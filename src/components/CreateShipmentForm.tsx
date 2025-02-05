@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MapPin, Calendar, Package, DollarSign } from "lucide-react";
+import { MapPin, Calendar, Package, DollarSign, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -28,6 +28,17 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
       toast({
         title: "Authentication required",
         description: "Please log in to create a shipment",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate departure date is in the future
+    const departureDate = new Date(formData.departure_date);
+    if (departureDate < new Date()) {
+      toast({
+        title: "Invalid date",
+        description: "Departure date must be in the future",
         variant: "destructive",
       });
       return;
@@ -65,7 +76,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="origin">Origin</Label>
+        <Label htmlFor="origin">Origin Location</Label>
         <div className="flex items-center space-x-2">
           <MapPin className="h-4 w-4 text-gray-400" />
           <Input
@@ -74,12 +85,13 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
             required
             placeholder="e.g., Shanghai, China"
+            disabled={loading}
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="destination">Destination</Label>
+        <Label htmlFor="destination">Destination Location</Label>
         <div className="flex items-center space-x-2">
           <MapPin className="h-4 w-4 text-gray-400" />
           <Input
@@ -88,6 +100,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
             required
             placeholder="e.g., Los Angeles, USA"
+            disabled={loading}
           />
         </div>
       </div>
@@ -102,6 +115,8 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             value={formData.departure_date}
             onChange={(e) => setFormData({ ...formData, departure_date: e.target.value })}
             required
+            min={new Date().toISOString().slice(0, 16)}
+            disabled={loading}
           />
         </div>
       </div>
@@ -117,6 +132,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             value={formData.available_space}
             onChange={(e) => setFormData({ ...formData, available_space: Number(e.target.value) })}
             required
+            disabled={loading}
           />
         </div>
       </div>
@@ -132,16 +148,29 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             value={formData.price_per_cbm}
             onChange={(e) => setFormData({ ...formData, price_per_cbm: Number(e.target.value) })}
             required
+            disabled={loading}
           />
         </div>
       </div>
 
       <div className="flex justify-end space-x-2">
-        <Button type="button" variant="outline" onClick={onClose}>
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={onClose}
+          disabled={loading}
+        >
           Cancel
         </Button>
         <Button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Shipment"}
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            "Create Shipment"
+          )}
         </Button>
       </div>
     </form>
