@@ -1,8 +1,6 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
-import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Package, Truck, Plus } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import {
   Dialog,
@@ -16,11 +14,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { Shipment } from "@/types/database.types";
 import BookingForm from "@/components/BookingForm";
 import CreateShipmentForm from "@/components/CreateShipmentForm";
-import { useState } from "react";
-import { Shipment } from "@/types/database.types";
-import { supabase } from "@/integrations/supabase/client";
+import MarketplaceHeader from "@/components/marketplace/MarketplaceHeader";
+import ShipmentCard from "@/components/marketplace/ShipmentCard";
+import BookingsList from "@/components/marketplace/BookingsList";
 
 const Marketplace = () => {
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
@@ -31,7 +31,7 @@ const Marketplace = () => {
     queryFn: shipmentService.listShipments,
   });
 
-  const { data: userShipments, isLoading: isLoadingUser, error: errorUser } = useQuery({
+  const { data: userShipments, isLoading: isLoadingUser } = useQuery({
     queryKey: ['user-shipments'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -45,7 +45,7 @@ const Marketplace = () => {
     },
   });
 
-  const { data: userBookings, isLoading: isLoadingBookings, error: errorBookings } = useQuery({
+  const { data: userBookings, isLoading: isLoadingBookings } = useQuery({
     queryKey: ['user-bookings'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -75,75 +75,11 @@ const Marketplace = () => {
     );
   }
 
-  if (errorAll || errorUser || errorBookings) {
-    toast({
-      title: "Error",
-      description: "Failed to load data. Please try again later.",
-      variant: "destructive",
-    });
-    return null;
-  }
-
-  const renderShipmentCard = (shipment: Shipment, showBookButton = true) => (
-    <div
-      key={shipment.id}
-      className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100"
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <MapPin className="h-5 w-5 text-secondary" />
-          <div>
-            <p className="text-sm text-gray-500">Route</p>
-            <p className="font-medium text-primary">
-              {shipment.origin} → {shipment.destination}
-            </p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="space-y-3 mb-4">
-        <div className="flex items-center space-x-2">
-          <Calendar className="h-4 w-4 text-gray-400" />
-          <span className="text-gray-600">
-            {new Date(shipment.departure_date).toLocaleDateString()}
-          </span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Package className="h-4 w-4 text-gray-400" />
-          <span className="text-gray-600">
-            {shipment.available_space} CBM available
-          </span>
-        </div>
-        <div className="text-lg font-semibold text-secondary">
-          ${shipment.price_per_cbm}/CBM
-        </div>
-      </div>
-
-      {showBookButton && (
-        <Button 
-          className="w-full bg-primary hover:bg-primary/90"
-          onClick={() => setSelectedShipment(shipment)}
-        >
-          Book Space
-        </Button>
-      )}
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       <main className="container mx-auto px-4 py-16">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-primary">Cargo Buddy Bridge</h1>
-          <Button 
-            className="flex items-center gap-2"
-            onClick={() => setShowCreateForm(true)}
-          >
-            <Plus className="h-4 w-4" />
-            Post a Shipment
-          </Button>
-        </div>
+        <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
 
         <Tabs defaultValue="marketplace" className="space-y-6">
           <TabsList>
@@ -153,11 +89,23 @@ const Marketplace = () => {
           </TabsList>
 
           <TabsContent value="marketplace" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {allShipments?.map((shipment) => renderShipmentCard(shipment))}
+            {allShipments?.map((shipment) => (
+              <ShipmentCard 
+                key={shipment.id}
+                shipment={shipment}
+                onBookSpace={setSelectedShipment}
+              />
+            ))}
           </TabsContent>
 
           <TabsContent value="my-shipments" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userShipments?.map((shipment) => renderShipmentCard(shipment, false))}
+            {userShipments?.map((shipment) => (
+              <ShipmentCard 
+                key={shipment.id}
+                shipment={shipment}
+                showBookButton={false}
+              />
+            ))}
             {userShipments?.length === 0 && (
               <div className="col-span-full text-center py-8 text-gray-500">
                 You haven't created any shipments yet.
@@ -166,42 +114,7 @@ const Marketplace = () => {
           </TabsContent>
 
           <TabsContent value="my-bookings">
-            <div className="space-y-4">
-              {userBookings?.map((booking) => (
-                <div key={booking.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-lg">
-                        {booking.shipment.origin} → {booking.shipment.destination}
-                      </h3>
-                      <p className="text-gray-500">
-                        Departure: {new Date(booking.shipment.departure_date).toLocaleDateString()}
-                      </p>
-                      <p className="text-gray-500">
-                        Space Booked: {booking.space_booked} CBM
-                      </p>
-                      <p className="text-gray-500">
-                        Total Cost: ${booking.space_booked * booking.shipment.price_per_cbm}
-                      </p>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-sm capitalize ${
-                      booking.status === 'confirmed' 
-                        ? 'bg-green-100 text-green-800'
-                        : booking.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {booking.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
-              {userBookings?.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  You haven't made any bookings yet.
-                </div>
-              )}
-            </div>
+            <BookingsList bookings={userBookings} />
           </TabsContent>
         </Tabs>
 
