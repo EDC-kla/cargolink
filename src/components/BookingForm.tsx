@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Save } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,57 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const handleSaveAsDraft = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to save a draft",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const draftBookingData: BookingFormData & { shipment_id: string; status: string; is_draft: boolean } = {
+        shipment_id: shipmentId,
+        space_booked: spaceRequired,
+        status: "draft",
+        is_draft: true,
+        cargo_type: "",
+        cargo_description: "",
+        cargo_value: 0,
+        cargo_packaging_type: "pallets",
+        cargo_dimensions: { length: 0, width: 0, height: 0, weight: 0 },
+        special_handling: [],
+        pickup_address: "",
+        delivery_address: "",
+        insurance_required: false,
+        required_certificates: [],
+        payment_terms: "prepaid"
+      };
+
+      await shipmentService.bookSpace(draftBookingData);
+
+      toast({
+        title: "Draft saved",
+        description: "Your booking has been saved as a draft. You can continue editing it later in My Bookings.",
+      });
+      onClose();
+    } catch (error: any) {
+      setError(error.message);
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,10 +105,11 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
 
     try {
       setLoading(true);
-      const initialBookingData: BookingFormData & { shipment_id: string; status: string } = {
+      const initialBookingData: BookingFormData & { shipment_id: string; status: string; is_draft: boolean } = {
         shipment_id: shipmentId,
         space_booked: spaceRequired,
         status: "pending",
+        is_draft: false,
         cargo_type: "",
         cargo_description: "",
         cargo_value: 0,
@@ -115,6 +167,15 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
       />
 
       <div className="flex justify-end space-x-2">
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={handleSaveAsDraft}
+          disabled={loading}
+        >
+          <Save className="h-4 w-4 mr-2" />
+          Save as Draft
+        </Button>
         <Button type="button" variant="outline" onClick={onClose}>
           Cancel
         </Button>
