@@ -8,7 +8,7 @@ import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
-import BookingPage from "@/components/marketplace/BookingPage";
+import BookingForm from "@/components/BookingForm";
 
 const Marketplace = () => {
   const navigate = useNavigate();
@@ -73,7 +73,18 @@ const Marketplace = () => {
             />
             <Route
               path="/book/:shipmentId"
-              element={<BookingPage />}
+              element={
+                <div className="max-w-4xl mx-auto">
+                  {shipments && (
+                    <BookingForm
+                      shipmentId={window.location.pathname.split('/').pop() || ''}
+                      availableSpace={shipments.find(s => s.id === window.location.pathname.split('/').pop())?.available_space || 0}
+                      pricePerCbm={shipments.find(s => s.id === window.location.pathname.split('/').pop())?.price_per_cbm || 0}
+                      onClose={() => navigate('/marketplace')}
+                    />
+                  )}
+                </div>
+              }
             />
           </Routes>
         </div>
