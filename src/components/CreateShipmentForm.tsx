@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { MapPin, Calendar, Package, DollarSign, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
+import ShipmentFormFields from "./ShipmentFormFields";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
@@ -34,7 +35,10 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     route_type: "direct",
     notes: "",
     preferred_cargo_types: [],
-    stops: []
+    stops: [] as string[],  // Explicitly type as string[]
+    featured: false,        // Add missing property
+    display_order: 0,       // Add missing property
+    category: ""           // Add missing property
   });
 
   const handleFieldChange = (field: string, value: string | number) => {
@@ -76,83 +80,11 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="origin">Origin Location</Label>
-        <div className="flex items-center space-x-2">
-          <MapPin className="h-4 w-4 text-gray-400" />
-          <Input
-            id="origin"
-            value={formData.origin}
-            onChange={(e) => handleFieldChange("origin", e.target.value)}
-            required
-            placeholder="e.g., Shanghai, China"
-            disabled={loading}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="destination">Destination Location</Label>
-        <div className="flex items-center space-x-2">
-          <MapPin className="h-4 w-4 text-gray-400" />
-          <Input
-            id="destination"
-            value={formData.destination}
-            onChange={(e) => handleFieldChange("destination", e.target.value)}
-            required
-            placeholder="e.g., Los Angeles, USA"
-            disabled={loading}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="departure_date">Departure Date</Label>
-        <div className="flex items-center space-x-2">
-          <Calendar className="h-4 w-4 text-gray-400" />
-          <Input
-            id="departure_date"
-            type="datetime-local"
-            value={formData.departure_date}
-            onChange={(e) => handleFieldChange("departure_date", e.target.value)}
-            required
-            min={new Date().toISOString().slice(0, 16)}
-            disabled={loading}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="available_space">Available Space (CBM)</Label>
-        <div className="flex items-center space-x-2">
-          <Package className="h-4 w-4 text-gray-400" />
-          <Input
-            id="available_space"
-            type="number"
-            min={1}
-            value={formData.available_space}
-            onChange={(e) => handleFieldChange("available_space", Number(e.target.value))}
-            required
-            disabled={loading}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="price_per_cbm">Price per CBM ($)</Label>
-        <div className="flex items-center space-x-2">
-          <DollarSign className="h-4 w-4 text-gray-400" />
-          <Input
-            id="price_per_cbm"
-            type="number"
-            min={1}
-            value={formData.price_per_cbm}
-            onChange={(e) => handleFieldChange("price_per_cbm", Number(e.target.value))}
-            required
-            disabled={loading}
-          />
-        </div>
-      </div>
+      <ShipmentFormFields
+        formData={formData}
+        onChange={handleFieldChange}
+        disabled={loading}
+      />
 
       <div className="flex justify-end space-x-2">
         <Button 

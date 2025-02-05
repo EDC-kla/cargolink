@@ -1,8 +1,8 @@
 
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { shipmentService } from "@/services/api";
+import { supabase } from '@/integrations/supabase/client';
+import { shipmentService } from '@/services/api';
 
 export const useShipmentForm = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -29,7 +29,10 @@ export const useShipmentForm = (onClose: () => void) => {
     route_type: "direct",
     notes: "",
     preferred_cargo_types: [],
-    stops: []
+    stops: [] as string[],  // Explicitly type as string[]
+    featured: false,        // Add missing property
+    display_order: 0,       // Add missing property
+    category: ""           // Add missing property
   });
 
   const handleFieldChange = (field: string, value: any) => {
@@ -87,3 +90,4 @@ export const useShipmentForm = (onClose: () => void) => {
     handleSubmit,
   };
 };
+

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
@@ -35,9 +34,14 @@ const Marketplace = () => {
     queryKey: ['shipments', transportMode],
     queryFn: async () => {
       const shipments = await shipmentService.listShipments();
+      // Transform the stops array from Json[] to string[]
+      const transformedShipments = shipments.map(shipment => ({
+        ...shipment,
+        stops: shipment.stops?.map(stop => String(stop)) || []
+      }));
       return transportMode === 'all' 
-        ? shipments 
-        : shipments.filter(s => s.transport_mode === transportMode);
+        ? transformedShipments 
+        : transformedShipments.filter(s => s.transport_mode === transportMode);
     },
   });
 
