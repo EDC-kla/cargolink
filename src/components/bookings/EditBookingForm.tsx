@@ -16,7 +16,8 @@ import { BookingFormData } from "./wizard/BookingWizard";
 import { Booking, Shipment, BookingStatus, RouteStop } from "@/types/database.types";
 
 const EditBookingForm = () => {
-  const { bookingId } = useParams<{ bookingId: string }>();
+  const params = useParams();
+  const bookingId = params.bookingId;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
