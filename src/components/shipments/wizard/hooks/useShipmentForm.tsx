@@ -32,7 +32,23 @@ export const useShipmentForm = (onClose: () => void) => {
     stops: [],
     featured: false,
     display_order: 0,
-    category: ""
+    category: "",
+    accepted_cargo_types: [],
+    max_piece_dimensions: {
+      length: 0,
+      width: 0,
+      height: 0,
+      weight: 0
+    },
+    hazmat_accepted: false,
+    temperature_controlled: false,
+    temperature_range: {
+      min: null,
+      max: null,
+      unit: 'C' as const
+    },
+    special_handling_options: [],
+    required_cargo_docs: []
   });
 
   const handleFieldChange = (field: string, value: any) => {
