@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { shipmentService } from "@/services/api";
@@ -10,37 +10,11 @@ import EditBookingForm from "@/components/bookings/EditBookingForm";
 import BookingForm from "@/components/bookings/BookingForm";
 
 const BookingRoute = () => {
-  const { shipmentId } = useParams();
   const navigate = useNavigate();
-  
-  const { data: shipment } = useQuery({
-    queryKey: ['shipment', shipmentId],
-    queryFn: () => shipmentService.getShipment(shipmentId || ''),
-    enabled: !!shipmentId,
+  const { data: shipments, refetch } = useQuery({
+    queryKey: ['shipments'],
+    queryFn: shipmentService.listShipments
   });
-
-  if (!shipment) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-muted-foreground">Loading shipment details...</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="max-w-4xl mx-auto">
-      <BookingForm
-        shipmentId={shipmentId || ''}
-        availableSpace={shipment.available_space}
-        pricePerCbm={shipment.price_per_cbm}
-        onClose={() => navigate('/marketplace')}
-      />
-    </div>
-  );
-};
-
-const Marketplace = () => {
-  const navigate = useNavigate();
 
   const { data: userData } = useQuery({
     queryKey: ['user'],
@@ -63,13 +37,19 @@ const Marketplace = () => {
           <Routes>
             <Route 
               path="/" 
-              element={<AvailableShipments />} 
+              element={
+                <AvailableShipments 
+                  shipments={shipments || []} 
+                  onRefetch={refetch}
+                />
+              } 
             />
             <Route 
               path="/my-shipments" 
               element={
                 <MyShipments 
-                  userId={userData?.user?.id}
+                  shipments={shipments || []}
+                  onRefetch={refetch}
                 />
               } 
             />
@@ -83,7 +63,7 @@ const Marketplace = () => {
             />
             <Route
               path="/book/:shipmentId"
-              element={<BookingRoute />}
+              element={<BookingForm />}
             />
           </Routes>
         </div>
@@ -92,4 +72,4 @@ const Marketplace = () => {
   );
 };
 
-export default Marketplace;
+export default BookingRoute;

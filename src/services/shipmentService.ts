@@ -1,5 +1,23 @@
 import { supabase } from "@/integrations/supabase/client";
-import { Shipment } from "@/types/database.types";
+import { Shipment, TransportMode, RouteStop } from "@/types/database.types";
+
+export const transformShipmentResponse = (data: any): Shipment => {
+  return {
+    ...data,
+    transport_mode: data.transport_mode as TransportMode,
+    stops: Array.isArray(data.stops) ? data.stops.map((stop: any) => ({
+      location: stop.location,
+      arrival_date: stop.arrival_date,
+      departure_date: stop.departure_date,
+      stop_type: stop.stop_type,
+      notes: stop.notes
+    })) : [],
+    additional_services: data.additional_services || [],
+    cargo_restrictions: data.cargo_restrictions || [],
+    route_tags: data.route_tags || [],
+    preferred_cargo_types: data.preferred_cargo_types || []
+  };
+};
 
 export const shipmentService = {
   listShipments: async () => {
@@ -9,7 +27,7 @@ export const shipmentService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data.map(transformShipmentResponse);
   },
 
   getShipment: async (id: string) => {
@@ -20,10 +38,10 @@ export const shipmentService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return transformShipmentResponse(data);
   },
 
-  createShipment: async (shipment: Partial<Shipment>) => {
+  createShipment: async (shipment: Omit<Shipment, 'id' | 'created_at'>) => {
     const { data, error } = await supabase
       .from('shipments')
       .insert([shipment])
@@ -31,10 +49,10 @@ export const shipmentService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return transformShipmentResponse(data);
   },
 
-  updateShipment: async (id: string, updates: Partial<Shipment>) => {
+  updateShipment: async (id: string, updates: Partial<Omit<Shipment, 'id' | 'created_at'>>) => {
     const { data, error } = await supabase
       .from('shipments')
       .update(updates)
@@ -43,7 +61,7 @@ export const shipmentService = {
       .single();
 
     if (error) throw error;
-    return data;
+    return transformShipmentResponse(data);
   },
 
   deleteShipment: async (id: string) => {
@@ -63,26 +81,6 @@ export const shipmentService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
-  },
-
-  bookSpace: async (bookingData: any) => {
-    const { data, error } = await supabase
-      .from('bookings')
-      .insert([bookingData])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Update available space in shipment
-    const shipment = await shipmentService.getShipment(bookingData.shipment_id);
-    const newAvailableSpace = shipment.available_space - bookingData.space_booked;
-
-    await shipmentService.updateShipment(bookingData.shipment_id, {
-      available_space: newAvailableSpace
-    });
-
-    return data;
+    return data.map(transformShipmentResponse);
   }
 };
