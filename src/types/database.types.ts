@@ -8,6 +8,18 @@ export type Shipment = {
   status: string | null;
   created_at: string;
   created_by: string | null;
+  transport_mode: string;
+  container_type: string | null;
+  transit_time_days: number | null;
+  cargo_restrictions: string[] | null;
+  additional_services: string[] | null;
+  customs_clearance: boolean | null;
+  door_pickup: boolean | null;
+  door_delivery: boolean | null;
+  route_frequency: string | null;
+  consolidation_service: boolean | null;
+  min_booking_size: number | null;
+  notes: string | null;
 };
 
 export type Booking = {

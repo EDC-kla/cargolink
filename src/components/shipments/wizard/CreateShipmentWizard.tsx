@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import LocationStep from "./steps/LocationStep";
 import DateStep from "./steps/DateStep";
 import SpaceStep from "./steps/SpaceStep";
+import TransportStep from "./steps/TransportStep";
 import ReviewStep from "./steps/ReviewStep";
 import WizardProgress from "./WizardProgress";
 
@@ -19,6 +20,13 @@ type ShipmentFormData = {
   departure_date: string;
   available_space: number;
   price_per_cbm: number;
+  transport_mode: string;
+  container_type: string | null;
+  transit_time_days: number | null;
+  customs_clearance: boolean;
+  door_pickup: boolean;
+  door_delivery: boolean;
+  min_booking_size: number | null;
 };
 
 const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
@@ -30,6 +38,13 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
     departure_date: "",
     available_space: 1,
     price_per_cbm: 1,
+    transport_mode: "sea",
+    container_type: null,
+    transit_time_days: null,
+    customs_clearance: false,
+    door_pickup: false,
+    door_delivery: false,
+    min_booking_size: null,
   });
 
   const steps = [
@@ -39,6 +54,21 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
         <LocationStep
           origin={formData.origin}
           destination={formData.destination}
+          onChange={(field, value) => setFormData({ ...formData, [field]: value })}
+        />
+      ),
+    },
+    {
+      title: "Transport",
+      component: (
+        <TransportStep
+          transportMode={formData.transport_mode}
+          transitTimeDays={formData.transit_time_days}
+          containerType={formData.container_type}
+          minBookingSize={formData.min_booking_size}
+          customsClearance={formData.customs_clearance}
+          doorPickup={formData.door_pickup}
+          doorDelivery={formData.door_delivery}
           onChange={(field, value) => setFormData({ ...formData, [field]: value })}
         />
       ),
