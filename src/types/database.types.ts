@@ -5,7 +5,7 @@ export type Shipment = {
   departure_date: string;
   available_space: number;
   price_per_cbm: number;
-  status: 'available' | 'full' | 'in_transit' | 'delivered' | null;
+  status: string | null;
   created_at: string;
   created_by: string | null;
 };
