@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MailCheck } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -12,6 +13,8 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmedEmail, setConfirmedEmail] = useState("");
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,10 +27,8 @@ const Auth = () => {
           password,
         });
         if (error) throw error;
-        toast({
-          title: "Success",
-          description: "Check your email to confirm your account",
-        });
+        setConfirmedEmail(email);
+        setShowConfirmation(true);
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -47,10 +48,44 @@ const Auth = () => {
     }
   };
 
+  if (showConfirmation) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-sm p-8 text-center">
+          <MailCheck className="w-12 h-12 text-blue-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold mb-4">Check your email</h2>
+          <Alert className="mb-4">
+            <AlertTitle>Confirmation email sent!</AlertTitle>
+            <AlertDescription>
+              We've sent a confirmation email to <strong>{confirmedEmail}</strong>.
+              Please check your inbox and follow the instructions to complete your
+              registration.
+            </AlertDescription>
+          </Alert>
+          <p className="text-gray-600 mb-6">
+            Once you've confirmed your email, you can sign in to your account.
+          </p>
+          <Button
+            onClick={() => {
+              setShowConfirmation(false);
+              setIsSignUp(false);
+            }}
+            className="w-full"
+          >
+            Return to Sign In
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="p-4">
-        <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gray-900">
+        <Link
+          to="/"
+          className="inline-flex items-center text-gray-600 hover:text-gray-900"
+        >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Home
         </Link>
