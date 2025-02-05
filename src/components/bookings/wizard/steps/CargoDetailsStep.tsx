@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -15,9 +14,6 @@ import { Card } from "@/components/ui/card";
 import {
   AlertCircle,
   Package,
-  Thermometer,
-  Scale,
-  Box,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -40,7 +36,7 @@ const CargoDetailsStep = ({ data, onChange, shipment }: CargoDetailsStepProps) =
   const handleTemperatureChange = (field: "min" | "max", value: number) => {
     onChange({
       temperature_requirements: {
-        ...(data.temperature_requirements || { unit: 'C' }),
+        ...(data.temperature_requirements || { min: 0, max: 0, unit: 'C' }),
         [field]: value,
       },
     });

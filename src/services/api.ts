@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { Shipment, Booking, Profile } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
@@ -81,12 +80,16 @@ export const shipmentService = {
       .insert([{ 
         ...booking,
         user_id: user.id,
+        cargo_dimensions: JSON.stringify(booking.cargo_dimensions),
+        temperature_requirements: booking.temperature_requirements 
+          ? JSON.stringify(booking.temperature_requirements)
+          : null
       }])
       .select()
       .single();
     
     if (error) throw error;
-    return data as Booking;
+    return transformBookingResponse(data) as Booking;
   },
 
   async listUserBookings() {
@@ -103,7 +106,10 @@ export const shipmentService = {
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data as (Booking & { shipment: Shipment })[];
+    return data.map(booking => ({
+      ...transformBookingResponse(booking),
+      shipment: booking.shipment as Shipment
+    })) as (Booking & { shipment: Shipment })[];
   },
 
   async updateBookingStatus(id: string, status: string) {
@@ -115,7 +121,7 @@ export const shipmentService = {
       .single();
     
     if (error) throw error;
-    return data as Booking;
+    return transformBookingResponse(data) as Booking;
   },
 
   async getProfile(userId: string) {
@@ -141,3 +147,19 @@ export const shipmentService = {
     return data as Profile;
   }
 };
+
+function transformBookingResponse(data: any): Booking {
+  return {
+    ...data,
+    cargo_dimensions: typeof data.cargo_dimensions === 'string' 
+      ? JSON.parse(data.cargo_dimensions)
+      : data.cargo_dimensions || { length: 0, width: 0, height: 0, weight: 0 },
+    temperature_requirements: data.temperature_requirements
+      ? typeof data.temperature_requirements === 'string'
+        ? JSON.parse(data.temperature_requirements)
+        : data.temperature_requirements
+      : null,
+    special_handling: data.special_handling || [],
+    required_certificates: data.required_certificates || [],
+  };
+}
