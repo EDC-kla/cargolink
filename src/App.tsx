@@ -3,11 +3,15 @@ import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
 import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <div className="app">
           <Routes>
@@ -18,7 +22,7 @@ function App() {
           <Toaster />
         </div>
       </Router>
-    </React.StrictMode>
+    </QueryClientProvider>
   );
 }
 
