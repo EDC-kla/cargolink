@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -9,36 +8,37 @@ import { Shipment } from "@/types/database.types";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
+  initialData?: Shipment | null;
 }
 
-const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
+const CreateShipmentForm = ({ onClose, initialData }: CreateShipmentFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<Omit<Shipment, "id" | "created_at" | "created_by">>({
-    origin: "",
-    destination: "",
-    departure_date: "",
-    available_space: 1,
-    price_per_cbm: 1,
-    transport_mode: "sea",
-    container_type: "",
-    transit_time_days: 0,
-    customs_clearance: false,
-    door_pickup: false,
-    door_delivery: false,
-    min_booking_size: 0,
-    status: "available",
-    additional_services: [],
-    cargo_restrictions: [],
-    consolidation_service: false,
-    route_frequency: "",
-    route_tags: [],
-    route_type: "direct",
-    notes: "",
-    preferred_cargo_types: [],
-    stops: [],
-    featured: false,
-    display_order: 0,
-    category: ""
+  const [formData, setFormData] = useState({
+    origin: initialData?.origin || "",
+    destination: initialData?.destination || "",
+    departure_date: initialData?.departure_date || "",
+    available_space: initialData?.available_space || 1,
+    price_per_cbm: initialData?.price_per_cbm || 1,
+    transport_mode: initialData?.transport_mode || "sea",
+    container_type: initialData?.container_type || "",
+    transit_time_days: initialData?.transit_time_days || 0,
+    customs_clearance: initialData?.customs_clearance || false,
+    door_pickup: initialData?.door_pickup || false,
+    door_delivery: initialData?.door_delivery || false,
+    min_booking_size: initialData?.min_booking_size || 0,
+    status: initialData?.status || "available",
+    additional_services: initialData?.additional_services || [],
+    cargo_restrictions: initialData?.cargo_restrictions || [],
+    consolidation_service: initialData?.consolidation_service || false,
+    route_frequency: initialData?.route_frequency || "",
+    route_tags: initialData?.route_tags || [],
+    route_type: initialData?.route_type || "direct",
+    notes: initialData?.notes || "",
+    preferred_cargo_types: initialData?.preferred_cargo_types || [],
+    stops: initialData?.stops || [],
+    featured: initialData?.featured || false,
+    display_order: initialData?.display_order || 0,
+    category: initialData?.category || ""
   });
 
   const handleFieldChange = (field: string, value: any) => {
@@ -60,12 +60,19 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
 
     try {
       setLoading(true);
-      await shipmentService.createShipment(formData);
-
-      toast({
-        title: "Success",
-        description: "Shipment created successfully",
-      });
+      if (initialData) {
+        await shipmentService.updateShipment(initialData.id, formData);
+        toast({
+          title: "Success",
+          description: "Shipment updated successfully",
+        });
+      } else {
+        await shipmentService.createShipment(formData);
+        toast({
+          title: "Success",
+          description: "Shipment created successfully",
+        });
+      }
       onClose();
     } catch (error: any) {
       toast({
@@ -99,10 +106,10 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Creating...
+              {initialData ? "Updating..." : "Creating..."}
             </>
           ) : (
-            "Create Shipment"
+            initialData ? "Update Shipment" : "Create Shipment"
           )}
         </Button>
       </div>

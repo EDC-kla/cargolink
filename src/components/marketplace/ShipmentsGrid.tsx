@@ -1,4 +1,3 @@
-
 import { Shipment } from "@/types/database.types";
 import ShipmentCard from "./ShipmentCard";
 
@@ -6,9 +5,17 @@ interface ShipmentsGridProps {
   shipments: Shipment[] | undefined;
   onBookSpace: (shipment: Shipment) => void;
   showBookButton?: boolean;
+  onEdit?: (shipment: Shipment) => void;
+  showEditButton?: boolean;
 }
 
-const ShipmentsGrid = ({ shipments, onBookSpace, showBookButton = true }: ShipmentsGridProps) => {
+const ShipmentsGrid = ({ 
+  shipments, 
+  onBookSpace, 
+  showBookButton = true,
+  onEdit,
+  showEditButton = false 
+}: ShipmentsGridProps) => {
   if (!shipments?.length) {
     return (
       <div className="col-span-full text-center py-8 text-gray-500">
@@ -25,6 +32,8 @@ const ShipmentsGrid = ({ shipments, onBookSpace, showBookButton = true }: Shipme
           shipment={shipment}
           onBookSpace={showBookButton ? onBookSpace : undefined}
           showBookButton={showBookButton}
+          onEdit={showEditButton ? onEdit : undefined}
+          showEditButton={showEditButton}
         />
       ))}
     </div>

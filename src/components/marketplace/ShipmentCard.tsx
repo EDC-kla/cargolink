@@ -1,6 +1,5 @@
-
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Package, Ship, Plane, Clock, Info } from "lucide-react";
+import { Calendar, MapPin, Package, Ship, Plane, Clock, Info, Edit } from "lucide-react";
 import { Shipment } from "@/types/database.types";
 import {
   Tooltip,
@@ -14,9 +13,17 @@ interface ShipmentCardProps {
   shipment: Shipment;
   showBookButton?: boolean;
   onBookSpace?: (shipment: Shipment) => void;
+  showEditButton?: boolean;
+  onEdit?: (shipment: Shipment) => void;
 }
 
-const ShipmentCard = ({ shipment, showBookButton = true, onBookSpace }: ShipmentCardProps) => {
+const ShipmentCard = ({ 
+  shipment, 
+  showBookButton = true, 
+  onBookSpace,
+  showEditButton = false,
+  onEdit
+}: ShipmentCardProps) => {
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
   
   return (
@@ -96,14 +103,25 @@ const ShipmentCard = ({ shipment, showBookButton = true, onBookSpace }: Shipment
         )}
       </div>
 
-      {showBookButton && onBookSpace && (
-        <Button 
-          className="w-full bg-primary hover:bg-primary/90 text-white font-medium"
-          onClick={() => onBookSpace(shipment)}
-        >
-          Book Space
-        </Button>
-      )}
+      <div className="flex gap-2">
+        {showBookButton && onBookSpace && (
+          <Button 
+            className="flex-1 bg-primary hover:bg-primary/90 text-white font-medium"
+            onClick={() => onBookSpace(shipment)}
+          >
+            Book Space
+          </Button>
+        )}
+        {showEditButton && onEdit && (
+          <Button 
+            variant="outline"
+            className="px-3"
+            onClick={() => onEdit(shipment)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
     </motion.div>
   );
 };

@@ -16,6 +16,17 @@ interface MyShipmentsProps {
 
 const MyShipments = ({ shipments, onRefetch }: MyShipmentsProps) => {
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [editingShipment, setEditingShipment] = useState<Shipment | null>(null);
+
+  const handleEdit = (shipment: Shipment) => {
+    setEditingShipment(shipment);
+  };
+
+  const handleCloseForm = () => {
+    setShowCreateForm(false);
+    setEditingShipment(null);
+    onRefetch();
+  };
 
   return (
     <div className="space-y-6">
@@ -32,18 +43,22 @@ const MyShipments = ({ shipments, onRefetch }: MyShipmentsProps) => {
         shipments={shipments}
         showBookButton={false}
         onBookSpace={() => {}}
+        onEdit={handleEdit}
+        showEditButton={true}
       />
 
-      <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
+      <Dialog open={showCreateForm || !!editingShipment} onOpenChange={(open) => {
+        if (!open) handleCloseForm();
+      }}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Create New Shipment</DialogTitle>
+            <DialogTitle>
+              {editingShipment ? 'Edit Shipment' : 'Create New Shipment'}
+            </DialogTitle>
           </DialogHeader>
           <CreateShipmentForm
-            onClose={() => {
-              setShowCreateForm(false);
-              onRefetch();
-            }}
+            initialData={editingShipment}
+            onClose={handleCloseForm}
           />
         </DialogContent>
       </Dialog>
