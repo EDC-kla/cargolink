@@ -14,6 +14,7 @@ interface BookingWizardProps {
   shipment: Shipment;
   onComplete: () => void;
   onCancel: () => void;
+  onAuthRequired?: () => Promise<void>;
 }
 
 export type BookingFormData = {
@@ -49,7 +50,7 @@ export type BookingFormData = {
   booking_notes?: string;
 };
 
-const BookingWizard = ({ shipment, onComplete, onCancel }: BookingWizardProps) => {
+const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: BookingWizardProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<BookingFormData>({
     space_booked: 1,
@@ -68,6 +69,9 @@ const BookingWizard = ({ shipment, onComplete, onCancel }: BookingWizardProps) =
 
   const handleSubmit = async () => {
     try {
+      if (onAuthRequired) {
+        await onAuthRequired();
+      }
       await bookingService.bookSpace({
         shipment_id: shipment.id,
         ...formData,

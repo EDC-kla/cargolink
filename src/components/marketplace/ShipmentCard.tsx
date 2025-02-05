@@ -2,14 +2,23 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
-import { Ship, Plane } from "lucide-react";
+import { Ship, Plane, Edit } from "lucide-react";
 
 interface ShipmentCardProps {
   shipment: Shipment;
   onBookSpace: (shipment: Shipment) => void;
+  showBookButton?: boolean;
+  onEdit?: (shipment: Shipment) => void;
+  showEditButton?: boolean;
 }
 
-const ShipmentCard = ({ shipment, onBookSpace }: ShipmentCardProps) => {
+const ShipmentCard = ({ 
+  shipment, 
+  onBookSpace, 
+  showBookButton = true,
+  onEdit,
+  showEditButton = false 
+}: ShipmentCardProps) => {
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
 
   return (
@@ -43,13 +52,23 @@ const ShipmentCard = ({ shipment, onBookSpace }: ShipmentCardProps) => {
         </div>
       </CardContent>
 
-      <CardFooter>
-        <Button 
-          className="w-full" 
-          onClick={() => onBookSpace(shipment)}
-        >
-          Book Space
-        </Button>
+      <CardFooter className="flex gap-2">
+        {showBookButton && (
+          <Button 
+            className="flex-1" 
+            onClick={() => onBookSpace(shipment)}
+          >
+            Book Space
+          </Button>
+        )}
+        {showEditButton && onEdit && (
+          <Button 
+            variant="outline"
+            onClick={() => onEdit(shipment)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
