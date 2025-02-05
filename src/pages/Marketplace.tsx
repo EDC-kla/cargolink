@@ -7,9 +7,9 @@ import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
-import BookingForm from "@/components/bookings/BookingForm";
+import BookingPage from "@/components/marketplace/BookingPage";
 
-const BookingRoute = () => {
+const Marketplace = () => {
   const navigate = useNavigate();
   const { data: shipments, refetch } = useQuery({
     queryKey: ['shipments'],
@@ -63,7 +63,7 @@ const BookingRoute = () => {
             />
             <Route
               path="/book/:shipmentId"
-              element={<BookingForm />}
+              element={<BookingPage />}
             />
           </Routes>
         </div>
@@ -72,4 +72,4 @@ const BookingRoute = () => {
   );
 };
 
-export default BookingRoute;
+export default Marketplace;
