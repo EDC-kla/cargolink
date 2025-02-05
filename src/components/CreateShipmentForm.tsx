@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,12 +18,32 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     departure_date: "",
     available_space: 1,
     price_per_cbm: 1,
+    transport_mode: "sea",
+    container_type: "",
+    transit_time_days: 0,
+    customs_clearance: false,
+    door_pickup: false,
+    door_delivery: false,
+    min_booking_size: 0,
+    status: "active",
+    additional_services: [],
+    cargo_restrictions: [],
+    consolidation_service: false,
+    route_frequency: "",
+    route_tags: [],
+    route_type: "direct",
+    notes: "",
+    preferred_cargo_types: [],
+    stops: []
   });
+
+  const handleFieldChange = (field: string, value: string | number) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate departure date is in the future
     const departureDate = new Date(formData.departure_date);
     if (departureDate < new Date()) {
       toast({
@@ -64,7 +83,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
           <Input
             id="origin"
             value={formData.origin}
-            onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+            onChange={(e) => handleFieldChange("origin", e.target.value)}
             required
             placeholder="e.g., Shanghai, China"
             disabled={loading}
@@ -79,7 +98,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
           <Input
             id="destination"
             value={formData.destination}
-            onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+            onChange={(e) => handleFieldChange("destination", e.target.value)}
             required
             placeholder="e.g., Los Angeles, USA"
             disabled={loading}
@@ -95,7 +114,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             id="departure_date"
             type="datetime-local"
             value={formData.departure_date}
-            onChange={(e) => setFormData({ ...formData, departure_date: e.target.value })}
+            onChange={(e) => handleFieldChange("departure_date", e.target.value)}
             required
             min={new Date().toISOString().slice(0, 16)}
             disabled={loading}
@@ -112,7 +131,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             type="number"
             min={1}
             value={formData.available_space}
-            onChange={(e) => setFormData({ ...formData, available_space: Number(e.target.value) })}
+            onChange={(e) => handleFieldChange("available_space", Number(e.target.value))}
             required
             disabled={loading}
           />
@@ -128,7 +147,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
             type="number"
             min={1}
             value={formData.price_per_cbm}
-            onChange={(e) => setFormData({ ...formData, price_per_cbm: Number(e.target.value) })}
+            onChange={(e) => handleFieldChange("price_per_cbm", Number(e.target.value))}
             required
             disabled={loading}
           />

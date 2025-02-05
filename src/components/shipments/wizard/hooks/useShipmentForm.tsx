@@ -14,12 +14,22 @@ export const useShipmentForm = (onClose: () => void) => {
     available_space: 1,
     price_per_cbm: 1,
     transport_mode: "sea",
-    container_type: null,
-    transit_time_days: null,
+    container_type: "",
+    transit_time_days: 0,
     customs_clearance: false,
     door_pickup: false,
     door_delivery: false,
-    min_booking_size: null,
+    min_booking_size: 0,
+    status: "active",
+    additional_services: [],
+    cargo_restrictions: [],
+    consolidation_service: false,
+    route_frequency: "",
+    route_tags: [],
+    route_type: "direct",
+    notes: "",
+    preferred_cargo_types: [],
+    stops: []
   });
 
   const handleFieldChange = (field: string, value: any) => {
