@@ -10,7 +10,6 @@ interface ShipmentCardProps {
   showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
-  onBookSpace?: (shipment: Shipment) => void;
 }
 
 const ShipmentCard = ({ 
@@ -18,17 +17,12 @@ const ShipmentCard = ({
   showBookButton = true,
   onEdit,
   showEditButton = false,
-  onBookSpace
 }: ShipmentCardProps) => {
   const navigate = useNavigate();
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
 
   const handleBookClick = () => {
-    if (onBookSpace) {
-      onBookSpace(shipment);
-    } else {
-      navigate(`/marketplace/book/${shipment.id}`);
-    }
+    navigate(`/marketplace/book/${shipment.id}`);
   };
 
   return (

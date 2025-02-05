@@ -6,7 +6,6 @@ interface ShipmentsGridProps {
   showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
-  onBookSpace?: (shipment: Shipment) => void;
 }
 
 const ShipmentsGrid = ({ 
@@ -14,7 +13,6 @@ const ShipmentsGrid = ({
   showBookButton = true,
   onEdit,
   showEditButton = false,
-  onBookSpace = () => {}
 }: ShipmentsGridProps) => {
   if (!shipments?.length) {
     return (
@@ -33,7 +31,6 @@ const ShipmentsGrid = ({
           showBookButton={showBookButton}
           onEdit={onEdit}
           showEditButton={showEditButton}
-          onBookSpace={() => onBookSpace(shipment)}
         />
       ))}
     </div>
