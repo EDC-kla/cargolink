@@ -1,7 +1,7 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
-import Navbar from "@/components/Navbar";
 import {
   Dialog,
   DialogContent,
@@ -71,74 +71,66 @@ const Marketplace = () => {
 
   if (isLoadingAll || isLoadingUser || isLoadingBookings) {
     return (
-      <div className="min-h-screen bg-white">
-        <Navbar />
-        <div className="container mx-auto px-4 py-16">
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        </div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <main className="container mx-auto px-4 py-16">
-        <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
+    <div className="p-6 max-w-7xl mx-auto">
+      <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
 
-        <Tabs defaultValue="marketplace" className="space-y-6">
-          <TabsList className="w-full justify-start border-b pb-px">
-            <TabsTrigger value="marketplace">Available Shipments</TabsTrigger>
-            <TabsTrigger value="my-shipments">My Listed Shipments</TabsTrigger>
-            <TabsTrigger value="my-bookings">My Bookings</TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="marketplace" className="mt-8">
+        <TabsList className="w-full justify-start border-b pb-px">
+          <TabsTrigger value="marketplace">Available Shipments</TabsTrigger>
+          <TabsTrigger value="my-shipments">My Listed Shipments</TabsTrigger>
+          <TabsTrigger value="my-bookings">My Bookings</TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="marketplace">
-            <TransportModeFilters 
-              transportMode={transportMode}
-              onTransportModeChange={setTransportMode}
-            />
-            <ShipmentsGrid 
-              shipments={allShipments}
-              onBookSpace={setSelectedShipment}
-            />
-          </TabsContent>
+        <TabsContent value="marketplace">
+          <TransportModeFilters 
+            transportMode={transportMode}
+            onTransportModeChange={setTransportMode}
+          />
+          <ShipmentsGrid 
+            shipments={allShipments}
+            onBookSpace={setSelectedShipment}
+          />
+        </TabsContent>
 
-          <TabsContent value="my-shipments">
-            <ShipmentsGrid 
-              shipments={userShipments}
-              onBookSpace={setSelectedShipment}
-              showBookButton={false}
-            />
-          </TabsContent>
+        <TabsContent value="my-shipments">
+          <ShipmentsGrid 
+            shipments={userShipments}
+            onBookSpace={setSelectedShipment}
+            showBookButton={false}
+          />
+        </TabsContent>
 
-          <TabsContent value="my-bookings">
-            <BookingsList bookings={userBookings} />
-          </TabsContent>
-        </Tabs>
+        <TabsContent value="my-bookings">
+          <BookingsList bookings={userBookings} />
+        </TabsContent>
+      </Tabs>
 
-        <BookingDialog 
-          shipment={selectedShipment}
-          onClose={() => setSelectedShipment(null)}
-          onBookingComplete={refetchAll}
-        />
+      <BookingDialog 
+        shipment={selectedShipment}
+        onClose={() => setSelectedShipment(null)}
+        onBookingComplete={refetchAll}
+      />
 
-        <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Create New Shipment</DialogTitle>
-            </DialogHeader>
-            <CreateShipmentWizard
-              onClose={() => {
-                setShowCreateForm(false);
-                refetchAll();
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-      </main>
+      <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Create New Shipment</DialogTitle>
+          </DialogHeader>
+          <CreateShipmentWizard
+            onClose={() => {
+              setShowCreateForm(false);
+              refetchAll();
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
