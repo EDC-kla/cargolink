@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import ShipmentList from "@/components/ShipmentList";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,7 +36,6 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero onGetStarted={handleGetStarted} />
-        <ShipmentList />
       </main>
     </div>
   );

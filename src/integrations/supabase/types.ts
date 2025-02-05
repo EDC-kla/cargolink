@@ -11,9 +11,11 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          booking_preferences: Json | null
           cargo_description: string | null
           cargo_type: string | null
           cargo_value: number | null
+          communication_preferences: string[] | null
           created_at: string
           delivery_address: string | null
           id: string
@@ -26,9 +28,11 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          booking_preferences?: Json | null
           cargo_description?: string | null
           cargo_type?: string | null
           cargo_value?: number | null
+          communication_preferences?: string[] | null
           created_at?: string
           delivery_address?: string | null
           id?: string
@@ -41,9 +45,11 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          booking_preferences?: Json | null
           cargo_description?: string | null
           cargo_type?: string | null
           cargo_value?: number | null
+          communication_preferences?: string[] | null
           created_at?: string
           delivery_address?: string | null
           id?: string
@@ -116,6 +122,42 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_searches: {
+        Row: {
+          cargo_type: string[] | null
+          created_at: string
+          departure_date_range: unknown | null
+          destination: string
+          id: string
+          origin: string
+          other_preferences: Json | null
+          space_required: number | null
+          user_id: string
+        }
+        Insert: {
+          cargo_type?: string[] | null
+          created_at?: string
+          departure_date_range?: unknown | null
+          destination: string
+          id?: string
+          origin: string
+          other_preferences?: Json | null
+          space_required?: number | null
+          user_id: string
+        }
+        Update: {
+          cargo_type?: string[] | null
+          created_at?: string
+          departure_date_range?: unknown | null
+          destination?: string
+          id?: string
+          origin?: string
+          other_preferences?: Json | null
+          space_required?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       shipments: {
         Row: {
           additional_services: string[] | null
@@ -134,9 +176,13 @@ export type Database = {
           min_booking_size: number | null
           notes: string | null
           origin: string
+          preferred_cargo_types: string[] | null
           price_per_cbm: number
           route_frequency: string | null
+          route_tags: string[] | null
+          route_type: string | null
           status: string | null
+          stops: Json[] | null
           transit_time_days: number | null
           transport_mode: string
         }
@@ -157,9 +203,13 @@ export type Database = {
           min_booking_size?: number | null
           notes?: string | null
           origin: string
+          preferred_cargo_types?: string[] | null
           price_per_cbm: number
           route_frequency?: string | null
+          route_tags?: string[] | null
+          route_type?: string | null
           status?: string | null
+          stops?: Json[] | null
           transit_time_days?: number | null
           transport_mode?: string
         }
@@ -180,9 +230,13 @@ export type Database = {
           min_booking_size?: number | null
           notes?: string | null
           origin?: string
+          preferred_cargo_types?: string[] | null
           price_per_cbm?: number
           route_frequency?: string | null
+          route_tags?: string[] | null
+          route_type?: string | null
           status?: string | null
+          stops?: Json[] | null
           transit_time_days?: number | null
           transport_mode?: string
         }
