@@ -1,13 +1,16 @@
-
 import { Booking } from "@/types/database.types";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Package, MapPin } from "lucide-react";
+import { Calendar, Package, MapPin, Edit } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface BookingsListProps {
   bookings: any[];
 }
 
 const BookingsList = ({ bookings }: BookingsListProps) => {
+  const navigate = useNavigate();
+
   if (!bookings?.length) {
     return (
       <div className="text-center py-8 text-gray-500">
@@ -16,7 +19,8 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
     );
   }
 
-  const getBadgeVariant = (status: string) => {
+  const getBadgeVariant = (status: string, isDraft: boolean) => {
+    if (isDraft) return 'secondary';
     switch (status) {
       case 'confirmed':
         return 'default';
@@ -25,6 +29,10 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
       default:
         return 'destructive';
     }
+  };
+
+  const handleContinueBooking = (booking: Booking) => {
+    navigate(`/bookings/${booking.id}/edit`);
   };
 
   return (
@@ -57,12 +65,26 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
               </div>
             </div>
             
-            <Badge 
-              variant={getBadgeVariant(booking.status)}
-              className="capitalize"
-            >
-              {booking.status}
-            </Badge>
+            <div className="flex flex-col items-end space-y-2">
+              <Badge 
+                variant={getBadgeVariant(booking.status, booking.is_draft)}
+                className="capitalize"
+              >
+                {booking.is_draft ? 'Draft' : booking.status}
+              </Badge>
+
+              {booking.is_draft && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleContinueBooking(booking)}
+                  className="flex items-center space-x-1"
+                >
+                  <Edit className="h-4 w-4 mr-1" />
+                  Continue Editing
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       ))}
