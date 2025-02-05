@@ -27,6 +27,7 @@ export interface Shipment {
   featured: boolean;
   display_order: number;
   category: string;
+  notes: string | null;
   vessel_name?: string;
   voyage_number?: string;
   container_size?: ContainerSizeType;
@@ -39,37 +40,71 @@ export interface Shipment {
   created_by?: string;
 }
 
-export interface BookingFormData {
+export interface Booking {
+  id: string;
   shipment_id: string;
+  user_id: string;
   space_booked: number;
-  cargo_type: string;
-  cargo_description: string;
-  cargo_value?: number;
+  status: string;
+  created_at: string;
+  cargo_type: string | null;
+  cargo_value: number | null;
+  cargo_description: string | null;
   special_handling: string[];
   insurance_required: boolean;
-  pickup_address: string;
-  delivery_address: string;
-  cargo_packaging_type: string;
+  pickup_address: string | null;
+  delivery_address: string | null;
+  booking_preferences: any;
+  communication_preferences: string[];
+  cargo_packaging_type: string | null;
   cargo_dimensions: {
     length: number;
     width: number;
     height: number;
     weight: number;
   };
-  temperature_requirements?: {
+  hazmat_details: any;
+  required_certificates: string[];
+  customs_broker: string | null;
+  payment_terms: string | null;
+  customs_declaration_number: string | null;
+  estimated_delivery_date: string | null;
+  actual_delivery_date: string | null;
+  tracking_number: string | null;
+  shipping_documents: any;
+  booking_notes: string | null;
+  temperature_requirements: {
     min: number;
     max: number;
     unit: string;
-  };
-  required_certificates: string[];
-  customs_broker?: string;
-  payment_terms: string;
-  booking_notes?: string;
+  } | null;
+  step_progress: number;
+  last_modified: string;
+  is_draft: boolean;
   incoterms?: IncotermType;
   container_size?: ContainerSizeType;
   bill_of_lading_number?: string;
   customs_status?: string;
   container_number?: string[];
+}
+
+export interface Profile {
+  id: string;
+  company_name: string | null;
+  contact_person: string | null;
+  email: string | null;
+  phone: string | null;
+  created_at: string;
+  company_type: string[];
+  services_offered: string[];
+  years_in_business: number | null;
+  registration_number: string | null;
+  service_regions: string[];
+  website: string | null;
+  office_address: string | null;
+  verified: boolean;
+  onboarding_completed: boolean;
+  onboarding_step: string;
 }
 
 export interface ShipmentDocument {
