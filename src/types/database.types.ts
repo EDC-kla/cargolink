@@ -37,6 +37,35 @@ export type Booking = {
   insurance_required: boolean | null;
   pickup_address: string | null;
   delivery_address: string | null;
+  cargo_packaging_type: string | null;
+  cargo_dimensions: {
+    length: number;
+    width: number;
+    height: number;
+    weight: number;
+  } | null;
+  hazmat_details: {
+    class: string;
+    un_number: string;
+    proper_shipping_name: string;
+  } | null;
+  required_certificates: string[] | null;
+  customs_broker: string | null;
+  payment_terms: string | null;
+  customs_declaration_number: string | null;
+  estimated_delivery_date: string | null;
+  actual_delivery_date: string | null;
+  tracking_number: string | null;
+  shipping_documents: {
+    type: string;
+    url: string;
+  }[] | null;
+  booking_notes: string | null;
+  temperature_requirements: {
+    min: number;
+    max: number;
+    unit: 'C' | 'F';
+  } | null;
   shipment?: Shipment;
 };
 

@@ -11,54 +11,93 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          actual_delivery_date: string | null
+          booking_notes: string | null
           booking_preferences: Json | null
           cargo_description: string | null
+          cargo_dimensions: Json | null
+          cargo_packaging_type: string | null
           cargo_type: string | null
           cargo_value: number | null
           communication_preferences: string[] | null
           created_at: string
+          customs_broker: string | null
+          customs_declaration_number: string | null
           delivery_address: string | null
+          estimated_delivery_date: string | null
+          hazmat_details: Json | null
           id: string
           insurance_required: boolean | null
+          payment_terms: string | null
           pickup_address: string | null
+          required_certificates: string[] | null
           shipment_id: string | null
+          shipping_documents: Json | null
           space_booked: number
           special_handling: string[] | null
           status: string | null
+          temperature_requirements: Json | null
+          tracking_number: string | null
           user_id: string | null
         }
         Insert: {
+          actual_delivery_date?: string | null
+          booking_notes?: string | null
           booking_preferences?: Json | null
           cargo_description?: string | null
+          cargo_dimensions?: Json | null
+          cargo_packaging_type?: string | null
           cargo_type?: string | null
           cargo_value?: number | null
           communication_preferences?: string[] | null
           created_at?: string
+          customs_broker?: string | null
+          customs_declaration_number?: string | null
           delivery_address?: string | null
+          estimated_delivery_date?: string | null
+          hazmat_details?: Json | null
           id?: string
           insurance_required?: boolean | null
+          payment_terms?: string | null
           pickup_address?: string | null
+          required_certificates?: string[] | null
           shipment_id?: string | null
+          shipping_documents?: Json | null
           space_booked: number
           special_handling?: string[] | null
           status?: string | null
+          temperature_requirements?: Json | null
+          tracking_number?: string | null
           user_id?: string | null
         }
         Update: {
+          actual_delivery_date?: string | null
+          booking_notes?: string | null
           booking_preferences?: Json | null
           cargo_description?: string | null
+          cargo_dimensions?: Json | null
+          cargo_packaging_type?: string | null
           cargo_type?: string | null
           cargo_value?: number | null
           communication_preferences?: string[] | null
           created_at?: string
+          customs_broker?: string | null
+          customs_declaration_number?: string | null
           delivery_address?: string | null
+          estimated_delivery_date?: string | null
+          hazmat_details?: Json | null
           id?: string
           insurance_required?: boolean | null
+          payment_terms?: string | null
           pickup_address?: string | null
+          required_certificates?: string[] | null
           shipment_id?: string | null
+          shipping_documents?: Json | null
           space_booked?: number
           special_handling?: string[] | null
           status?: string | null
+          temperature_requirements?: Json | null
+          tracking_number?: string | null
           user_id?: string | null
         }
         Relationships: [
