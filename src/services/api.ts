@@ -28,13 +28,25 @@ export const shipmentService = {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id);
+
+    if (!roles?.some(r => r.role === 'seller' || r.role === 'buyer')) {
+      throw new Error('You must be a seller or buyer to create shipments');
+    }
+
     const { data, error } = await supabase
       .from('shipments')
       .insert([{ ...shipment, created_by: user.id }])
       .select()
       .single();
     
-    if (error) throw error;
+    if (error) {
+      console.error('Error creating shipment:', error);
+      throw new Error(error.message);
+    }
     return data as Shipment;
   },
 
