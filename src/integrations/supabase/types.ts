@@ -9,7 +9,104 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string
+          id: string
+          shipment_id: string | null
+          space_booked: number
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          shipment_id?: string | null
+          space_booked: number
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          shipment_id?: string | null
+          space_booked?: number
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_shipment_id_fkey"
+            columns: ["shipment_id"]
+            isOneToOne: false
+            referencedRelation: "shipments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          company_name: string | null
+          contact_person: string | null
+          created_at: string
+          email: string | null
+          id: string
+          phone: string | null
+        }
+        Insert: {
+          company_name?: string | null
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          phone?: string | null
+        }
+        Update: {
+          company_name?: string | null
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      shipments: {
+        Row: {
+          available_space: number
+          created_at: string
+          created_by: string | null
+          departure_date: string
+          destination: string
+          id: string
+          origin: string
+          price_per_cbm: number
+          status: string | null
+        }
+        Insert: {
+          available_space: number
+          created_at?: string
+          created_by?: string | null
+          departure_date: string
+          destination: string
+          id?: string
+          origin: string
+          price_per_cbm: number
+          status?: string | null
+        }
+        Update: {
+          available_space?: number
+          created_at?: string
+          created_by?: string | null
+          departure_date?: string
+          destination?: string
+          id?: string
+          origin?: string
+          price_per_cbm?: number
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
