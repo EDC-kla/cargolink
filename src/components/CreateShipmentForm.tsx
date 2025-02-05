@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import ShipmentFormFields from "@/components/shipments/ShipmentFormFields";
-import { TransportMode, ShipmentStatus } from "@/types/database.types";
+import { TransportMode, ShipmentStatus, CargoType, RouteStop } from "@/types/database.types";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
@@ -33,8 +33,8 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     route_tags: [] as string[],
     route_type: "direct",
     notes: "",
-    preferred_cargo_types: [] as string[],
-    stops: [] as { location: string; stop_type: 'port' | 'terminal' | 'warehouse' | 'customs' }[],
+    preferred_cargo_types: [] as CargoType[],
+    stops: [] as RouteStop[],
     featured: false,
     display_order: 0,
     category: ""

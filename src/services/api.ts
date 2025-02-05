@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus, RouteStop } from '@/types/database.types';
+import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus, RouteStop, CargoType } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
 
 export const shipmentService = {
@@ -19,8 +19,10 @@ export const shipmentService = {
             arrival_date: (stop as any).arrival_date,
             departure_date: (stop as any).departure_date,
             notes: (stop as any).notes
-          }))
-        : []
+          } as RouteStop))
+        : [] as RouteStop[],
+      preferred_cargo_types: (shipment.preferred_cargo_types || []) as CargoType[],
+      status: shipment.status as ShipmentStatus
     })) as Shipment[];
   },
 
@@ -41,8 +43,10 @@ export const shipmentService = {
             arrival_date: (stop as any).arrival_date,
             departure_date: (stop as any).departure_date,
             notes: (stop as any).notes
-          }))
-        : []
+          } as RouteStop))
+        : [] as RouteStop[],
+      preferred_cargo_types: (data.preferred_cargo_types || []) as CargoType[],
+      status: data.status as ShipmentStatus
     } as Shipment;
   },
 

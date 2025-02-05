@@ -120,11 +120,11 @@ const EditBookingForm = () => {
     try {
       setLoading(true);
       const updatedBookingData: Partial<BookingFormData> & {
-        status: string;
+        status: BookingStatus;
         is_draft: boolean;
       } = {
         space_booked: spaceRequired,
-        status: "draft",
+        status: "draft" as BookingStatus,
         is_draft: true,
       };
 
