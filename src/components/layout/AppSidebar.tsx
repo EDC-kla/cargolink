@@ -11,7 +11,7 @@ const AppSidebar = () => {
   const location = useLocation();
 
   const menuItems = [
-    { icon: Home, label: "Home", path: "/" },
+    { icon: Home, label: "Dashboard", path: "/dashboard" },
     { icon: Store, label: "Marketplace", path: "/marketplace" },
     { icon: Package, label: "My Shipments", path: "/marketplace?tab=my-shipments" },
   ];
