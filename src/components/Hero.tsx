@@ -3,12 +3,14 @@ import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface HeroProps {
   onGetStarted: () => void;
 }
 
 const Hero = ({ onGetStarted }: HeroProps) => {
+  const navigate = useNavigate();
   const [searchData, setSearchData] = useState({
     origin: "",
     destination: "",
@@ -18,7 +20,14 @@ const Hero = ({ onGetStarted }: HeroProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onGetStarted();
+    // Navigate to marketplace with search params
+    const searchParams = new URLSearchParams({
+      origin: searchData.origin,
+      destination: searchData.destination,
+      date: searchData.date,
+      cargoSize: searchData.cargoSize,
+    });
+    navigate(`/marketplace?${searchParams.toString()}`);
   };
 
   return (
@@ -144,7 +153,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               <Button 
                 variant="outline" 
                 size="lg"
-                onClick={onGetStarted}
+                onClick={() => navigate('/marketplace')}
                 className="w-full sm:w-auto h-12 text-base font-semibold border-2 hover:bg-accent/5"
               >
                 View Marketplace

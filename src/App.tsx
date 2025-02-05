@@ -46,15 +46,12 @@ const App = () => {
         {/* Public routes */}
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/marketplace" element={<Marketplace />} />
         
         {/* Protected routes */}
         <Route
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/auth" replace />}
-        />
-        <Route
-          path="/marketplace"
-          element={user ? <Marketplace /> : <Navigate to="/auth" replace />}
         />
         <Route
           path="/create-shipment"
