@@ -35,7 +35,18 @@ const Auth = () => {
           password,
         });
         if (error) throw error;
-        navigate("/marketplace");
+        
+        // Check if onboarding is completed
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('onboarding_completed')
+          .single();
+        
+        if (profile?.onboarding_completed) {
+          navigate("/marketplace");
+        } else {
+          navigate("/onboarding");
+        }
       }
     } catch (error: any) {
       toast({

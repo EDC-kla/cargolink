@@ -80,6 +80,8 @@ export type Database = {
           email: string | null
           id: string
           office_address: string | null
+          onboarding_completed: boolean | null
+          onboarding_step: string | null
           phone: string | null
           registration_number: string | null
           service_regions: string[] | null
@@ -96,6 +98,8 @@ export type Database = {
           email?: string | null
           id: string
           office_address?: string | null
+          onboarding_completed?: boolean | null
+          onboarding_step?: string | null
           phone?: string | null
           registration_number?: string | null
           service_regions?: string[] | null
@@ -112,6 +116,8 @@ export type Database = {
           email?: string | null
           id?: string
           office_address?: string | null
+          onboarding_completed?: boolean | null
+          onboarding_step?: string | null
           phone?: string | null
           registration_number?: string | null
           service_regions?: string[] | null
