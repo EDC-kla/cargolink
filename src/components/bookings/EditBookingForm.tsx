@@ -13,7 +13,7 @@ import {
 import BookingSpaceInput from "./BookingSpaceInput";
 import PriceCalculation from "./PriceCalculation";
 import { BookingFormData } from "./wizard/BookingWizard";
-import { Booking, Shipment, BookingStatus } from "@/types/database.types";
+import { Booking, Shipment, BookingStatus, RouteStop } from "@/types/database.types";
 
 const EditBookingForm = () => {
   const { bookingId } = useParams();
@@ -59,9 +59,22 @@ const EditBookingForm = () => {
           required_certificates: bookingData.required_certificates || [],
           status: bookingData.status as BookingStatus,
         } as Booking;
+
+        const transformedShipment = bookingData.shipment ? {
+          ...bookingData.shipment,
+          stops: Array.isArray(bookingData.shipment.stops)
+            ? bookingData.shipment.stops.map((stop: any) => ({
+                location: stop.location || '',
+                stop_type: stop.stop_type || 'port',
+                arrival_date: stop.arrival_date,
+                departure_date: stop.departure_date,
+                notes: stop.notes
+              } as RouteStop))
+            : [] as RouteStop[]
+        } as Shipment : null;
         
         setBooking(transformedBooking);
-        setShipment(bookingData.shipment as Shipment);
+        setShipment(transformedShipment);
         setSpaceRequired(bookingData.space_booked);
       } catch (error: any) {
         setError(error.message);

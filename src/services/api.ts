@@ -2,6 +2,21 @@ import { supabase } from '@/integrations/supabase/client';
 import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus, RouteStop, CargoType } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
 
+const transformShipmentResponse = (data: any): Shipment => ({
+  ...data,
+  stops: Array.isArray(data.stops)
+    ? data.stops.map((stop: any) => ({
+        location: stop.location || '',
+        stop_type: stop.stop_type || 'port',
+        arrival_date: stop.arrival_date,
+        departure_date: stop.departure_date,
+        notes: stop.notes
+      } as RouteStop))
+    : [] as RouteStop[],
+  preferred_cargo_types: (data.preferred_cargo_types || []) as CargoType[],
+  status: data.status as ShipmentStatus
+});
+
 export const shipmentService = {
   async listShipments() {
     const { data, error } = await supabase
@@ -10,20 +25,7 @@ export const shipmentService = {
       .order('departure_date', { ascending: true });
     
     if (error) throw error;
-    return data.map(shipment => ({
-      ...shipment,
-      stops: Array.isArray(shipment.stops) 
-        ? shipment.stops.map(stop => ({
-            location: (stop as any).location || '',
-            stop_type: (stop as any).stop_type || 'port',
-            arrival_date: (stop as any).arrival_date,
-            departure_date: (stop as any).departure_date,
-            notes: (stop as any).notes
-          } as RouteStop))
-        : [] as RouteStop[],
-      preferred_cargo_types: (shipment.preferred_cargo_types || []) as CargoType[],
-      status: shipment.status as ShipmentStatus
-    })) as Shipment[];
+    return data.map(transformShipmentResponse);
   },
 
   async getShipment(id: string) {
@@ -34,20 +36,7 @@ export const shipmentService = {
       .single();
     
     if (error) throw error;
-    return {
-      ...data,
-      stops: Array.isArray(data.stops) 
-        ? data.stops.map(stop => ({
-            location: (stop as any).location || '',
-            stop_type: (stop as any).stop_type || 'port',
-            arrival_date: (stop as any).arrival_date,
-            departure_date: (stop as any).departure_date,
-            notes: (stop as any).notes
-          } as RouteStop))
-        : [] as RouteStop[],
-      preferred_cargo_types: (data.preferred_cargo_types || []) as CargoType[],
-      status: data.status as ShipmentStatus
-    } as Shipment;
+    return transformShipmentResponse(data);
   },
 
   async createShipment(shipment: Omit<Shipment, 'id' | 'created_at' | 'created_by'>) {
@@ -65,7 +54,7 @@ export const shipmentService = {
 
     const { data, error } = await supabase
       .from('shipments')
-      .insert([{ 
+      .insert([{
         ...shipment,
         created_by: user.id,
         stops: shipment.stops.map(stop => ({
@@ -83,7 +72,7 @@ export const shipmentService = {
       console.error('Error creating shipment:', error);
       throw new Error(error.message);
     }
-    return data as Shipment;
+    return transformShipmentResponse(data);
   },
 
   async updateShipment(id: string, updates: Partial<Shipment>) {
