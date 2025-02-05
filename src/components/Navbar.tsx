@@ -30,7 +30,7 @@ const Navbar = () => {
     try {
       setLoading(true);
       await supabase.auth.signOut();
-      navigate("/auth");
+      navigate("/");
       toast({
         title: "Logged out",
         description: "You have been successfully logged out.",
@@ -58,6 +58,12 @@ const Navbar = () => {
             {user && (
               <div className="hidden sm:flex space-x-4">
                 <Link
+                  to="/dashboard"
+                  className="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Dashboard
+                </Link>
+                <Link
                   to="/marketplace"
                   className="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium"
                 >
@@ -69,6 +75,12 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
+                <Link
+                  to="/profile"
+                  className="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium hidden sm:block"
+                >
+                  Profile
+                </Link>
                 <span className="text-sm text-gray-600 hidden sm:block">
                   {user.email}
                 </span>
