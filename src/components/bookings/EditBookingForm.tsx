@@ -13,7 +13,7 @@ import {
 import BookingSpaceInput from "./BookingSpaceInput";
 import PriceCalculation from "./PriceCalculation";
 import { BookingFormData } from "./wizard/BookingWizard";
-import { Booking, Shipment } from "@/types/database.types";
+import { Booking, Shipment, BookingStatus } from "@/types/database.types";
 
 const EditBookingForm = () => {
   const { bookingId } = useParams();
@@ -35,8 +35,7 @@ const EditBookingForm = () => {
 
         if (bookingError) throw bookingError;
         
-        // Transform the data to match the Booking type
-        const transformedBooking: Booking = {
+        const transformedBooking = {
           ...bookingData,
           cargo_dimensions: typeof bookingData.cargo_dimensions === 'string' 
             ? JSON.parse(bookingData.cargo_dimensions)
@@ -58,10 +57,11 @@ const EditBookingForm = () => {
             : [],
           special_handling: bookingData.special_handling || [],
           required_certificates: bookingData.required_certificates || [],
-        };
+          status: bookingData.status as BookingStatus,
+        } as Booking;
         
         setBooking(transformedBooking);
-        setShipment(bookingData.shipment);
+        setShipment(bookingData.shipment as Shipment);
         setSpaceRequired(bookingData.space_booked);
       } catch (error: any) {
         setError(error.message);
@@ -87,7 +87,7 @@ const EditBookingForm = () => {
     try {
       setLoading(true);
       const updatedBookingData: Partial<BookingFormData> & { 
-        status: string;
+        status: BookingStatus;
         is_draft: boolean;
       } = {
         space_booked: spaceRequired,

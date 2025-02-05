@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import ShipmentFormFields from "./ShipmentFormFields";
-import { Shipment } from "@/types/database.types";
+import { Shipment, ShipmentStatus, TransportMode } from "@/types/database.types";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
@@ -19,14 +19,14 @@ const CreateShipmentForm = ({ onClose, initialData }: CreateShipmentFormProps) =
     departure_date: initialData?.departure_date || "",
     available_space: initialData?.available_space || 1,
     price_per_cbm: initialData?.price_per_cbm || 1,
-    transport_mode: initialData?.transport_mode || "sea",
+    transport_mode: (initialData?.transport_mode || "sea") as TransportMode,
     container_type: initialData?.container_type || "",
     transit_time_days: initialData?.transit_time_days || 0,
     customs_clearance: initialData?.customs_clearance || false,
     door_pickup: initialData?.door_pickup || false,
     door_delivery: initialData?.door_delivery || false,
     min_booking_size: initialData?.min_booking_size || 0,
-    status: initialData?.status || "available",
+    status: (initialData?.status || "available") as ShipmentStatus,
     additional_services: initialData?.additional_services || [],
     cargo_restrictions: initialData?.cargo_restrictions || [],
     consolidation_service: initialData?.consolidation_service || false,

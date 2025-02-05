@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { Shipment, Booking, Profile } from '@/types/database.types';
+import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
 
 export const shipmentService = {
@@ -10,7 +10,7 @@ export const shipmentService = {
       .order('departure_date', { ascending: true });
     
     if (error) throw error;
-    return data as Shipment[];
+    return data as unknown as Shipment[];
   },
 
   async getShipment(id: string) {
@@ -21,7 +21,7 @@ export const shipmentService = {
       .single();
     
     if (error) throw error;
-    return data as Shipment;
+    return data as unknown as Shipment;
   },
 
   async createShipment(shipment: Omit<Shipment, 'id' | 'created_at' | 'created_by'>) {
@@ -47,7 +47,7 @@ export const shipmentService = {
       console.error('Error creating shipment:', error);
       throw new Error(error.message);
     }
-    return data as Shipment;
+    return data as unknown as Shipment;
   },
 
   async updateShipment(id: string, updates: Partial<Shipment>) {
@@ -59,7 +59,7 @@ export const shipmentService = {
       .single();
     
     if (error) throw error;
-    return data as Shipment;
+    return data as unknown as Shipment;
   },
 
   async deleteShipment(id: string) {
@@ -71,7 +71,7 @@ export const shipmentService = {
     if (error) throw error;
   },
 
-  async updateBooking(id: string, updates: Partial<BookingFormData> & { status: string; is_draft: boolean }) {
+  async updateBooking(id: string, updates: Partial<BookingFormData> & { status: BookingStatus; is_draft: boolean }) {
     const { data, error } = await supabase
       .from('bookings')
       .update({
