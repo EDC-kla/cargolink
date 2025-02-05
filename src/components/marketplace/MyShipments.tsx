@@ -42,7 +42,6 @@ const MyShipments = ({ shipments, onRefetch }: MyShipmentsProps) => {
       <ShipmentsGrid 
         shipments={shipments}
         showBookButton={false}
-        onBookSpace={() => {}}
         onEdit={handleEdit}
         showEditButton={true}
       />
