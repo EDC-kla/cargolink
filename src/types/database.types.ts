@@ -1,5 +1,52 @@
 export type ContainerSizeType = '20GP' | '40GP' | '40HC' | '45HC' | 'LCL';
 export type IncotermType = 'EXW' | 'FCA' | 'FAS' | 'FOB' | 'CFR' | 'CIF' | 'CPT' | 'CIP' | 'DAP' | 'DPU' | 'DDP';
+export type TransportMode = 'sea' | 'air' | 'rail' | 'road';
+export type CargoType = 'general' | 'hazmat' | 'reefer' | 'oversized' | 'bulk' | 'liquid';
+export type BookingStatus = 'draft' | 'pending' | 'confirmed' | 'cancelled' | 'completed';
+export type ShipmentStatus = 'draft' | 'active' | 'completed' | 'cancelled';
+
+export interface Location {
+  address: string;
+  city: string;
+  country: string;
+  postal_code: string;
+  coordinates?: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
+export interface CargoDimensions {
+  length: number;
+  width: number;
+  height: number;
+  weight: number;
+  volume?: number;
+  weight_unit: 'kg' | 'lbs';
+  dimension_unit: 'm' | 'cm' | 'in' | 'ft';
+}
+
+export interface TemperatureRequirements {
+  min: number;
+  max: number;
+  unit: 'C' | 'F';
+}
+
+export interface HazmatDetails {
+  un_number: string;
+  class: string;
+  proper_shipping_name: string;
+  packing_group?: string;
+  flash_point?: number;
+}
+
+export interface RouteStop {
+  location: string;
+  arrival_date?: string;
+  departure_date?: string;
+  stop_type: 'port' | 'terminal' | 'warehouse' | 'customs';
+  notes?: string;
+}
 
 export interface Shipment {
   id: string;
@@ -8,22 +55,22 @@ export interface Shipment {
   departure_date: string;
   available_space: number;
   price_per_cbm: number;
-  transport_mode: string;
+  transport_mode: TransportMode;
   container_type: string | null;
   transit_time_days: number | null;
   customs_clearance: boolean;
   door_pickup: boolean;
   door_delivery: boolean;
   min_booking_size: number | null;
-  status: string;
+  status: ShipmentStatus;
   additional_services: string[];
   cargo_restrictions: string[];
   consolidation_service: boolean;
   route_frequency: string | null;
   route_type: string;
-  stops: any[]; // Changed from string[] to any[] to handle JSON data
+  stops: RouteStop[];
   route_tags: string[];
-  preferred_cargo_types: string[];
+  preferred_cargo_types: CargoType[];
   featured: boolean;
   display_order: number;
   category: string;
@@ -45,9 +92,9 @@ export interface Booking {
   shipment_id: string;
   user_id: string;
   space_booked: number;
-  status: string;
+  status: BookingStatus;
   created_at: string;
-  cargo_type: string | null;
+  cargo_type: CargoType | null;
   cargo_value: number | null;
   cargo_description: string | null;
   special_handling: string[];
@@ -57,13 +104,8 @@ export interface Booking {
   booking_preferences: any;
   communication_preferences: string[];
   cargo_packaging_type: string | null;
-  cargo_dimensions: {
-    length: number;
-    width: number;
-    height: number;
-    weight: number;
-  };
-  hazmat_details: any;
+  cargo_dimensions: CargoDimensions;
+  hazmat_details: HazmatDetails | null;
   required_certificates: string[];
   customs_broker: string | null;
   payment_terms: string | null;
@@ -73,11 +115,7 @@ export interface Booking {
   tracking_number: string | null;
   shipping_documents: any;
   booking_notes: string | null;
-  temperature_requirements: {
-    min: number;
-    max: number;
-    unit: string;
-  } | null;
+  temperature_requirements: TemperatureRequirements | null;
   step_progress: number;
   last_modified: string;
   is_draft: boolean;
