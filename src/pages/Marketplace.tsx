@@ -8,7 +8,7 @@ import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
-import BookingWizard from "@/components/bookings/wizard/BookingWizard";
+import BookingPage from "@/components/marketplace/BookingPage";
 
 const Marketplace = () => {
   const navigate = useNavigate();
