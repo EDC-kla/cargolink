@@ -175,7 +175,6 @@ const Onboarding = () => {
         {currentStep === "role" && renderRoleStep()}
       </div>
     </div>
-  </div>
   );
 };
 
