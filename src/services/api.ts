@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus, RouteStop, CargoType } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
+import { Json } from '@/integrations/supabase/types';
 
 const transformShipmentResponse = (data: any): Shipment => ({
   ...data,
@@ -16,6 +17,15 @@ const transformShipmentResponse = (data: any): Shipment => ({
   preferred_cargo_types: (data.preferred_cargo_types || []) as CargoType[],
   status: data.status as ShipmentStatus
 });
+
+const transformRouteStopsToJson = (stops: RouteStop[]): Json[] => 
+  stops.map(stop => ({
+    location: stop.location,
+    stop_type: stop.stop_type,
+    arrival_date: stop.arrival_date,
+    departure_date: stop.departure_date,
+    notes: stop.notes
+  }));
 
 export const shipmentService = {
   async listShipments() {
@@ -57,13 +67,7 @@ export const shipmentService = {
       .insert([{
         ...shipment,
         created_by: user.id,
-        stops: shipment.stops.map(stop => ({
-          location: stop.location,
-          stop_type: stop.stop_type,
-          arrival_date: stop.arrival_date,
-          departure_date: stop.departure_date,
-          notes: stop.notes
-        }))
+        stops: transformRouteStopsToJson(shipment.stops)
       }])
       .select()
       .single();
@@ -78,13 +82,16 @@ export const shipmentService = {
   async updateShipment(id: string, updates: Partial<Shipment>) {
     const { data, error } = await supabase
       .from('shipments')
-      .update(updates)
+      .update({
+        ...updates,
+        stops: updates.stops ? transformRouteStopsToJson(updates.stops) : undefined
+      })
       .eq('id', id)
       .select()
       .single();
     
     if (error) throw error;
-    return data as unknown as Shipment;
+    return transformShipmentResponse(data);
   },
 
   async deleteShipment(id: string) {
