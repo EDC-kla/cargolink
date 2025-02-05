@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Package, Store, Home, Menu, X } from "lucide-react";
+import { Package, Store, Home, Menu, X, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -14,6 +13,8 @@ const AppSidebar = () => {
     { icon: Home, label: "Dashboard", path: "/dashboard" },
     { icon: Store, label: "Marketplace", path: "/marketplace" },
     { icon: Package, label: "My Shipments", path: "/marketplace?tab=my-shipments" },
+    { icon: User, label: "Profile", path: "/profile" },
+    { icon: Settings, label: "Settings", path: "/settings" },
   ];
 
   const toggleSidebar = () => setIsOpen(!isOpen);

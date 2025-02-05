@@ -5,6 +5,8 @@ import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
 import Marketplace from "@/pages/Marketplace";
 import Dashboard from "@/pages/Dashboard";
+import Settings from "@/pages/Settings";
+import Profile from "@/pages/Profile";
 import Onboarding from "@/pages/Onboarding";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
@@ -15,7 +17,6 @@ import AppSidebar from "./components/layout/AppSidebar";
 
 const queryClient = new QueryClient();
 
-// Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -67,16 +68,32 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <div className="min-h-screen flex bg-gray-50">
-          {user && <AppSidebar />}
-          <main className={`flex-1 ${user ? 'lg:ml-[280px]' : ''} min-h-screen`}>
+          {user && window.location.pathname !== "/" && <AppSidebar />}
+          <main className={`flex-1 ${user && window.location.pathname !== "/" ? 'lg:ml-[280px]' : ''} min-h-screen`}>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
+              <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Index />} />
+              <Route path="/auth" element={user ? <Navigate to="/dashboard" replace /> : <Auth />} />
               <Route
                 path="/dashboard"
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
                   </ProtectedRoute>
                 }
               />
