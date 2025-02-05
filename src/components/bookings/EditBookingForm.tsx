@@ -16,7 +16,7 @@ import { BookingFormData } from "./wizard/BookingWizard";
 import { Booking, Shipment, BookingStatus, RouteStop } from "@/types/database.types";
 
 const EditBookingForm = () => {
-  const { bookingId } = useParams();
+  const { bookingId } = useParams<{ bookingId: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,13 +27,21 @@ const EditBookingForm = () => {
   useEffect(() => {
     const fetchBookingData = async () => {
       try {
+        if (!bookingId) {
+          throw new Error("Booking ID is required");
+        }
+
         const { data: bookingData, error: bookingError } = await supabase
           .from('bookings')
-          .select('*, shipment:shipments(*)')
+          .select(`
+            *,
+            shipment:shipments (*)
+          `)
           .eq('id', bookingId)
-          .single();
+          .maybeSingle();
 
         if (bookingError) throw bookingError;
+        if (!bookingData) throw new Error("Booking not found");
         
         const transformedBooking = {
           ...bookingData,
