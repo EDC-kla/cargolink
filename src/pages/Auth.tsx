@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, MailCheck } from "lucide-react";
+import { ArrowLeft, MailCheck, Ship, Plane } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Auth = () => {
@@ -63,7 +63,7 @@ const Auth = () => {
             </AlertDescription>
           </Alert>
           <p className="text-gray-600 mb-6">
-            Once you've confirmed your email, you can sign in to your account.
+            Once you've confirmed your email, you can sign in to access the marketplace.
           </p>
           <Button
             onClick={() => {
@@ -91,43 +91,67 @@ const Auth = () => {
         </Link>
       </div>
       <div className="flex-1 flex flex-col justify-center items-center p-4">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-sm p-8">
-          <h2 className="text-2xl font-bold text-center mb-6">
-            {isSignUp ? "Create an Account" : "Welcome Back"}
-          </h2>
-          <form onSubmit={handleAuth} className="space-y-4">
-            <div>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="flex justify-center space-x-4 mb-6">
+              <Ship className="h-8 w-8 text-blue-500" />
+              <Plane className="h-8 w-8 text-blue-500" />
             </div>
-            <div>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button className="w-full" type="submit" disabled={loading}>
-              {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
-            </Button>
-          </form>
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-blue-600 hover:underline"
-            >
+            <h2 className="text-2xl font-bold text-center mb-2">
+              {isSignUp ? "Join the Marketplace" : "Welcome Back"}
+            </h2>
+            <p className="text-center text-gray-600 mb-6">
               {isSignUp
-                ? "Already have an account? Sign in"
-                : "Don't have an account? Sign up"}
-            </button>
+                ? "Create an account to start booking and offering cargo space"
+                : "Sign in to access your shipments and bookings"}
+            </p>
+            <form onSubmit={handleAuth} className="space-y-4">
+              <div>
+                <Input
+                  type="email"
+                  placeholder="Business Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full"
+                />
+              </div>
+              <Button className="w-full" type="submit" disabled={loading}>
+                {loading
+                  ? "Please wait..."
+                  : isSignUp
+                  ? "Create Account"
+                  : "Sign In"}
+              </Button>
+            </form>
+            <div className="mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                {isSignUp
+                  ? "Already have an account? Sign in"
+                  : "New to the platform? Create an account"}
+              </button>
+            </div>
+            <div className="mt-6 text-center text-sm text-gray-500">
+              <p>
+                {isSignUp
+                  ? "By signing up, you can both book cargo space and list your available capacity"
+                  : "Access your dashboard to manage shipments and bookings"}
+              </p>
+            </div>
           </div>
         </div>
       </div>

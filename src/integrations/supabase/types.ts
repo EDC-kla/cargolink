@@ -11,26 +11,47 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          cargo_description: string | null
+          cargo_type: string | null
+          cargo_value: number | null
           created_at: string
+          delivery_address: string | null
           id: string
+          insurance_required: boolean | null
+          pickup_address: string | null
           shipment_id: string | null
           space_booked: number
+          special_handling: string[] | null
           status: string | null
           user_id: string | null
         }
         Insert: {
+          cargo_description?: string | null
+          cargo_type?: string | null
+          cargo_value?: number | null
           created_at?: string
+          delivery_address?: string | null
           id?: string
+          insurance_required?: boolean | null
+          pickup_address?: string | null
           shipment_id?: string | null
           space_booked: number
+          special_handling?: string[] | null
           status?: string | null
           user_id?: string | null
         }
         Update: {
+          cargo_description?: string | null
+          cargo_type?: string | null
+          cargo_value?: number | null
           created_at?: string
+          delivery_address?: string | null
           id?: string
+          insurance_required?: boolean | null
+          pickup_address?: string | null
           shipment_id?: string | null
           space_booked?: number
+          special_handling?: string[] | null
           status?: string | null
           user_id?: string | null
         }
@@ -47,63 +68,123 @@ export type Database = {
       profiles: {
         Row: {
           company_name: string | null
+          company_type: string[] | null
           contact_person: string | null
           created_at: string
           email: string | null
           id: string
+          office_address: string | null
           phone: string | null
+          registration_number: string | null
+          service_regions: string[] | null
+          services_offered: string[] | null
+          verified: boolean | null
+          website: string | null
+          years_in_business: number | null
         }
         Insert: {
           company_name?: string | null
+          company_type?: string[] | null
           contact_person?: string | null
           created_at?: string
           email?: string | null
           id: string
+          office_address?: string | null
           phone?: string | null
+          registration_number?: string | null
+          service_regions?: string[] | null
+          services_offered?: string[] | null
+          verified?: boolean | null
+          website?: string | null
+          years_in_business?: number | null
         }
         Update: {
           company_name?: string | null
+          company_type?: string[] | null
           contact_person?: string | null
           created_at?: string
           email?: string | null
           id?: string
+          office_address?: string | null
           phone?: string | null
+          registration_number?: string | null
+          service_regions?: string[] | null
+          services_offered?: string[] | null
+          verified?: boolean | null
+          website?: string | null
+          years_in_business?: number | null
         }
         Relationships: []
       }
       shipments: {
         Row: {
+          additional_services: string[] | null
           available_space: number
+          cargo_restrictions: string[] | null
+          consolidation_service: boolean | null
+          container_type: string | null
           created_at: string
           created_by: string | null
+          customs_clearance: boolean | null
           departure_date: string
           destination: string
+          door_delivery: boolean | null
+          door_pickup: boolean | null
           id: string
+          min_booking_size: number | null
+          notes: string | null
           origin: string
           price_per_cbm: number
+          route_frequency: string | null
           status: string | null
+          transit_time_days: number | null
+          transport_mode: string
         }
         Insert: {
+          additional_services?: string[] | null
           available_space: number
+          cargo_restrictions?: string[] | null
+          consolidation_service?: boolean | null
+          container_type?: string | null
           created_at?: string
           created_by?: string | null
+          customs_clearance?: boolean | null
           departure_date: string
           destination: string
+          door_delivery?: boolean | null
+          door_pickup?: boolean | null
           id?: string
+          min_booking_size?: number | null
+          notes?: string | null
           origin: string
           price_per_cbm: number
+          route_frequency?: string | null
           status?: string | null
+          transit_time_days?: number | null
+          transport_mode?: string
         }
         Update: {
+          additional_services?: string[] | null
           available_space?: number
+          cargo_restrictions?: string[] | null
+          consolidation_service?: boolean | null
+          container_type?: string | null
           created_at?: string
           created_by?: string | null
+          customs_clearance?: boolean | null
           departure_date?: string
           destination?: string
+          door_delivery?: boolean | null
+          door_pickup?: boolean | null
           id?: string
+          min_booking_size?: number | null
+          notes?: string | null
           origin?: string
           price_per_cbm?: number
+          route_frequency?: string | null
           status?: string | null
+          transit_time_days?: number | null
+          transport_mode?: string
         }
         Relationships: []
       }
