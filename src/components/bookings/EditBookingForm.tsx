@@ -51,6 +51,11 @@ const EditBookingForm = () => {
               ? JSON.parse(bookingData.hazmat_details)
               : bookingData.hazmat_details
             : null,
+          shipping_documents: bookingData.shipping_documents
+            ? typeof bookingData.shipping_documents === 'string'
+              ? JSON.parse(bookingData.shipping_documents)
+              : bookingData.shipping_documents || []
+            : [],
           special_handling: bookingData.special_handling || [],
           required_certificates: bookingData.required_certificates || [],
         };
