@@ -46,6 +46,11 @@ const EditBookingForm = () => {
               ? JSON.parse(bookingData.temperature_requirements)
               : bookingData.temperature_requirements
             : null,
+          hazmat_details: bookingData.hazmat_details
+            ? typeof bookingData.hazmat_details === 'string'
+              ? JSON.parse(bookingData.hazmat_details)
+              : bookingData.hazmat_details
+            : null,
           special_handling: bookingData.special_handling || [],
           required_certificates: bookingData.required_certificates || [],
         };

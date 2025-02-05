@@ -17,7 +17,7 @@ const Marketplace = () => {
     queryFn: shipmentService.listShipments,
   });
 
-  const { data: { user }, isLoading: isLoadingUser } = useQuery({
+  const { data: userData, isLoading: isLoadingUser } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
       const { data, error } = await supabase.auth.getUser();
@@ -27,10 +27,10 @@ const Marketplace = () => {
   });
 
   useEffect(() => {
-    if (!isLoadingUser && !user) {
+    if (!isLoadingUser && !userData?.user) {
       navigate("/auth");
     }
-  }, [user, isLoadingUser, navigate]);
+  }, [userData, isLoadingUser, navigate]);
 
   if (isLoadingAll || isLoadingUser) {
     return (
@@ -63,7 +63,7 @@ const Marketplace = () => {
               path="/my-shipments" 
               element={
                 <MyShipments 
-                  shipments={shipments?.filter(s => s.created_by === user?.id) || []}
+                  shipments={shipments?.filter(s => s.created_by === userData?.user?.id) || []}
                   onRefetch={refetchShipments}
                 />
               } 
