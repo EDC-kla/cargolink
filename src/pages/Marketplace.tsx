@@ -35,18 +35,30 @@ const Marketplace = () => {
     queryKey: ['shipments', transportMode],
     queryFn: async () => {
       const shipments = await shipmentService.listShipments();
-      // Transform the stops array from Json[] to string[] and ensure all fields match Shipment type
-      const transformedShipments = shipments.map(shipment => ({
-        ...shipment,
-        // Ensure stops is an array of strings
-        stops: Array.isArray(shipment.stops) 
-          ? shipment.stops.map(stop => String(stop))
-          : [],
-        // Ensure these fields exist with default values if they're null
-        featured: shipment.featured ?? false,
-        display_order: shipment.display_order ?? 0,
-        category: shipment.category ?? "standard"
-      })) as Shipment[];
+      
+      // Transform the raw data to match the Shipment type exactly
+      const transformedShipments = shipments.map(shipment => {
+        const transformedStops = Array.isArray(shipment.stops) 
+          ? shipment.stops.map(stop => 
+              // Convert any type of stop value to string
+              typeof stop === 'object' ? JSON.stringify(stop) : String(stop)
+            )
+          : [];
+
+        return {
+          ...shipment,
+          stops: transformedStops,
+          // Ensure these fields exist with default values if they're null
+          featured: shipment.featured ?? false,
+          display_order: shipment.display_order ?? 0,
+          category: shipment.category ?? "standard",
+          // Ensure other nullable fields have their default values
+          cargo_restrictions: shipment.cargo_restrictions ?? [],
+          additional_services: shipment.additional_services ?? [],
+          route_tags: shipment.route_tags ?? [],
+          preferred_cargo_types: shipment.preferred_cargo_types ?? [],
+        } satisfies Shipment;
+      });
 
       return transportMode === 'all' 
         ? transformedShipments 
