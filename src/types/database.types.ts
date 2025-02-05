@@ -26,7 +26,7 @@ export type Shipment = {
   route_type: string | null;
   route_tags: string[] | null;
   preferred_cargo_types: string[] | null;
-  stops: string[] | null;
+  stops: any[] | null; // Changed to any[] to accommodate different types in the stops array
 };
 
 export type Booking = {

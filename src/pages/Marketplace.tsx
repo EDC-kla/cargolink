@@ -36,33 +36,7 @@ const Marketplace = () => {
       const rawShipments = await shipmentService.listShipments();
       
       const transformedShipments = rawShipments.map(shipment => ({
-        id: shipment.id,
-        origin: shipment.origin,
-        destination: shipment.destination,
-        departure_date: shipment.departure_date,
-        available_space: shipment.available_space,
-        price_per_cbm: shipment.price_per_cbm,
-        status: shipment.status,
-        created_at: shipment.created_at,
-        created_by: shipment.created_by,
-        transport_mode: shipment.transport_mode,
-        container_type: shipment.container_type,
-        transit_time_days: shipment.transit_time_days,
-        cargo_restrictions: shipment.cargo_restrictions ?? [],
-        additional_services: shipment.additional_services ?? [],
-        customs_clearance: shipment.customs_clearance ?? false,
-        door_pickup: shipment.door_pickup ?? false,
-        door_delivery: shipment.door_delivery ?? false,
-        route_frequency: shipment.route_frequency,
-        consolidation_service: shipment.consolidation_service ?? true,
-        min_booking_size: shipment.min_booking_size,
-        notes: shipment.notes,
-        featured: shipment.featured ?? false,
-        display_order: shipment.display_order ?? 0,
-        category: shipment.category ?? "standard",
-        route_type: shipment.route_type,
-        route_tags: shipment.route_tags ?? [],
-        preferred_cargo_types: shipment.preferred_cargo_types ?? [],
+        ...shipment,
         stops: shipment.stops 
           ? shipment.stops.map(stop => 
               typeof stop === 'object' ? JSON.stringify(stop) : String(stop)
