@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Shipment } from "@/types/database.types";
 import TransportModeFilters from "./TransportModeFilters";
 import ShipmentsGrid from "./ShipmentsGrid";
-import BookingDialog from "./BookingDialog";
 
 interface AvailableShipmentsProps {
   shipments: Shipment[] | undefined;
@@ -10,7 +9,6 @@ interface AvailableShipmentsProps {
 }
 
 const AvailableShipments = ({ shipments, onRefetch }: AvailableShipmentsProps) => {
-  const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
   const [transportMode, setTransportMode] = useState<'all' | 'sea' | 'air'>('all');
 
   const filteredShipments = transportMode === 'all' 
@@ -26,13 +24,6 @@ const AvailableShipments = ({ shipments, onRefetch }: AvailableShipmentsProps) =
       
       <ShipmentsGrid 
         shipments={filteredShipments}
-        onBookSpace={setSelectedShipment}
-      />
-
-      <BookingDialog 
-        shipment={selectedShipment}
-        onClose={() => setSelectedShipment(null)}
-        onBookingComplete={onRefetch}
       />
     </div>
   );

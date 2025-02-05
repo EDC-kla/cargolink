@@ -8,6 +8,7 @@ import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
+import BookingPage from "@/components/marketplace/BookingPage";
 
 const Marketplace = () => {
   const navigate = useNavigate();
@@ -25,12 +26,6 @@ const Marketplace = () => {
       return data;
     },
   });
-
-  useEffect(() => {
-    if (!isLoadingUser && !userData?.user) {
-      navigate("/auth");
-    }
-  }, [userData, isLoadingUser, navigate]);
 
   if (isLoadingAll || isLoadingUser) {
     return (
@@ -75,6 +70,10 @@ const Marketplace = () => {
             <Route
               path="/bookings/:bookingId/edit"
               element={<EditBookingForm />}
+            />
+            <Route
+              path="/book/:shipmentId"
+              element={<BookingPage />}
             />
           </Routes>
         </div>

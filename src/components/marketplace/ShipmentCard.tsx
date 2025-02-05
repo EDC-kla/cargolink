@@ -3,22 +3,22 @@ import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
 import { Ship, Plane, Edit } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ShipmentCardProps {
   shipment: Shipment;
-  onBookSpace: (shipment: Shipment) => void;
   showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
 }
 
 const ShipmentCard = ({ 
-  shipment, 
-  onBookSpace, 
+  shipment,
   showBookButton = true,
   onEdit,
   showEditButton = false 
 }: ShipmentCardProps) => {
+  const navigate = useNavigate();
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
 
   return (
@@ -56,7 +56,7 @@ const ShipmentCard = ({
         {showBookButton && (
           <Button 
             className="flex-1" 
-            onClick={() => onBookSpace(shipment)}
+            onClick={() => navigate(`/marketplace/book/${shipment.id}`)}
           >
             Book Space
           </Button>
