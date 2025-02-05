@@ -7,7 +7,6 @@ import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
-import BookingPage from "@/components/marketplace/BookingPage";
 
 const Marketplace = () => {
   const navigate = useNavigate();
@@ -49,7 +48,6 @@ const Marketplace = () => {
             } />
             <Route path="/bookings" element={<MyBookings />} />
             <Route path="/bookings/:bookingId/edit" element={<EditBookingForm />} />
-            <Route path="/book/:shipmentId" element={<BookingPage />} />
           </Routes>
         </div>
       </div>

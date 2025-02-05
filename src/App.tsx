@@ -10,6 +10,7 @@ import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
+import BookingPage from "@/components/marketplace/BookingPage";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -46,7 +47,10 @@ const App = () => {
         {/* Public routes */}
         <Route path="/" element={<Index />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/marketplace/*" element={<Marketplace />} />
+        <Route path="/book/:shipmentId" element={
+          user ? <BookingPage /> : <Navigate to="/auth" replace />
+        } />
         
         {/* Protected routes */}
         <Route
