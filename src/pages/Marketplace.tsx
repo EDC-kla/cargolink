@@ -68,7 +68,7 @@ const Marketplace = () => {
               typeof stop === 'object' ? JSON.stringify(stop) : String(stop)
             )
           : null
-      })) satisfies Shipment[];
+      })) as Shipment[];
 
       return transportMode === 'all' 
         ? transformedShipments 
