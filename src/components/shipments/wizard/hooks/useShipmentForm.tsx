@@ -3,11 +3,12 @@ import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { shipmentService } from '@/services/api';
+import { Shipment } from "@/types/database.types";
 
 export const useShipmentForm = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Shipment, "id" | "created_at" | "created_by">>({
     origin: "",
     destination: "",
     departure_date: "",
@@ -29,7 +30,7 @@ export const useShipmentForm = (onClose: () => void) => {
     route_type: "direct",
     notes: "",
     preferred_cargo_types: [],
-    stops: [] as string[],
+    stops: [],
     featured: false,
     display_order: 0,
     category: ""

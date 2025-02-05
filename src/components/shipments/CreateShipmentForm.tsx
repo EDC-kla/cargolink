@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import ShipmentFormFields from "./ShipmentFormFields";
+import { Shipment } from "@/types/database.types";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
@@ -12,7 +13,7 @@ interface CreateShipmentFormProps {
 
 const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Shipment, "id" | "created_at" | "created_by">>({
     origin: "",
     destination: "",
     departure_date: "",
@@ -25,7 +26,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     door_pickup: false,
     door_delivery: false,
     min_booking_size: 0,
-    status: "active",
+    status: "available",
     additional_services: [],
     cargo_restrictions: [],
     consolidation_service: false,
@@ -34,10 +35,13 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     route_type: "direct",
     notes: "",
     preferred_cargo_types: [],
-    stops: []
+    stops: [],
+    featured: false,
+    display_order: 0,
+    category: ""
   });
 
-  const handleFieldChange = (field: string, value: string | number) => {
+  const handleFieldChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 

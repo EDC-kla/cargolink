@@ -35,7 +35,7 @@ const Marketplace = () => {
     queryFn: async () => {
       const shipments = await shipmentService.listShipments();
       // Transform the stops array from Json[] to string[]
-      const transformedShipments = shipments.map(shipment => ({
+      const transformedShipments: Shipment[] = shipments.map(shipment => ({
         ...shipment,
         stops: Array.isArray(shipment.stops) 
           ? shipment.stops.map(stop => String(stop))
