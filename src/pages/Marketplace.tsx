@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { shipmentService } from "@/services/api";
@@ -9,6 +9,33 @@ import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
 import BookingForm from "@/components/BookingForm";
+
+const BookingRoute = () => {
+  const { shipmentId } = useParams();
+  const navigate = useNavigate();
+  
+  const { data: shipments } = useQuery({
+    queryKey: ['shipments'],
+    queryFn: shipmentService.listShipments,
+  });
+
+  const shipment = shipments?.find(s => s.id === shipmentId);
+
+  if (!shipment) {
+    return <div>Shipment not found</div>;
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <BookingForm
+        shipmentId={shipmentId || ''}
+        availableSpace={shipment.available_space}
+        pricePerCbm={shipment.price_per_cbm}
+        onClose={() => navigate('/marketplace')}
+      />
+    </div>
+  );
+};
 
 const Marketplace = () => {
   const navigate = useNavigate();
@@ -73,18 +100,7 @@ const Marketplace = () => {
             />
             <Route
               path="/book/:shipmentId"
-              element={
-                <div className="max-w-4xl mx-auto">
-                  {shipments && (
-                    <BookingForm
-                      shipmentId={window.location.pathname.split('/').pop() || ''}
-                      availableSpace={shipments.find(s => s.id === window.location.pathname.split('/').pop())?.available_space || 0}
-                      pricePerCbm={shipments.find(s => s.id === window.location.pathname.split('/').pop())?.price_per_cbm || 0}
-                      onClose={() => navigate('/marketplace')}
-                    />
-                  )}
-                </div>
-              }
+              element={<BookingRoute />}
             />
           </Routes>
         </div>
