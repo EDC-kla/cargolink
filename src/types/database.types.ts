@@ -1,3 +1,4 @@
+
 export type Shipment = {
   id: string;
   origin: string;
@@ -54,4 +55,6 @@ export type Profile = {
   website: string | null;
   office_address: string | null;
   verified: boolean | null;
+  onboarding_completed: boolean | null;
+  onboarding_step: string | null;
 };
