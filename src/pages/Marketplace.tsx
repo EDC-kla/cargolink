@@ -7,12 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { Shipment } from "@/types/database.types";
 import CreateShipmentWizard from "@/components/shipments/wizard/CreateShipmentWizard";
@@ -21,9 +15,8 @@ import BookingsList from "@/components/marketplace/BookingsList";
 import TransportModeFilters from "@/components/marketplace/TransportModeFilters";
 import ShipmentsGrid from "@/components/marketplace/ShipmentsGrid";
 import BookingDialog from "@/components/marketplace/BookingDialog";
-import { Card } from "@/components/ui/card";
-import { Package, Ship, Calendar, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 const Marketplace = () => {
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
@@ -60,7 +53,7 @@ const Marketplace = () => {
         .select('*')
         .eq('created_by', user.id);
       if (error) throw error;
-      return data;
+      return data as Shipment[];
     },
   });
 
@@ -82,8 +75,6 @@ const Marketplace = () => {
     },
   });
 
-  const featuredShipments = allShipments?.filter(s => s.featured) || [];
-
   if (isLoadingAll || isLoadingUser || isLoadingBookings) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -96,91 +87,44 @@ const Marketplace = () => {
     <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
 
-      {/* Featured Shipments */}
-      {featuredShipments.length > 0 && (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mt-8"
-        >
-          <h2 className="text-2xl font-bold mb-4">Featured Routes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredShipments.map((shipment) => (
-              <motion.div
-                key={shipment.id}
-                whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedShipment(shipment)}>
-                  <div className="flex items-center space-x-4 mb-4">
-                    {shipment.transport_mode === 'sea' ? (
-                      <Ship className="h-10 w-10 text-blue-500" />
-                    ) : (
-                      <Package className="h-10 w-10 text-purple-500" />
-                    )}
-                    <div>
-                      <h3 className="font-semibold text-lg">{shipment.origin} → {shipment.destination}</h3>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        {new Date(shipment.departure_date).toLocaleDateString(undefined, {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-sm bg-gray-50 p-2 rounded">
-                      <span>Available Space:</span>
-                      <span className="font-medium">{shipment.available_space} CBM</span>
-                    </div>
-                    <div className="flex justify-between text-sm bg-gray-50 p-2 rounded">
-                      <span>Price per CBM:</span>
-                      <span className="font-medium text-primary">${shipment.price_per_cbm}</span>
-                    </div>
-                    <div className="flex items-center justify-end text-sm text-primary mt-2">
-                      View Details <ArrowRight className="h-4 w-4 ml-1" />
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
-
-      <Tabs defaultValue="marketplace" className="mt-8">
-        <TabsList className="w-full justify-start border-b pb-px overflow-x-auto flex-nowrap">
-          <TabsTrigger value="marketplace" className="text-lg whitespace-nowrap">Available Shipments</TabsTrigger>
-          <TabsTrigger value="my-shipments" className="text-lg whitespace-nowrap">My Listed Shipments</TabsTrigger>
-          <TabsTrigger value="my-bookings" className="text-lg whitespace-nowrap">My Bookings</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="marketplace">
-          <TransportModeFilters 
-            transportMode={transportMode}
-            onTransportModeChange={setTransportMode}
-          />
-          <ShipmentsGrid 
-            shipments={allShipments}
-            onBookSpace={setSelectedShipment}
-          />
-        </TabsContent>
-
-        <TabsContent value="my-shipments">
-          <ShipmentsGrid 
-            shipments={userShipments}
-            onBookSpace={setSelectedShipment}
-            showBookButton={false}
-          />
-        </TabsContent>
-
-        <TabsContent value="my-bookings">
-          <BookingsList bookings={userBookings} />
-        </TabsContent>
-      </Tabs>
+      <div className="mt-8">
+        <ShipmentsNav />
+        
+        <div className="mt-6">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <>
+                  <TransportModeFilters 
+                    transportMode={transportMode}
+                    onTransportModeChange={setTransportMode}
+                  />
+                  <ShipmentsGrid 
+                    shipments={allShipments}
+                    onBookSpace={setSelectedShipment}
+                  />
+                </>
+              } 
+            />
+            <Route 
+              path="/my-shipments" 
+              element={
+                <ShipmentsGrid 
+                  shipments={userShipments}
+                  onBookSpace={setSelectedShipment}
+                  showBookButton={false}
+                />
+              } 
+            />
+            <Route 
+              path="/bookings" 
+              element={<BookingsList bookings={userBookings} />} 
+            />
+            <Route path="*" element={<Navigate to="/marketplace" replace />} />
+          </Routes>
+        </div>
+      </div>
 
       <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
         <DialogContent className="sm:max-w-[600px]">
