@@ -23,7 +23,8 @@ import TransportModeFilters from "@/components/marketplace/TransportModeFilters"
 import ShipmentsGrid from "@/components/marketplace/ShipmentsGrid";
 import BookingDialog from "@/components/marketplace/BookingDialog";
 import { Card } from "@/components/ui/card";
-import { Package, Ship } from "lucide-react";
+import { Package, Ship, Calendar, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Marketplace = () => {
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
@@ -88,45 +89,64 @@ const Marketplace = () => {
 
       {/* Featured Shipments */}
       {featuredShipments.length > 0 && (
-        <div className="mt-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mt-8"
+        >
           <h2 className="text-2xl font-bold mb-4">Featured Routes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredShipments.map((shipment) => (
-              <Card key={shipment.id} className="p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center space-x-4 mb-4">
-                  {shipment.transport_mode === 'sea' ? (
-                    <Ship className="h-8 w-8 text-blue-500" />
-                  ) : (
-                    <Package className="h-8 w-8 text-purple-500" />
-                  )}
-                  <div>
-                    <h3 className="font-semibold">{shipment.origin} → {shipment.destination}</h3>
-                    <p className="text-sm text-gray-500">
-                      {new Date(shipment.departure_date).toLocaleDateString()}
-                    </p>
+              <motion.div
+                key={shipment.id}
+                whileHover={{ y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedShipment(shipment)}>
+                  <div className="flex items-center space-x-4 mb-4">
+                    {shipment.transport_mode === 'sea' ? (
+                      <Ship className="h-10 w-10 text-blue-500" />
+                    ) : (
+                      <Package className="h-10 w-10 text-purple-500" />
+                    )}
+                    <div>
+                      <h3 className="font-semibold text-lg">{shipment.origin} → {shipment.destination}</h3>
+                      <div className="flex items-center text-sm text-gray-500 mt-1">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {new Date(shipment.departure_date).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Available Space:</span>
-                    <span className="font-medium">{shipment.available_space} CBM</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-sm bg-gray-50 p-2 rounded">
+                      <span>Available Space:</span>
+                      <span className="font-medium">{shipment.available_space} CBM</span>
+                    </div>
+                    <div className="flex justify-between text-sm bg-gray-50 p-2 rounded">
+                      <span>Price per CBM:</span>
+                      <span className="font-medium text-primary">${shipment.price_per_cbm}</span>
+                    </div>
+                    <div className="flex items-center justify-end text-sm text-primary mt-2">
+                      View Details <ArrowRight className="h-4 w-4 ml-1" />
+                    </div>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Price per CBM:</span>
-                    <span className="font-medium">${shipment.price_per_cbm}</span>
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
 
       <Tabs defaultValue="marketplace" className="mt-8">
-        <TabsList className="w-full justify-start border-b pb-px">
-          <TabsTrigger value="marketplace" className="text-lg">Available Shipments</TabsTrigger>
-          <TabsTrigger value="my-shipments" className="text-lg">My Listed Shipments</TabsTrigger>
-          <TabsTrigger value="my-bookings" className="text-lg">My Bookings</TabsTrigger>
+        <TabsList className="w-full justify-start border-b pb-px overflow-x-auto flex-nowrap">
+          <TabsTrigger value="marketplace" className="text-lg whitespace-nowrap">Available Shipments</TabsTrigger>
+          <TabsTrigger value="my-shipments" className="text-lg whitespace-nowrap">My Listed Shipments</TabsTrigger>
+          <TabsTrigger value="my-bookings" className="text-lg whitespace-nowrap">My Bookings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="marketplace">

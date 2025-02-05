@@ -1,4 +1,3 @@
-
 export type Shipment = {
   id: string;
   origin: string;
@@ -21,6 +20,13 @@ export type Shipment = {
   consolidation_service: boolean | null;
   min_booking_size: number | null;
   notes: string | null;
+  featured: boolean | null;
+  display_order: number | null;
+  category: string | null;
+  route_type: string | null;
+  route_tags: string[] | null;
+  preferred_cargo_types: string[] | null;
+  stops: string[] | null;
 };
 
 export type Booking = {
