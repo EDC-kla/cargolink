@@ -21,7 +21,7 @@ export interface Shipment {
   consolidation_service: boolean;
   route_frequency: string | null;
   route_type: string;
-  stops: string[];
+  stops: any[]; // Changed from string[] to any[] to handle JSON data
   route_tags: string[];
   preferred_cargo_types: string[];
   featured: boolean;
