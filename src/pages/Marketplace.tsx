@@ -12,7 +12,7 @@ import EditBookingForm from "@/components/bookings/EditBookingForm";
 const Marketplace = () => {
   const navigate = useNavigate();
 
-  const { data: shipments, isLoading: isLoadingAll } = useQuery({
+  const { data: shipments, isLoading: isLoadingAll, refetch: refetchShipments } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments,
   });
@@ -55,6 +55,7 @@ const Marketplace = () => {
               element={
                 <AvailableShipments 
                   shipments={shipments || []}
+                  onRefetch={refetchShipments}
                 />
               } 
             />
@@ -63,6 +64,7 @@ const Marketplace = () => {
               element={
                 <MyShipments 
                   shipments={shipments?.filter(s => s.created_by === user?.id) || []}
+                  onRefetch={refetchShipments}
                 />
               } 
             />

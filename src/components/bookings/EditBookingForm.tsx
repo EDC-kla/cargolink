@@ -35,7 +35,22 @@ const EditBookingForm = () => {
 
         if (bookingError) throw bookingError;
         
-        setBooking(bookingData);
+        // Transform the data to match the Booking type
+        const transformedBooking: Booking = {
+          ...bookingData,
+          cargo_dimensions: typeof bookingData.cargo_dimensions === 'string' 
+            ? JSON.parse(bookingData.cargo_dimensions)
+            : bookingData.cargo_dimensions || { length: 0, width: 0, height: 0, weight: 0 },
+          temperature_requirements: bookingData.temperature_requirements
+            ? typeof bookingData.temperature_requirements === 'string'
+              ? JSON.parse(bookingData.temperature_requirements)
+              : bookingData.temperature_requirements
+            : null,
+          special_handling: bookingData.special_handling || [],
+          required_certificates: bookingData.required_certificates || [],
+        };
+        
+        setBooking(transformedBooking);
         setShipment(bookingData.shipment);
         setSpaceRequired(bookingData.space_booked);
       } catch (error: any) {
