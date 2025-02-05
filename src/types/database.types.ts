@@ -5,9 +5,9 @@ export type Shipment = {
   departure_date: string;
   available_space: number;
   price_per_cbm: number;
-  status: 'available' | 'full' | 'in_transit' | 'delivered';
+  status: 'available' | 'full' | 'in_transit' | 'delivered' | null;
   created_at: string;
-  created_by: string;
+  created_by: string | null;
 };
 
 export type Booking = {
@@ -21,10 +21,9 @@ export type Booking = {
 
 export type Profile = {
   id: string;
-  company_name: string;
-  contact_person: string;
-  email: string;
-  phone: string;
-  country: string;
+  company_name: string | null;
+  contact_person: string | null;
+  email: string | null;
+  phone: string | null;
   created_at: string;
 };
