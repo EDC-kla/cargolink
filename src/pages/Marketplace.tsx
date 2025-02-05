@@ -4,8 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Package, Truck } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import BookingForm from "@/components/BookingForm";
+import { useState } from "react";
+import { Shipment } from "@/types/database.types";
 
 const Marketplace = () => {
+  const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
+  
   const { data: shipments, isLoading, error } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments,
@@ -83,18 +94,29 @@ const Marketplace = () => {
 
               <Button 
                 className="w-full bg-primary hover:bg-primary/90"
-                onClick={() => {
-                  toast({
-                    title: "Coming Soon",
-                    description: "Booking functionality will be available soon!",
-                  });
-                }}
+                onClick={() => setSelectedShipment(shipment)}
               >
                 Book Space
               </Button>
             </div>
           ))}
         </div>
+
+        <Dialog open={!!selectedShipment} onOpenChange={() => setSelectedShipment(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Book Shipping Space</DialogTitle>
+            </DialogHeader>
+            {selectedShipment && (
+              <BookingForm
+                shipmentId={selectedShipment.id}
+                availableSpace={selectedShipment.available_space}
+                pricePerCbm={selectedShipment.price_per_cbm}
+                onClose={() => setSelectedShipment(null)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
