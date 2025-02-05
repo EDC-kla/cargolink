@@ -4,10 +4,12 @@ import Marketplace from "@/pages/Marketplace";
 import CreateShipment from "@/pages/CreateShipment";
 import Auth from "@/pages/Auth";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
+import Navbar from "@/components/Navbar";
 
 const App = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Navbar />
       <Toaster />
       <Routes>
         <Route path="/" element={<Marketplace />} />
