@@ -57,7 +57,14 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
         shipment_id: shipmentId,
         user_id: user.id,
         space_booked: spaceRequired,
-        status: "pending"
+        status: "pending",
+        cargo_type: null,
+        cargo_value: null,
+        cargo_description: null,
+        special_handling: null,
+        insurance_required: null,
+        pickup_address: null,
+        delivery_address: null
       });
 
       toast({
