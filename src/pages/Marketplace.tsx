@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
@@ -36,7 +35,6 @@ const Marketplace = () => {
     queryFn: async () => {
       const rawShipments = await shipmentService.listShipments();
       
-      // Transform the raw data to match the Shipment type exactly
       const transformedShipments = rawShipments.map(shipment => ({
         id: shipment.id,
         origin: shipment.origin,
@@ -65,9 +63,11 @@ const Marketplace = () => {
         route_type: shipment.route_type,
         route_tags: shipment.route_tags ?? [],
         preferred_cargo_types: shipment.preferred_cargo_types ?? [],
-        stops: Array.isArray(shipment.stops)
-          ? shipment.stops.map(stop => typeof stop === 'object' ? JSON.stringify(stop) : String(stop))
-          : []
+        stops: shipment.stops 
+          ? shipment.stops.map(stop => 
+              typeof stop === 'object' ? JSON.stringify(stop) : String(stop)
+            )
+          : null
       })) satisfies Shipment[];
 
       return transportMode === 'all' 
