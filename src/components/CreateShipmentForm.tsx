@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import ShipmentFormFields from "@/components/shipments/ShipmentFormFields";
+import { TransportMode, ShipmentStatus } from "@/types/database.types";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
@@ -18,23 +18,23 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     departure_date: "",
     available_space: 1,
     price_per_cbm: 1,
-    transport_mode: "sea",
+    transport_mode: "sea" as TransportMode,
     container_type: "",
     transit_time_days: 0,
     customs_clearance: false,
     door_pickup: false,
     door_delivery: false,
     min_booking_size: 0,
-    status: "available",
-    additional_services: [],
-    cargo_restrictions: [],
+    status: "available" as ShipmentStatus,
+    additional_services: [] as string[],
+    cargo_restrictions: [] as string[],
     consolidation_service: false,
     route_frequency: "",
-    route_tags: [],
+    route_tags: [] as string[],
     route_type: "direct",
     notes: "",
-    preferred_cargo_types: [],
-    stops: [] as string[],
+    preferred_cargo_types: [] as string[],
+    stops: [] as { location: string; stop_type: 'port' | 'terminal' | 'warehouse' | 'customs' }[],
     featured: false,
     display_order: 0,
     category: ""

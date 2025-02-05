@@ -91,7 +91,7 @@ const EditBookingForm = () => {
         is_draft: boolean;
       } = {
         space_booked: spaceRequired,
-        status: "pending",
+        status: "pending" as BookingStatus,
         is_draft: false,
       };
 

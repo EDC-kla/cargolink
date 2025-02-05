@@ -12,10 +12,15 @@ export const shipmentService = {
     if (error) throw error;
     return data.map(shipment => ({
       ...shipment,
-      stops: Array.isArray(shipment.stops) ? shipment.stops.map(stop => ({
-        ...stop,
-        stop_type: stop.stop_type || 'port'
-      })) : []
+      stops: Array.isArray(shipment.stops) 
+        ? shipment.stops.map(stop => ({
+            location: (stop as any).location || '',
+            stop_type: (stop as any).stop_type || 'port',
+            arrival_date: (stop as any).arrival_date,
+            departure_date: (stop as any).departure_date,
+            notes: (stop as any).notes
+          }))
+        : []
     })) as Shipment[];
   },
 
@@ -29,10 +34,15 @@ export const shipmentService = {
     if (error) throw error;
     return {
       ...data,
-      stops: Array.isArray(data.stops) ? data.stops.map(stop => ({
-        ...stop,
-        stop_type: stop.stop_type || 'port'
-      })) : []
+      stops: Array.isArray(data.stops) 
+        ? data.stops.map(stop => ({
+            location: (stop as any).location || '',
+            stop_type: (stop as any).stop_type || 'port',
+            arrival_date: (stop as any).arrival_date,
+            departure_date: (stop as any).departure_date,
+            notes: (stop as any).notes
+          }))
+        : []
     } as Shipment;
   },
 
@@ -55,8 +65,11 @@ export const shipmentService = {
         ...shipment,
         created_by: user.id,
         stops: shipment.stops.map(stop => ({
-          ...stop,
-          stop_type: stop.stop_type || 'port'
+          location: stop.location,
+          stop_type: stop.stop_type,
+          arrival_date: stop.arrival_date,
+          departure_date: stop.departure_date,
+          notes: stop.notes
         }))
       }])
       .select()
