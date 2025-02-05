@@ -1,7 +1,9 @@
 import { Booking } from "@/types/database.types";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Package, MapPin } from "lucide-react";
 
 interface BookingsListProps {
-  bookings: (Booking & { shipment: any })[] | undefined;
+  bookings: any[];
 }
 
 const BookingsList = ({ bookings }: BookingsListProps) => {
@@ -16,31 +18,45 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
   return (
     <div className="space-y-4">
       {bookings.map((booking) => (
-        <div key={booking.id} className="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
-          <div className="flex justify-between items-start">
+        <div 
+          key={booking.id} 
+          className="bg-white rounded-lg shadow-sm border p-4 hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-start justify-between">
             <div>
-              <h3 className="font-semibold text-lg">
-                {booking.shipment.origin} → {booking.shipment.destination}
-              </h3>
-              <p className="text-gray-500">
-                Departure: {new Date(booking.shipment.departure_date).toLocaleDateString()}
-              </p>
-              <p className="text-gray-500">
-                Space Booked: {booking.space_booked} CBM
-              </p>
-              <p className="text-gray-500">
-                Total Cost: ${booking.space_booked * booking.shipment.price_per_cbm}
-              </p>
+              <div className="flex items-center space-x-2 mb-2">
+                <MapPin className="h-4 w-4 text-gray-400" />
+                <span className="text-gray-900 font-medium">
+                  {booking.shipment.origin} → {booking.shipment.destination}
+                </span>
+              </div>
+              
+              <div className="space-y-1 text-sm text-gray-500">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="h-4 w-4" />
+                  <span>
+                    {new Date(booking.shipment.departure_date).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Package className="h-4 w-4" />
+                  <span>{booking.space_booked} CBM booked</span>
+                </div>
+              </div>
             </div>
-            <span className={`px-3 py-1 rounded-full text-sm capitalize ${
-              booking.status === 'confirmed' 
-                ? 'bg-green-100 text-green-800'
-                : booking.status === 'pending'
-                ? 'bg-yellow-100 text-yellow-800'
-                : 'bg-red-100 text-red-800'
-            }`}>
+            
+            <Badge 
+              variant={
+                booking.status === 'confirmed' 
+                  ? 'success' 
+                  : booking.status === 'pending' 
+                    ? 'warning' 
+                    : 'destructive'
+              }
+              className="capitalize"
+            >
               {booking.status}
-            </span>
+            </Badge>
           </div>
         </div>
       ))}
