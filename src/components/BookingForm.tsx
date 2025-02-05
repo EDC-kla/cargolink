@@ -1,8 +1,7 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Package, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +11,9 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import BookingSpaceInput from "./BookingSpaceInput";
+import PriceCalculation from "./PriceCalculation";
+import { BookingFormData } from "./wizard/BookingWizard";
 
 interface BookingFormProps {
   shipmentId: string;
@@ -53,19 +55,24 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
 
     try {
       setLoading(true);
-      await shipmentService.bookSpace({
+      const initialBookingData: BookingFormData & { shipment_id: string; status: string } = {
         shipment_id: shipmentId,
-        user_id: user.id,
         space_booked: spaceRequired,
         status: "pending",
-        cargo_type: null,
-        cargo_value: null,
-        cargo_description: null,
-        special_handling: null,
-        insurance_required: null,
-        pickup_address: null,
-        delivery_address: null
-      });
+        cargo_type: "",
+        cargo_description: "",
+        cargo_value: 0,
+        cargo_packaging_type: "pallets",
+        cargo_dimensions: { length: 0, width: 0, height: 0, weight: 0 },
+        special_handling: [],
+        pickup_address: "",
+        delivery_address: "",
+        insurance_required: false,
+        required_certificates: [],
+        payment_terms: "prepaid"
+      };
+
+      await shipmentService.bookSpace(initialBookingData);
 
       toast({
         title: "Booking submitted",
@@ -96,38 +103,17 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
         </Alert>
       )}
 
-      <div className="space-y-2">
-        <Label htmlFor="space">Space Required (CBM)</Label>
-        <div className="flex items-center space-x-2">
-          <Package className="h-4 w-4 text-gray-400" />
-          <Input
-            id="space"
-            type="number"
-            min={1}
-            max={availableSpace}
-            value={spaceRequired}
-            onChange={(e) => setSpaceRequired(Number(e.target.value))}
-            className="w-full"
-          />
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Available space: {availableSpace} CBM
-        </p>
-      </div>
+      <BookingSpaceInput
+        spaceRequired={spaceRequired}
+        availableSpace={availableSpace}
+        onChange={setSpaceRequired}
+        disabled={loading}
+      />
 
-      <div className="space-y-2">
-        <Label>Price Calculation</Label>
-        <div className="bg-secondary/10 p-4 rounded-lg space-y-2">
-          <div className="flex justify-between">
-            <span>Price per CBM:</span>
-            <span>${pricePerCbm.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between font-semibold">
-            <span>Total Price:</span>
-            <span>${totalPrice.toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
+      <PriceCalculation
+        pricePerCbm={pricePerCbm}
+        totalPrice={totalPrice}
+      />
 
       <div className="flex justify-end space-x-2">
         <Button type="button" variant="outline" onClick={onClose}>
