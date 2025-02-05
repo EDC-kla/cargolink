@@ -27,23 +27,23 @@ const TransportStep = ({
 }: TransportStepProps) => {
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <Label>Transport Mode</Label>
+      <div className="space-y-4">
+        <Label>How would you like to transport?</Label>
         <RadioGroup
           value={transportMode}
           onValueChange={(value) => onChange("transport_mode", value)}
-          className="flex space-x-4"
+          className="grid grid-cols-2 gap-4"
         >
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
             <RadioGroupItem value="sea" id="sea" />
-            <Label htmlFor="sea" className="flex items-center space-x-2">
+            <Label htmlFor="sea" className="flex items-center space-x-2 cursor-pointer">
               <Ship className="h-4 w-4" />
               <span>Sea Freight</span>
             </Label>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:border-primary transition-colors">
             <RadioGroupItem value="air" id="air" />
-            <Label htmlFor="air" className="flex items-center space-x-2">
+            <Label htmlFor="air" className="flex items-center space-x-2 cursor-pointer">
               <Plane className="h-4 w-4" />
               <span>Air Freight</span>
             </Label>
@@ -62,6 +62,7 @@ const TransportStep = ({
             value={transitTimeDays || ""}
             onChange={(e) => onChange("transit_time_days", Number(e.target.value))}
             placeholder="e.g., 14"
+            className="flex-1"
           />
         </div>
       </div>
@@ -73,6 +74,7 @@ const TransportStep = ({
           value={containerType || ""}
           onChange={(e) => onChange("container_type", e.target.value)}
           placeholder="e.g., 20ft Standard"
+          className="flex-1"
         />
       </div>
 
@@ -88,20 +90,21 @@ const TransportStep = ({
             value={minBookingSize || ""}
             onChange={(e) => onChange("min_booking_size", Number(e.target.value))}
             placeholder="e.g., 1"
+            className="flex-1"
           />
         </div>
       </div>
 
       <div className="space-y-4">
         <Label>Additional Services</Label>
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center space-x-2">
             <Checkbox
               id="customs_clearance"
               checked={customsClearance}
               onCheckedChange={(checked) => onChange("customs_clearance", checked)}
             />
-            <Label htmlFor="customs_clearance">Customs Clearance</Label>
+            <Label htmlFor="customs_clearance" className="cursor-pointer">Customs Clearance</Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
@@ -109,7 +112,7 @@ const TransportStep = ({
               checked={doorPickup}
               onCheckedChange={(checked) => onChange("door_pickup", checked)}
             />
-            <Label htmlFor="door_pickup">Door Pickup</Label>
+            <Label htmlFor="door_pickup" className="cursor-pointer">Door Pickup</Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
@@ -117,7 +120,7 @@ const TransportStep = ({
               checked={doorDelivery}
               onCheckedChange={(checked) => onChange("door_delivery", checked)}
             />
-            <Label htmlFor="door_delivery">Door Delivery</Label>
+            <Label htmlFor="door_delivery" className="cursor-pointer">Door Delivery</Label>
           </div>
         </div>
       </div>

@@ -14,25 +14,10 @@ interface CreateShipmentWizardProps {
   onClose: () => void;
 }
 
-type ShipmentFormData = {
-  origin: string;
-  destination: string;
-  departure_date: string;
-  available_space: number;
-  price_per_cbm: number;
-  transport_mode: string;
-  container_type: string | null;
-  transit_time_days: number | null;
-  customs_clearance: boolean;
-  door_pickup: boolean;
-  door_delivery: boolean;
-  min_booking_size: number | null;
-};
-
 const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<ShipmentFormData>({
+  const [formData, setFormData] = useState({
     origin: "",
     destination: "",
     departure_date: "",
@@ -47,6 +32,10 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
     min_booking_size: null,
   });
 
+  const handleFieldChange = (field: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const steps = [
     {
       title: "Location",
@@ -54,7 +43,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
         <LocationStep
           origin={formData.origin}
           destination={formData.destination}
-          onChange={(field, value) => setFormData({ ...formData, [field]: value })}
+          onChange={handleFieldChange}
         />
       ),
     },
@@ -69,7 +58,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
           customsClearance={formData.customs_clearance}
           doorPickup={formData.door_pickup}
           doorDelivery={formData.door_delivery}
-          onChange={(field, value) => setFormData({ ...formData, [field]: value })}
+          onChange={handleFieldChange}
         />
       ),
     },
@@ -78,7 +67,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
       component: (
         <DateStep
           value={formData.departure_date}
-          onChange={(value) => setFormData({ ...formData, departure_date: value })}
+          onChange={(value) => handleFieldChange("departure_date", value)}
         />
       ),
     },
@@ -88,7 +77,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
         <SpaceStep
           availableSpace={formData.available_space}
           pricePerCbm={formData.price_per_cbm}
-          onChange={(field, value) => setFormData({ ...formData, [field]: value })}
+          onChange={handleFieldChange}
         />
       ),
     },
