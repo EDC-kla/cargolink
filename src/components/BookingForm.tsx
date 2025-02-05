@@ -2,11 +2,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Package } from "lucide-react";
+import { Package, AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 
 interface BookingFormProps {
   shipmentId: string;
@@ -18,10 +23,12 @@ interface BookingFormProps {
 const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: BookingFormProps) => {
   const [spaceRequired, setSpaceRequired] = useState<number>(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
@@ -34,12 +41,13 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
       return;
     }
 
+    if (spaceRequired <= 0) {
+      setError("Space required must be greater than 0");
+      return;
+    }
+
     if (spaceRequired > availableSpace) {
-      toast({
-        title: "Invalid space requirement",
-        description: "Requested space exceeds available space",
-        variant: "destructive",
-      });
+      setError(`Requested space (${spaceRequired} CBM) exceeds available space (${availableSpace} CBM)`);
       return;
     }
 
@@ -54,10 +62,11 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
 
       toast({
         title: "Booking submitted",
-        description: "Your booking request has been submitted successfully",
+        description: "Your booking request has been submitted successfully. You can track its status in My Bookings.",
       });
       onClose();
     } catch (error: any) {
+      setError(error.message);
       toast({
         title: "Error",
         description: error.message,
@@ -72,6 +81,14 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
       <div className="space-y-2">
         <Label htmlFor="space">Space Required (CBM)</Label>
         <div className="flex items-center space-x-2">
@@ -96,11 +113,11 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
         <div className="bg-secondary/10 p-4 rounded-lg space-y-2">
           <div className="flex justify-between">
             <span>Price per CBM:</span>
-            <span>${pricePerCbm}</span>
+            <span>${pricePerCbm.toFixed(2)}</span>
           </div>
           <div className="flex justify-between font-semibold">
             <span>Total Price:</span>
-            <span>${totalPrice}</span>
+            <span>${totalPrice.toFixed(2)}</span>
           </div>
         </div>
       </div>

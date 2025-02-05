@@ -12,11 +12,12 @@ export type Shipment = {
 
 export type Booking = {
   id: string;
-  shipment_id: string;
-  user_id: string;
+  shipment_id: string | null;
+  user_id: string | null;
   space_booked: number;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: string | null;
   created_at: string;
+  shipment?: Shipment;
 };
 
 export type Profile = {

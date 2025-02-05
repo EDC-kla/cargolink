@@ -12,10 +12,24 @@ export const shipmentService = {
     return data as Shipment[];
   },
 
-  async createShipment(shipment: Omit<Shipment, 'id' | 'created_at' | 'created_by'>) {
+  async getShipment(id: string) {
     const { data, error } = await supabase
       .from('shipments')
-      .insert([shipment])
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) throw error;
+    return data as Shipment;
+  },
+
+  async createShipment(shipment: Omit<Shipment, 'id' | 'created_at' | 'created_by'>) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
+    const { data, error } = await supabase
+      .from('shipments')
+      .insert([{ ...shipment, created_by: user.id }])
       .select()
       .single();
     
@@ -23,10 +37,60 @@ export const shipmentService = {
     return data as Shipment;
   },
 
+  async updateShipment(id: string, updates: Partial<Shipment>) {
+    const { data, error } = await supabase
+      .from('shipments')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data as Shipment;
+  },
+
+  async deleteShipment(id: string) {
+    const { error } = await supabase
+      .from('shipments')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+  },
+
   async bookSpace(booking: Omit<Booking, 'id' | 'created_at'>) {
     const { data, error } = await supabase
       .from('bookings')
       .insert([booking])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data as Booking;
+  },
+
+  async listUserBookings() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
+    const { data, error } = await supabase
+      .from('bookings')
+      .select(`
+        *,
+        shipment:shipments (*)
+      `)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data as (Booking & { shipment: Shipment })[];
+  },
+
+  async updateBookingStatus(id: string, status: string) {
+    const { data, error } = await supabase
+      .from('bookings')
+      .update({ status })
+      .eq('id', id)
       .select()
       .single();
     
