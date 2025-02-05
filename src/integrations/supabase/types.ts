@@ -282,6 +282,7 @@ export type Database = {
       }
       shipments: {
         Row: {
+          accepted_cargo_types: string[] | null
           additional_services: string[] | null
           available_space: number
           cargo_restrictions: string[] | null
@@ -302,8 +303,10 @@ export type Database = {
           door_pickup: boolean | null
           estimated_arrival: string | null
           featured: boolean | null
+          hazmat_accepted: boolean | null
           id: string
           incoterms: Database["public"]["Enums"]["incoterm_type"] | null
+          max_piece_dimensions: Json | null
           min_booking_size: number | null
           notes: string | null
           origin: string
@@ -311,17 +314,22 @@ export type Database = {
           port_of_loading: string | null
           preferred_cargo_types: string[] | null
           price_per_cbm: number
+          required_cargo_docs: string[] | null
           route_frequency: string | null
           route_tags: string[] | null
           route_type: string | null
+          special_handling_options: string[] | null
           status: string | null
           stops: Json[] | null
+          temperature_controlled: boolean | null
+          temperature_range: Json | null
           transit_time_days: number | null
           transport_mode: string
           vessel_name: string | null
           voyage_number: string | null
         }
         Insert: {
+          accepted_cargo_types?: string[] | null
           additional_services?: string[] | null
           available_space: number
           cargo_restrictions?: string[] | null
@@ -342,8 +350,10 @@ export type Database = {
           door_pickup?: boolean | null
           estimated_arrival?: string | null
           featured?: boolean | null
+          hazmat_accepted?: boolean | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
+          max_piece_dimensions?: Json | null
           min_booking_size?: number | null
           notes?: string | null
           origin: string
@@ -351,17 +361,22 @@ export type Database = {
           port_of_loading?: string | null
           preferred_cargo_types?: string[] | null
           price_per_cbm: number
+          required_cargo_docs?: string[] | null
           route_frequency?: string | null
           route_tags?: string[] | null
           route_type?: string | null
+          special_handling_options?: string[] | null
           status?: string | null
           stops?: Json[] | null
+          temperature_controlled?: boolean | null
+          temperature_range?: Json | null
           transit_time_days?: number | null
           transport_mode?: string
           vessel_name?: string | null
           voyage_number?: string | null
         }
         Update: {
+          accepted_cargo_types?: string[] | null
           additional_services?: string[] | null
           available_space?: number
           cargo_restrictions?: string[] | null
@@ -382,8 +397,10 @@ export type Database = {
           door_pickup?: boolean | null
           estimated_arrival?: string | null
           featured?: boolean | null
+          hazmat_accepted?: boolean | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
+          max_piece_dimensions?: Json | null
           min_booking_size?: number | null
           notes?: string | null
           origin?: string
@@ -391,11 +408,15 @@ export type Database = {
           port_of_loading?: string | null
           preferred_cargo_types?: string[] | null
           price_per_cbm?: number
+          required_cargo_docs?: string[] | null
           route_frequency?: string | null
           route_tags?: string[] | null
           route_type?: string | null
+          special_handling_options?: string[] | null
           status?: string | null
           stops?: Json[] | null
+          temperature_controlled?: boolean | null
+          temperature_range?: Json | null
           transit_time_days?: number | null
           transport_mode?: string
           vessel_name?: string | null
