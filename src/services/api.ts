@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus } from '@/types/database.types';
+import { Shipment, Booking, Profile, BookingStatus, ShipmentStatus, RouteStop } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
 
 export const shipmentService = {
@@ -10,7 +10,13 @@ export const shipmentService = {
       .order('departure_date', { ascending: true });
     
     if (error) throw error;
-    return data as unknown as Shipment[];
+    return data.map(shipment => ({
+      ...shipment,
+      stops: Array.isArray(shipment.stops) ? shipment.stops.map(stop => ({
+        ...stop,
+        stop_type: stop.stop_type || 'port'
+      })) : []
+    })) as Shipment[];
   },
 
   async getShipment(id: string) {
@@ -21,7 +27,13 @@ export const shipmentService = {
       .single();
     
     if (error) throw error;
-    return data as unknown as Shipment;
+    return {
+      ...data,
+      stops: Array.isArray(data.stops) ? data.stops.map(stop => ({
+        ...stop,
+        stop_type: stop.stop_type || 'port'
+      })) : []
+    } as Shipment;
   },
 
   async createShipment(shipment: Omit<Shipment, 'id' | 'created_at' | 'created_by'>) {
@@ -39,7 +51,14 @@ export const shipmentService = {
 
     const { data, error } = await supabase
       .from('shipments')
-      .insert([{ ...shipment, created_by: user.id }])
+      .insert([{ 
+        ...shipment,
+        created_by: user.id,
+        stops: shipment.stops.map(stop => ({
+          ...stop,
+          stop_type: stop.stop_type || 'port'
+        }))
+      }])
       .select()
       .single();
     
@@ -47,7 +66,7 @@ export const shipmentService = {
       console.error('Error creating shipment:', error);
       throw new Error(error.message);
     }
-    return data as unknown as Shipment;
+    return data as Shipment;
   },
 
   async updateShipment(id: string, updates: Partial<Shipment>) {
@@ -181,5 +200,6 @@ function transformBookingResponse(data: any): Booking {
       : null,
     special_handling: data.special_handling || [],
     required_certificates: data.required_certificates || [],
+    status: data.status as BookingStatus
   };
 }

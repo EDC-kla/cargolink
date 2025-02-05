@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { shipmentService } from '@/services/api';
-import { Shipment } from "@/types/database.types";
+import { Shipment, ShipmentStatus, TransportMode } from "@/types/database.types";
 
 export const useShipmentForm = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -14,14 +13,14 @@ export const useShipmentForm = (onClose: () => void) => {
     departure_date: "",
     available_space: 1,
     price_per_cbm: 1,
-    transport_mode: "sea",
+    transport_mode: "sea" as TransportMode,
     container_type: "",
     transit_time_days: 0,
     customs_clearance: false,
     door_pickup: false,
     door_delivery: false,
     min_booking_size: 0,
-    status: "available",
+    status: "available" as ShipmentStatus,
     additional_services: [],
     cargo_restrictions: [],
     consolidation_service: false,

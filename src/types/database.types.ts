@@ -3,7 +3,8 @@ export type IncotermType = 'EXW' | 'FCA' | 'FAS' | 'FOB' | 'CFR' | 'CIF' | 'CPT'
 export type TransportMode = 'sea' | 'air' | 'rail' | 'road';
 export type CargoType = 'general' | 'hazmat' | 'reefer' | 'oversized' | 'bulk' | 'liquid';
 export type BookingStatus = 'draft' | 'pending' | 'confirmed' | 'cancelled' | 'completed';
-export type ShipmentStatus = 'draft' | 'active' | 'completed' | 'cancelled';
+export type ShipmentStatus = 'draft' | 'active' | 'completed' | 'cancelled' | 'available';
+export type StopType = 'port' | 'terminal' | 'warehouse' | 'customs';
 
 export interface Location {
   address: string;
@@ -44,7 +45,7 @@ export interface RouteStop {
   location: string;
   arrival_date?: string;
   departure_date?: string;
-  stop_type: 'port' | 'terminal' | 'warehouse' | 'customs';
+  stop_type: StopType;
   notes?: string;
 }
 
