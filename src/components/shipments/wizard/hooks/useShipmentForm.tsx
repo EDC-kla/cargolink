@@ -20,7 +20,7 @@ export const useShipmentForm = (onClose: () => void) => {
     door_pickup: false,
     door_delivery: false,
     min_booking_size: 0,
-    status: "active",
+    status: "available",
     additional_services: [],
     cargo_restrictions: [],
     consolidation_service: false,
@@ -67,6 +67,7 @@ export const useShipmentForm = (onClose: () => void) => {
       });
       onClose();
     } catch (error: any) {
+      console.error('Error creating shipment:', error);
       toast({
         title: "Error",
         description: error.message,
