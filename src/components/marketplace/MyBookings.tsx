@@ -1,7 +1,7 @@
 import { Booking } from "@/types/database.types";
 import BookingsList from "./BookingsList";
 import { useEffect, useState } from "react";
-import { shipmentService } from "@/services/api";
+import { bookingService } from "@/services/bookingService";
 import { toast } from "@/hooks/use-toast";
 
 const MyBookings = () => {
@@ -11,7 +11,7 @@ const MyBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const userBookings = await shipmentService.listUserBookings();
+        const userBookings = await bookingService.listUserBookings();
         setBookings(userBookings);
       } catch (error: any) {
         toast({

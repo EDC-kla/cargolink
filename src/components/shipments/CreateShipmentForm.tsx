@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { shipmentService } from "@/services/api";
+import { shipmentService } from "@/services/shipmentService";
 import ShipmentFormFields from "./ShipmentFormFields";
 import { Shipment, ShipmentStatus, TransportMode } from "@/types/database.types";
 

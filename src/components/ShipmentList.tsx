@@ -1,7 +1,7 @@
 import { Calendar, MapPin, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { shipmentService } from "@/services/api";
+import { shipmentService } from "@/services/shipmentService";
 import { toast } from "@/components/ui/use-toast";
 
 const ShipmentList = () => {
