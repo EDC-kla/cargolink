@@ -29,6 +29,13 @@ export type Booking = {
   space_booked: number;
   status: string | null;
   created_at: string;
+  cargo_type: string | null;
+  cargo_value: number | null;
+  cargo_description: string | null;
+  special_handling: string[] | null;
+  insurance_required: boolean | null;
+  pickup_address: string | null;
+  delivery_address: string | null;
   shipment?: Shipment;
 };
 
@@ -39,4 +46,12 @@ export type Profile = {
   email: string | null;
   phone: string | null;
   created_at: string;
+  company_type: string[] | null;
+  services_offered: string[] | null;
+  years_in_business: number | null;
+  registration_number: string | null;
+  service_regions: string[] | null;
+  website: string | null;
+  office_address: string | null;
+  verified: boolean | null;
 };
