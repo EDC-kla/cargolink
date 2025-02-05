@@ -39,12 +39,7 @@ const Marketplace = () => {
     },
   });
 
-  const { data: userBookings, isLoading: isLoadingBookings } = useQuery({
-    queryKey: ['user-bookings'],
-    queryFn: shipmentService.listUserBookings,
-  });
-
-  if (isLoadingAll || isLoadingUser || isLoadingBookings) {
+  if (isLoadingAll || isLoadingUser) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -83,11 +78,7 @@ const Marketplace = () => {
             />
             <Route 
               path="/bookings" 
-              element={
-                <MyBookings 
-                  bookings={userBookings}
-                />
-              } 
+              element={<MyBookings />} 
             />
           </Routes>
         </div>
