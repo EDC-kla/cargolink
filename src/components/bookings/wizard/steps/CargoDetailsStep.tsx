@@ -22,12 +22,10 @@ const CargoDetailsStep = ({ data, onChange, shipment }: CargoDetailsStepProps) =
   useEffect(() => {
     const errors: string[] = [];
     
-    // Validate cargo type
     if (data.cargo_type && !shipment.accepted_cargo_types?.includes(data.cargo_type)) {
       errors.push(`This shipment does not accept ${data.cargo_type} cargo type`);
     }
 
-    // Validate dimensions
     if (shipment.max_piece_dimensions && data.cargo_dimensions) {
       const max = shipment.max_piece_dimensions;
       const current = data.cargo_dimensions;
