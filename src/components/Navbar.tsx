@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Ship, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-import type { User } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
+import { User } from "@supabase/supabase-js";
+import { toast } from "@/components/ui/use-toast";
 
 const Navbar = () => {
-  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     // Get initial session
@@ -32,7 +31,8 @@ const Navbar = () => {
       await supabase.auth.signOut();
       navigate("/auth");
       toast({
-        title: "Logged out successfully",
+        title: "Logged out",
+        description: "You have been successfully logged out.",
       });
     } catch (error: any) {
       toast({
@@ -45,22 +45,18 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Ship className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-primary">CargoLink</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <Link to="/" className="text-xl font-bold text-primary">
+              Shipment App
+            </Link>
           </div>
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <Button variant="ghost">How it Works</Button>
-                <Button variant="ghost">Find Shipments</Button>
-                <Button variant="default" className="bg-secondary hover:bg-secondary/90">
-                  List Your Cargo
-                </Button>
-                <Button variant="ghost" onClick={handleLogout}>
-                  <LogOut className="h-4 w-4 mr-2" />
+                <span className="text-gray-600">{user.email}</span>
+                <Button variant="outline" onClick={handleLogout}>
                   Logout
                 </Button>
               </>

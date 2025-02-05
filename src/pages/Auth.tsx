@@ -3,38 +3,37 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { Ship } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Auth = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleAuth = async (action: "login" | "signup") => {
     try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
+      setLoading(true);
+      
+      const { error } = action === "login" 
+        ? await supabase.auth.signInWithPassword({ email, password })
+        : await supabase.auth.signUp({ email, password });
+
+      if (error) throw error;
+
+      if (action === "login") {
+        navigate("/");
         toast({
-          title: "Success!",
-          description: "Please check your email to verify your account.",
+          title: "Welcome back!",
+          description: "You have successfully logged in.",
         });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+        toast({
+          title: "Check your email",
+          description: "We've sent you a confirmation link.",
         });
-        if (error) throw error;
-        navigate("/");
       }
     } catch (error: any) {
       toast({
@@ -48,63 +47,71 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-accent flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="flex flex-col items-center">
-          <Ship className="h-12 w-12 text-primary" />
-          <h2 className="mt-6 text-3xl font-bold text-primary">
-            {isSignUp ? "Create an account" : "Welcome back"}
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            {isSignUp
-              ? "Sign up to start shipping"
-              : "Sign in to access your account"}
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold">Welcome</CardTitle>
+          <CardDescription>
+            Sign in to your account or create a new one
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="login" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="login">Login</TabsTrigger>
+              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="login" className="space-y-4">
+              <div className="space-y-4">
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button 
+                  className="w-full" 
+                  onClick={() => handleAuth("login")}
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : "Sign In"}
+                </Button>
+              </div>
+            </TabsContent>
 
-        <form onSubmit={handleAuth} className="mt-8 space-y-6">
-          <div className="space-y-4 rounded-md shadow-sm">
-            <Input
-              type="email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading
-              ? "Loading..."
-              : isSignUp
-              ? "Sign Up"
-              : "Sign In"}
-          </Button>
-
-          <div className="text-center">
-            <Button
-              type="button"
-              variant="link"
-              onClick={() => setIsSignUp(!isSignUp)}
-            >
-              {isSignUp
-                ? "Already have an account? Sign in"
-                : "Need an account? Sign up"}
-            </Button>
-          </div>
-        </form>
-      </div>
+            <TabsContent value="signup" className="space-y-4">
+              <div className="space-y-4">
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button 
+                  className="w-full" 
+                  onClick={() => handleAuth("signup")}
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : "Create Account"}
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };
