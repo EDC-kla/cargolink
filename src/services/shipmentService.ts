@@ -1,104 +1,88 @@
-import { supabase } from '@/integrations/supabase/client';
-import { Shipment, RouteStop, CargoType, ShipmentStatus } from '@/types/database.types';
-import { Json } from '@/integrations/supabase/types';
-
-export const transformRouteStopsToJson = (stops: RouteStop[]): Json[] => 
-  stops.map(stop => ({
-    location: stop.location,
-    stop_type: stop.stop_type,
-    arrival_date: stop.arrival_date,
-    departure_date: stop.departure_date,
-    notes: stop.notes
-  }));
-
-export const transformShipmentResponse = (data: any): Shipment => ({
-  ...data,
-  stops: Array.isArray(data.stops)
-    ? data.stops.map((stop: any) => ({
-        location: stop.location || '',
-        stop_type: stop.stop_type || 'port',
-        arrival_date: stop.arrival_date,
-        departure_date: stop.departure_date,
-        notes: stop.notes
-      } as RouteStop))
-    : [] as RouteStop[],
-  preferred_cargo_types: (data.preferred_cargo_types || []) as CargoType[],
-  status: data.status as ShipmentStatus
-});
+import { supabase } from "@/integrations/supabase/client";
+import { Shipment } from "@/types/database.types";
 
 export const shipmentService = {
-  async listShipments() {
+  listShipments: async () => {
     const { data, error } = await supabase
       .from('shipments')
       .select('*')
-      .order('departure_date', { ascending: true });
-    
+      .order('created_at', { ascending: false });
+
     if (error) throw error;
-    return data.map(transformShipmentResponse);
+    return data;
   },
 
-  async getShipment(id: string) {
+  getShipment: async (id: string) => {
     const { data, error } = await supabase
       .from('shipments')
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error) throw error;
-    return transformShipmentResponse(data);
+    return data;
   },
 
-  async createShipment(shipment: Omit<Shipment, 'id' | 'created_at' | 'created_by'>) {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error('User not authenticated');
-
-    const { data: roles } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id);
-
-    if (!roles?.some(r => r.role === 'seller' || r.role === 'buyer')) {
-      throw new Error('You must be a seller or buyer to create shipments');
-    }
-
+  createShipment: async (shipment: Partial<Shipment>) => {
     const { data, error } = await supabase
       .from('shipments')
-      .insert([{
-        ...shipment,
-        created_by: user.id,
-        stops: transformRouteStopsToJson(shipment.stops)
-      }])
+      .insert([shipment])
       .select()
       .single();
-    
-    if (error) {
-      console.error('Error creating shipment:', error);
-      throw new Error(error.message);
-    }
-    return transformShipmentResponse(data);
+
+    if (error) throw error;
+    return data;
   },
 
-  async updateShipment(id: string, updates: Partial<Shipment>) {
+  updateShipment: async (id: string, updates: Partial<Shipment>) => {
     const { data, error } = await supabase
       .from('shipments')
-      .update({
-        ...updates,
-        stops: updates.stops ? transformRouteStopsToJson(updates.stops) : undefined
-      })
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) throw error;
-    return transformShipmentResponse(data);
+    return data;
   },
 
-  async deleteShipment(id: string) {
+  deleteShipment: async (id: string) => {
     const { error } = await supabase
       .from('shipments')
       .delete()
       .eq('id', id);
-    
+
     if (error) throw error;
+  },
+
+  getUserShipments: async (userId: string) => {
+    const { data, error } = await supabase
+      .from('shipments')
+      .select('*')
+      .eq('created_by', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data;
+  },
+
+  bookSpace: async (bookingData: any) => {
+    const { data, error } = await supabase
+      .from('bookings')
+      .insert([bookingData])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    // Update available space in shipment
+    const shipment = await shipmentService.getShipment(bookingData.shipment_id);
+    const newAvailableSpace = shipment.available_space - bookingData.space_booked;
+
+    await shipmentService.updateShipment(bookingData.shipment_id, {
+      available_space: newAvailableSpace
+    });
+
+    return data;
   }
 };

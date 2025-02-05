@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,21 +7,24 @@ import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import EditBookingForm from "@/components/bookings/EditBookingForm";
-import BookingForm from "@/components/BookingForm";
+import BookingForm from "@/components/bookings/BookingForm";
 
 const BookingRoute = () => {
   const { shipmentId } = useParams();
   const navigate = useNavigate();
   
-  const { data: shipments } = useQuery({
-    queryKey: ['shipments'],
-    queryFn: shipmentService.listShipments,
+  const { data: shipment } = useQuery({
+    queryKey: ['shipment', shipmentId],
+    queryFn: () => shipmentService.getShipment(shipmentId || ''),
+    enabled: !!shipmentId,
   });
 
-  const shipment = shipments?.find(s => s.id === shipmentId);
-
   if (!shipment) {
-    return <div>Shipment not found</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        <p className="text-muted-foreground">Loading shipment details...</p>
+      </div>
+    );
   }
 
   return (
@@ -40,12 +42,7 @@ const BookingRoute = () => {
 const Marketplace = () => {
   const navigate = useNavigate();
 
-  const { data: shipments, isLoading: isLoadingAll, refetch: refetchShipments } = useQuery({
-    queryKey: ['shipments'],
-    queryFn: shipmentService.listShipments,
-  });
-
-  const { data: userData, isLoading: isLoadingUser } = useQuery({
+  const { data: userData } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
       const { data, error } = await supabase.auth.getUser();
@@ -53,14 +50,6 @@ const Marketplace = () => {
       return data;
     },
   });
-
-  if (isLoadingAll || isLoadingUser) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,19 +63,13 @@ const Marketplace = () => {
           <Routes>
             <Route 
               path="/" 
-              element={
-                <AvailableShipments 
-                  shipments={shipments || []}
-                  onRefetch={refetchShipments}
-                />
-              } 
+              element={<AvailableShipments />} 
             />
             <Route 
               path="/my-shipments" 
               element={
                 <MyShipments 
-                  shipments={shipments?.filter(s => s.created_by === userData?.user?.id) || []}
-                  onRefetch={refetchShipments}
+                  userId={userData?.user?.id}
                 />
               } 
             />
