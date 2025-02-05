@@ -8,8 +8,18 @@ import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
 import AvailableShipments from "@/components/marketplace/AvailableShipments";
 import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import CreateShipmentForm from "@/components/CreateShipmentForm";
 
 const Marketplace = () => {
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  
   const { data: allShipments, isLoading: isLoadingAll, refetch: refetchAll } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments,
@@ -44,7 +54,7 @@ const Marketplace = () => {
 
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto">
-      <MarketplaceHeader />
+      <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
       <div className="mt-8">
         <ShipmentsNav />
         <div className="mt-6">
@@ -82,6 +92,20 @@ const Marketplace = () => {
           </Routes>
         </div>
       </div>
+
+      <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Create New Shipment</DialogTitle>
+          </DialogHeader>
+          <CreateShipmentForm
+            onClose={() => {
+              setShowCreateForm(false);
+              refetchAll();
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
