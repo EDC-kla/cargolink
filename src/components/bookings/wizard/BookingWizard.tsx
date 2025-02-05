@@ -8,6 +8,8 @@ import LogisticsDetailsStep from "./steps/LogisticsDetailsStep";
 import CustomsDetailsStep from "./steps/CustomsDetailsStep";
 import ReviewStep from "./steps/ReviewStep";
 import { motion, AnimatePresence } from "framer-motion";
+import { shipmentService } from "@/services/api";
+import { toast } from "@/hooks/use-toast";
 
 interface BookingWizardProps {
   shipment: Shipment;
@@ -65,6 +67,27 @@ const BookingWizard = ({ shipment, onComplete, onCancel }: BookingWizardProps) =
     payment_terms: "prepaid",
   });
 
+  const handleSubmit = async () => {
+    try {
+      await shipmentService.bookSpace({
+        shipment_id: shipment.id,
+        ...formData,
+        status: 'pending',
+      });
+      toast({
+        title: "Booking submitted successfully",
+        description: "Your booking request has been sent.",
+      });
+      onComplete();
+    } catch (error: any) {
+      toast({
+        title: "Error submitting booking",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const steps = [
     {
       title: "Cargo Details",
@@ -105,11 +128,6 @@ const BookingWizard = ({ shipment, onComplete, onCancel }: BookingWizardProps) =
       ),
     },
   ];
-
-  const handleSubmit = async () => {
-    // Submit booking logic here
-    onComplete();
-  };
 
   const progress = ((currentStep + 1) / steps.length) * 100;
 

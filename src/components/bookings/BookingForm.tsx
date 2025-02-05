@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/alert";
 import BookingSpaceInput from "./BookingSpaceInput";
 import PriceCalculation from "./PriceCalculation";
+import { BookingFormData } from "./wizard/BookingWizard";
 
 interface BookingFormProps {
   shipmentId: string;
@@ -53,19 +55,24 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
 
     try {
       setLoading(true);
-      await shipmentService.bookSpace({
+      const initialBookingData: BookingFormData & { shipment_id: string; status: string } = {
         shipment_id: shipmentId,
-        user_id: user.id,
         space_booked: spaceRequired,
         status: "pending",
-        cargo_type: null,
-        cargo_value: null,
-        cargo_description: null,
-        special_handling: null,
-        insurance_required: null,
-        pickup_address: null,
-        delivery_address: null
-      });
+        cargo_type: "",
+        cargo_description: "",
+        cargo_value: 0,
+        cargo_packaging_type: "pallets",
+        cargo_dimensions: { length: 0, width: 0, height: 0, weight: 0 },
+        special_handling: [],
+        pickup_address: "",
+        delivery_address: "",
+        insurance_required: false,
+        required_certificates: [],
+        payment_terms: "prepaid"
+      };
+
+      await shipmentService.bookSpace(initialBookingData);
 
       toast({
         title: "Booking submitted",

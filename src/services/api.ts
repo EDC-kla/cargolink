@@ -1,6 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { Shipment, Booking, Profile } from '@/types/database.types';
+import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
 
 export const shipmentService = {
   async listShipments() {
@@ -71,10 +72,16 @@ export const shipmentService = {
     if (error) throw error;
   },
 
-  async bookSpace(booking: Omit<Booking, 'id' | 'created_at'>) {
+  async bookSpace(booking: BookingFormData & { shipment_id: string; status: string }) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('bookings')
-      .insert([booking])
+      .insert([{ 
+        ...booking,
+        user_id: user.id,
+      }])
       .select()
       .single();
     
