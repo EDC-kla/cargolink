@@ -14,7 +14,8 @@ import {
   CargoDimensions,
   RouteStop,
   HazmatDetails,
-  StopType
+  StopType,
+  TemperatureRequirements
 } from "@/types/database.types";
 
 const Dashboard = () => {
@@ -29,26 +30,37 @@ const Dashboard = () => {
         .eq("user_id", user.id);
       if (error) throw error;
       
-      return data.map((booking): Booking => ({
-        ...booking,
-        status: (booking.status || 'pending') as BookingStatus,
-        cargo_type: (booking.cargo_type || 'general') as CargoType,
-        cargo_dimensions: (booking.cargo_dimensions as CargoDimensions) || {
-          length: 0,
-          width: 0,
-          height: 0,
-          weight: 0,
-          weight_unit: 'kg',
-          dimension_unit: 'm'
-        },
-        hazmat_details: (booking.hazmat_details as HazmatDetails) || {
-          un_number: '',
-          class: '',
-          proper_shipping_name: '',
-          packing_group: '',
-          flash_point: 0
-        },
-      }));
+      return data.map((booking): Booking => {
+        const dimensions = booking.cargo_dimensions as Record<string, any> || {};
+        const hazmat = booking.hazmat_details as Record<string, any> || {};
+        const temp = booking.temperature_requirements as Record<string, any> || {};
+        
+        return {
+          ...booking,
+          status: (booking.status || 'pending') as BookingStatus,
+          cargo_type: (booking.cargo_type || 'general') as CargoType,
+          cargo_dimensions: {
+            length: dimensions.length || 0,
+            width: dimensions.width || 0,
+            height: dimensions.height || 0,
+            weight: dimensions.weight || 0,
+            weight_unit: dimensions.weight_unit || 'kg',
+            dimension_unit: dimensions.dimension_unit || 'm'
+          },
+          hazmat_details: {
+            un_number: hazmat.un_number || '',
+            class: hazmat.class || '',
+            proper_shipping_name: hazmat.proper_shipping_name || '',
+            packing_group: hazmat.packing_group || '',
+            flash_point: hazmat.flash_point || 0
+          },
+          temperature_requirements: {
+            min: temp.min || 0,
+            max: temp.max || 0,
+            unit: temp.unit || 'C'
+          },
+        };
+      });
     },
   });
 
