@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast";
 const CreateShipment = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const { formData, handleFieldChange, submitShipment, loading } = useShipmentForm(() => {
+  const { formData, handleFieldChange, handleSubmit, loading } = useShipmentForm(() => {
     navigate("/marketplace?tab=my-shipments");
   });
 
@@ -25,8 +25,6 @@ const CreateShipment = () => {
     { number: 3, title: "Services", component: ServicesStep },
     { number: 4, title: "Review", component: ReviewStep },
   ];
-
-  const CurrentStepComponent = steps[currentStep - 1].component;
 
   const handleNext = () => {
     if (currentStep < steps.length) {
@@ -40,9 +38,9 @@ const CreateShipment = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleFormSubmit = async () => {
     try {
-      await submitShipment();
+      await handleSubmit();
       toast({
         title: "Success",
         description: "Shipment created successfully!",
@@ -56,6 +54,8 @@ const CreateShipment = () => {
       });
     }
   };
+
+  const CurrentStepComponent = steps[currentStep - 1].component;
 
   return (
     <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
@@ -88,19 +88,19 @@ const CreateShipment = () => {
               <Button
                 variant="outline"
                 onClick={handleBack}
-                disabled={currentStep === 1}
+                disabled={currentStep === 1 || loading}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
 
               {currentStep < steps.length ? (
-                <Button onClick={handleNext}>
+                <Button onClick={handleNext} disabled={loading}>
                   Next
                 </Button>
               ) : (
                 <Button
-                  onClick={handleSubmit}
+                  onClick={handleFormSubmit}
                   disabled={loading}
                   className="bg-green-600 hover:bg-green-700"
                 >
