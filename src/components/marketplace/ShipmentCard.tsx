@@ -22,7 +22,7 @@ const ShipmentCard = ({
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
 
   const handleBookClick = () => {
-    navigate(`/marketplace/book/${shipment.id}`);
+    navigate(`/book/${shipment.id}`);
   };
 
   return (

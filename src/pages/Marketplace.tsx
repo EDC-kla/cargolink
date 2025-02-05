@@ -35,36 +35,21 @@ const Marketplace = () => {
       <div className="bg-background rounded-lg shadow">
         <div className="p-6">
           <Routes>
-            <Route 
-              path="/" 
-              element={
-                <AvailableShipments 
-                  shipments={shipments || []} 
-                  onRefetch={refetch}
-                />
-              } 
-            />
-            <Route 
-              path="/my-shipments" 
-              element={
-                <MyShipments 
-                  shipments={shipments || []}
-                  onRefetch={refetch}
-                />
-              } 
-            />
-            <Route 
-              path="/bookings" 
-              element={<MyBookings />} 
-            />
-            <Route
-              path="/bookings/:bookingId/edit"
-              element={<EditBookingForm />}
-            />
-            <Route
-              path="/book/:shipmentId"
-              element={<BookingPage />}
-            />
+            <Route path="/" element={
+              <AvailableShipments 
+                shipments={shipments || []} 
+                onRefetch={refetch}
+              />
+            } />
+            <Route path="/my-shipments" element={
+              <MyShipments 
+                shipments={shipments || []}
+                onRefetch={refetch}
+              />
+            } />
+            <Route path="/bookings" element={<MyBookings />} />
+            <Route path="/bookings/:bookingId/edit" element={<EditBookingForm />} />
+            <Route path="/book/:shipmentId" element={<BookingPage />} />
           </Routes>
         </div>
       </div>
