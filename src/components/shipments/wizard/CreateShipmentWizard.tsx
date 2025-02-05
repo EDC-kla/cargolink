@@ -1,4 +1,3 @@
-
 import { useShipmentForm } from "./hooks/useShipmentForm";
 import WizardProgress from "./WizardProgress";
 import WizardNavigation from "./components/WizardNavigation";
@@ -8,8 +7,6 @@ import SpaceStep from "./steps/SpaceStep";
 import TransportStep from "./steps/TransportStep";
 import ReviewStep from "./steps/ReviewStep";
 import { motion, AnimatePresence } from "framer-motion";
-
-<lov-add-dependency>framer-motion@latest</lov-add-dependency>
 
 interface CreateShipmentWizardProps {
   onClose: () => void;
