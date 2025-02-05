@@ -7,7 +7,7 @@ import LogisticsDetailsStep from "./steps/LogisticsDetailsStep";
 import CustomsDetailsStep from "./steps/CustomsDetailsStep";
 import ReviewStep from "./steps/ReviewStep";
 import { motion, AnimatePresence } from "framer-motion";
-import { shipmentService } from "@/services/api";
+import { bookingService } from "@/services/api";
 import { toast } from "@/hooks/use-toast";
 
 interface BookingWizardProps {
@@ -68,7 +68,7 @@ const BookingWizard = ({ shipment, onComplete, onCancel }: BookingWizardProps) =
 
   const handleSubmit = async () => {
     try {
-      await shipmentService.bookSpace({
+      await bookingService.bookSpace({
         shipment_id: shipment.id,
         ...formData,
         status: 'pending',

@@ -2,7 +2,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Shipment, RouteStop, CargoType, ShipmentStatus } from '@/types/database.types';
 import { Json } from '@/integrations/supabase/types';
 
-const transformRouteStopsToJson = (stops: RouteStop[]): Json[] => 
+export const transformRouteStopsToJson = (stops: RouteStop[]): Json[] => 
   stops.map(stop => ({
     location: stop.location,
     stop_type: stop.stop_type,
@@ -11,7 +11,7 @@ const transformRouteStopsToJson = (stops: RouteStop[]): Json[] =>
     notes: stop.notes
   }));
 
-const transformShipmentResponse = (data: any): Shipment => ({
+export const transformShipmentResponse = (data: any): Shipment => ({
   ...data,
   stops: Array.isArray(data.stops)
     ? data.stops.map((stop: any) => ({

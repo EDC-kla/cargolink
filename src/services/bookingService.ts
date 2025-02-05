@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { Booking, BookingStatus, Shipment } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
-import { shipmentService } from './shipmentService';
+import { transformShipmentResponse } from './shipmentService';
 
 function transformBookingResponse(data: any): Booking {
   return {
@@ -43,7 +43,7 @@ export const bookingService = {
     if (error) throw error;
     return {
       ...transformBookingResponse(data),
-      shipment: data.shipment ? shipmentService.transformShipmentResponse(data.shipment) : null
+      shipment: data.shipment ? transformShipmentResponse(data.shipment) : null
     } as Booking & { shipment: Shipment | null };
   },
 
@@ -70,7 +70,7 @@ export const bookingService = {
     if (error) throw error;
     return {
       ...transformBookingResponse(data),
-      shipment: data.shipment ? shipmentService.transformShipmentResponse(data.shipment) : null
+      shipment: data.shipment ? transformShipmentResponse(data.shipment) : null
     } as Booking & { shipment: Shipment | null };
   },
 
@@ -90,7 +90,7 @@ export const bookingService = {
     if (error) throw error;
     return data.map(booking => ({
       ...transformBookingResponse(booking),
-      shipment: booking.shipment ? shipmentService.transformShipmentResponse(booking.shipment) : null
+      shipment: booking.shipment ? transformShipmentResponse(booking.shipment) : null
     })) as (Booking & { shipment: Shipment | null })[];
   },
 

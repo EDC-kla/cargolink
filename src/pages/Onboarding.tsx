@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { ArrowRight, Building2, UserCircle, Briefcase } from "lucide-react";
-import { shipmentService } from "@/services/api";
+import { profileService } from "@/services/api";
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const Onboarding = () => {
         return;
       }
 
-      const profile = await shipmentService.getProfile(user.id);
+      const profile = await profileService.getProfile(user.id);
       if (profile.onboarding_completed) {
         navigate("/marketplace");
       } else {
@@ -53,7 +52,7 @@ const Onboarding = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
-      await shipmentService.updateProfile({
+      await profileService.updateProfile({
         id: user.id,
         ...formData,
         onboarding_step: "role",
@@ -78,7 +77,7 @@ const Onboarding = () => {
       if (!user) throw new Error("No user found");
 
       // Insert role (the trigger will handle this)
-      await shipmentService.updateProfile({
+      await profileService.updateProfile({
         id: user.id,
         onboarding_step: "completed",
         onboarding_completed: true,

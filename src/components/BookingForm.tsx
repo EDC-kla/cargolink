@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, Save } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { shipmentService } from "@/services/api";
+import { bookingService } from "@/services/api";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -59,7 +59,7 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
         payment_terms: "prepaid"
       };
 
-      await shipmentService.bookSpace(draftBookingData);
+      await bookingService.bookSpace(draftBookingData);
 
       toast({
         title: "Draft saved",
@@ -123,7 +123,7 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
         payment_terms: "prepaid"
       };
 
-      await shipmentService.bookSpace(initialBookingData);
+      await bookingService.bookSpace(initialBookingData);
 
       toast({
         title: "Booking submitted",

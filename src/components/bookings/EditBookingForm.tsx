@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { shipmentService } from "@/services/api";
+import { bookingService } from "@/services/api";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Alert,
@@ -108,7 +108,7 @@ const EditBookingForm = () => {
         is_draft: false,
       };
 
-      await shipmentService.updateBooking(booking.id, updatedBookingData);
+      await bookingService.updateBooking(booking.id, updatedBookingData);
 
       toast({
         title: "Booking updated",
@@ -141,7 +141,7 @@ const EditBookingForm = () => {
         is_draft: true,
       };
 
-      await shipmentService.updateBooking(booking.id, updatedBookingData);
+      await bookingService.updateBooking(booking.id, updatedBookingData);
 
       toast({
         title: "Draft saved",
