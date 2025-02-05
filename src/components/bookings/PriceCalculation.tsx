@@ -1,3 +1,4 @@
+
 import { Label } from "@/components/ui/label";
 
 interface PriceCalculationProps {

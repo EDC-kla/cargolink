@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
@@ -11,9 +10,9 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
-import BookingSpaceInput from "./BookingSpaceInput";
-import PriceCalculation from "./PriceCalculation";
-import { BookingFormData } from "./wizard/BookingWizard";
+import BookingSpaceInput from "@/components/bookings/BookingSpaceInput";
+import PriceCalculation from "@/components/bookings/PriceCalculation";
+import { BookingFormData } from "@/components/bookings/wizard/BookingWizard";
 
 interface BookingFormProps {
   shipmentId: string;
