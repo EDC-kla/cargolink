@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import QuickActions from "@/components/dashboard/QuickActions";
 import RecentActivity from "@/components/dashboard/RecentActivity";
+import { Booking, Shipment, TransportMode, BookingStatus } from "@/types/database.types";
 
 const Dashboard = () => {
   const { data: bookings } = useQuery({
@@ -16,7 +17,12 @@ const Dashboard = () => {
         .select("*")
         .eq("user_id", user.id);
       if (error) throw error;
-      return data;
+      
+      // Transform the data to match the Booking type
+      return data.map((booking): Booking => ({
+        ...booking,
+        status: (booking.status || 'pending') as BookingStatus,
+      }));
     },
   });
 
@@ -30,7 +36,12 @@ const Dashboard = () => {
         .select("*")
         .eq("created_by", user.id);
       if (error) throw error;
-      return data;
+      
+      // Transform the data to match the Shipment type
+      return data.map((shipment): Shipment => ({
+        ...shipment,
+        transport_mode: (shipment.transport_mode || 'sea') as TransportMode,
+      }));
     },
   });
 
