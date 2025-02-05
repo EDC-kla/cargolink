@@ -12,7 +12,9 @@ import {
   CargoType,
   ShipmentStatus,
   CargoDimensions,
-  RouteStop
+  RouteStop,
+  HazmatDetails,
+  StopType
 } from "@/types/database.types";
 
 const Dashboard = () => {
@@ -31,13 +33,20 @@ const Dashboard = () => {
         ...booking,
         status: (booking.status || 'pending') as BookingStatus,
         cargo_type: (booking.cargo_type || 'general') as CargoType,
-        cargo_dimensions: booking.cargo_dimensions as CargoDimensions || {
+        cargo_dimensions: (booking.cargo_dimensions as CargoDimensions) || {
           length: 0,
           width: 0,
           height: 0,
           weight: 0,
           weight_unit: 'kg',
           dimension_unit: 'm'
+        },
+        hazmat_details: (booking.hazmat_details as HazmatDetails) || {
+          un_number: '',
+          class: '',
+          proper_shipping_name: '',
+          packing_group: '',
+          flash_point: 0
         },
       }));
     },
@@ -58,7 +67,16 @@ const Dashboard = () => {
         ...shipment,
         transport_mode: (shipment.transport_mode || 'sea') as TransportMode,
         status: (shipment.status || 'available') as ShipmentStatus,
-        stops: (shipment.stops as RouteStop[]) || [],
+        stops: ((shipment.stops || []) as any[]).map(stop => ({
+          location: stop.location || '',
+          stop_type: (stop.stop_type || 'port') as StopType,
+          arrival_date: stop.arrival_date,
+          departure_date: stop.departure_date,
+          notes: stop.notes
+        })),
+        preferred_cargo_types: ((shipment.preferred_cargo_types || []) as string[]).map(
+          type => (type || 'general') as CargoType
+        ),
       }));
     },
   });
