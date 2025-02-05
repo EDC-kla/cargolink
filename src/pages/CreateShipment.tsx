@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import BasicDetailsStep from "@/components/shipments/wizard/steps/BasicDetailsStep";
 import SpaceDetailsStep from "@/components/shipments/wizard/steps/SpaceDetailsStep";
 import ServicesStep from "@/components/shipments/wizard/steps/ServicesStep";
@@ -10,12 +10,14 @@ import ReviewStep from "@/components/shipments/wizard/steps/ReviewStep";
 import WizardProgress from "@/components/shipments/wizard/WizardProgress";
 import { useShipmentForm } from "@/components/shipments/wizard/hooks/useShipmentForm";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { toast } from "@/hooks/use-toast";
 
 const CreateShipment = () => {
-  const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
-  const { formData, updateFormData, submitShipment, isValid } = useShipmentForm();
+  const [currentStep, setCurrentStep] = useState(1);
+  const { formData, handleFieldChange, submitShipment, loading } = useShipmentForm(() => {
+    navigate("/marketplace?tab=my-shipments");
+  });
 
   const steps = [
     { number: 1, title: "Basic Details", component: BasicDetailsStep },
@@ -41,10 +43,17 @@ const CreateShipment = () => {
   const handleSubmit = async () => {
     try {
       await submitShipment();
-      toast.success("Shipment created successfully!");
+      toast({
+        title: "Success",
+        description: "Shipment created successfully!",
+      });
       navigate("/marketplace?tab=my-shipments");
-    } catch (error) {
-      toast.error("Failed to create shipment. Please try again.");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to create shipment. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -71,7 +80,7 @@ const CreateShipment = () => {
             <div className="mt-8">
               <CurrentStepComponent
                 formData={formData}
-                updateFormData={updateFormData}
+                onChange={handleFieldChange}
               />
             </div>
 
@@ -86,21 +95,16 @@ const CreateShipment = () => {
               </Button>
 
               {currentStep < steps.length ? (
-                <Button
-                  onClick={handleNext}
-                  disabled={!isValid(currentStep)}
-                >
+                <Button onClick={handleNext}>
                   Next
-                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               ) : (
                 <Button
                   onClick={handleSubmit}
-                  disabled={!isValid(currentStep)}
+                  disabled={loading}
                   className="bg-green-600 hover:bg-green-700"
                 >
                   Submit
-                  <Check className="ml-2 h-4 w-4" />
                 </Button>
               )}
             </div>

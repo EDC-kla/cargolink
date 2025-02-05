@@ -39,7 +39,28 @@ export const useShipmentForm = (onClose: () => void) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async () => {
+  const updateFormData = (updates: Partial<typeof formData>) => {
+    setFormData(prev => ({ ...prev, ...updates }));
+  };
+
+  const isValid = (step: number) => {
+    switch (step) {
+      case 0: // Location
+        return formData.origin && formData.destination;
+      case 1: // Transport
+        return formData.transport_mode && formData.container_type;
+      case 2: // Date
+        return formData.departure_date;
+      case 3: // Space & Price
+        return formData.available_space > 0 && formData.price_per_cbm > 0;
+      case 4: // Review
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  const submitShipment = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       toast({
@@ -87,6 +108,9 @@ export const useShipmentForm = (onClose: () => void) => {
     loading,
     formData,
     handleFieldChange,
-    handleSubmit,
+    updateFormData,
+    submitShipment,
+    isValid,
+    handleSubmit: submitShipment,
   };
 };

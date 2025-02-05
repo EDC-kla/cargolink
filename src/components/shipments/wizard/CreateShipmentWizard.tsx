@@ -8,6 +8,12 @@ import TransportStep from "./steps/TransportStep";
 import ReviewStep from "./steps/ReviewStep";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface Step {
+  number: number;
+  title: string;
+  component: JSX.Element;
+}
+
 interface CreateShipmentWizardProps {
   onClose: () => void;
 }
@@ -22,8 +28,9 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
     handleSubmit,
   } = useShipmentForm(onClose);
 
-  const steps = [
+  const steps: Step[] = [
     {
+      number: 1,
       title: "Location",
       component: (
         <LocationStep
@@ -34,6 +41,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
       ),
     },
     {
+      number: 2,
       title: "Transport",
       component: (
         <TransportStep
@@ -49,6 +57,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
       ),
     },
     {
+      number: 3,
       title: "Date",
       component: (
         <DateStep
@@ -58,6 +67,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
       ),
     },
     {
+      number: 4,
       title: "Space & Price",
       component: (
         <SpaceStep
@@ -68,6 +78,7 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
       ),
     },
     {
+      number: 5,
       title: "Review",
       component: <ReviewStep formData={formData} />,
     },
