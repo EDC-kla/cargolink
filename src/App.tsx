@@ -3,10 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
 import Auth from "@/pages/Auth";
 import NotFound from "@/pages/NotFound";
+import Marketplace from "@/pages/Marketplace";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
-// Create a client
 const queryClient = new QueryClient();
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/marketplace" element={<Marketplace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
