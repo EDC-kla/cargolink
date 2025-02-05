@@ -1,3 +1,4 @@
+
 import { Shipment } from "@/types/database.types";
 import ShipmentCard from "./ShipmentCard";
 

@@ -1,3 +1,4 @@
+
 import { Booking } from "@/types/database.types";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Package, MapPin } from "lucide-react";
