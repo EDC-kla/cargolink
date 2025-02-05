@@ -15,6 +15,17 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
     );
   }
 
+  const getBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'confirmed':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      default:
+        return 'destructive';
+    }
+  };
+
   return (
     <div className="space-y-4">
       {bookings.map((booking) => (
@@ -46,13 +57,7 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
             </div>
             
             <Badge 
-              variant={
-                booking.status === 'confirmed' 
-                  ? 'success' 
-                  : booking.status === 'pending' 
-                    ? 'warning' 
-                    : 'destructive'
-              }
+              variant={getBadgeVariant(booking.status)}
               className="capitalize"
             >
               {booking.status}
