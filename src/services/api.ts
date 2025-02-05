@@ -116,11 +116,17 @@ export const shipmentService = {
           : undefined
       })
       .eq('id', id)
-      .select()
+      .select(`
+        *,
+        shipment:shipments (*)
+      `)
       .single();
     
     if (error) throw error;
-    return transformBookingResponse(data) as Booking;
+    return {
+      ...transformBookingResponse(data),
+      shipment: data.shipment ? transformShipmentResponse(data.shipment) : null
+    } as Booking & { shipment: Shipment | null };
   },
 
   async bookSpace(booking: BookingFormData & { shipment_id: string; status: string }) {
@@ -137,11 +143,17 @@ export const shipmentService = {
           ? JSON.stringify(booking.temperature_requirements)
           : null
       }])
-      .select()
+      .select(`
+        *,
+        shipment:shipments (*)
+      `)
       .single();
     
     if (error) throw error;
-    return transformBookingResponse(data) as Booking;
+    return {
+      ...transformBookingResponse(data),
+      shipment: data.shipment ? transformShipmentResponse(data.shipment) : null
+    } as Booking & { shipment: Shipment | null };
   },
 
   async listUserBookings() {
@@ -160,8 +172,8 @@ export const shipmentService = {
     if (error) throw error;
     return data.map(booking => ({
       ...transformBookingResponse(booking),
-      shipment: booking.shipment as Shipment
-    })) as (Booking & { shipment: Shipment })[];
+      shipment: booking.shipment ? transformShipmentResponse(booking.shipment) : null
+    })) as (Booking & { shipment: Shipment | null })[];
   },
 
   async updateBookingStatus(id: string, status: string) {
