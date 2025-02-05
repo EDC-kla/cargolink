@@ -37,7 +37,9 @@ const Marketplace = () => {
       // Transform the stops array from Json[] to string[]
       const transformedShipments = shipments.map(shipment => ({
         ...shipment,
-        stops: shipment.stops?.map(stop => String(stop)) || []
+        stops: Array.isArray(shipment.stops) 
+          ? shipment.stops.map(stop => String(stop))
+          : []
       }));
       return transportMode === 'all' 
         ? transformedShipments 

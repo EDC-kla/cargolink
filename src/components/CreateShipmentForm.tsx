@@ -1,11 +1,10 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { MapPin, Calendar, Package, DollarSign, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
-import ShipmentFormFields from "./ShipmentFormFields";
+import ShipmentFormFields from "@/components/shipments/ShipmentFormFields";
 
 interface CreateShipmentFormProps {
   onClose: () => void;
@@ -26,7 +25,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     door_pickup: false,
     door_delivery: false,
     min_booking_size: 0,
-    status: "active",
+    status: "available",
     additional_services: [],
     cargo_restrictions: [],
     consolidation_service: false,
@@ -35,13 +34,13 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     route_type: "direct",
     notes: "",
     preferred_cargo_types: [],
-    stops: [] as string[],  // Explicitly type as string[]
-    featured: false,        // Add missing property
-    display_order: 0,       // Add missing property
-    category: ""           // Add missing property
+    stops: [] as string[],
+    featured: false,
+    display_order: 0,
+    category: ""
   });
 
-  const handleFieldChange = (field: string, value: string | number) => {
+  const handleFieldChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 

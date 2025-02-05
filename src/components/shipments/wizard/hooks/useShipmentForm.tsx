@@ -29,10 +29,10 @@ export const useShipmentForm = (onClose: () => void) => {
     route_type: "direct",
     notes: "",
     preferred_cargo_types: [],
-    stops: [] as string[],  // Explicitly type as string[]
-    featured: false,        // Add missing property
-    display_order: 0,       // Add missing property
-    category: ""           // Add missing property
+    stops: [] as string[],
+    featured: false,
+    display_order: 0,
+    category: ""
   });
 
   const handleFieldChange = (field: string, value: any) => {
@@ -90,4 +90,3 @@ export const useShipmentForm = (onClose: () => void) => {
     handleSubmit,
   };
 };
-
