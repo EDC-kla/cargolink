@@ -31,6 +31,12 @@ const EditBookingForm = () => {
           throw new Error("Booking ID is required");
         }
 
+        // Validate UUID format using a regex
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        if (!uuidRegex.test(bookingId)) {
+          throw new Error("Invalid booking ID format");
+        }
+
         const { data: bookingData, error: bookingError } = await supabase
           .from('bookings')
           .select(`
@@ -80,11 +86,12 @@ const EditBookingForm = () => {
               } as RouteStop))
             : [] as RouteStop[]
         } as Shipment : null;
-        
+
         setBooking(transformedBooking);
         setShipment(transformedShipment);
         setSpaceRequired(bookingData.space_booked);
       } catch (error: any) {
+        console.error('Error fetching booking:', error);
         setError(error.message);
         toast({
           title: "Error loading booking",
