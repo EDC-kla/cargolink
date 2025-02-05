@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle } from "lucide-react";
 import { BookingFormData } from "../BookingWizard";
-import { Shipment } from "@/types/database.types";
+import { Shipment, CargoDimensions } from "@/types/database.types";
 import CargoDimensionsInput from "./cargo/CargoDimensionsInput";
 import TemperatureRequirementsInput from "./cargo/TemperatureRequirementsInput";
 
@@ -48,6 +48,15 @@ const CargoDetailsStep = ({ data, onChange, shipment }: CargoDetailsStepProps) =
 
     setValidationErrors(errors);
   }, [data, shipment]);
+
+  const initialDimensions: CargoDimensions = {
+    length: 0,
+    width: 0,
+    height: 0,
+    weight: 0,
+    weight_unit: 'kg',
+    dimension_unit: 'm'
+  };
 
   return (
     <div className="space-y-6">
@@ -109,7 +118,7 @@ const CargoDetailsStep = ({ data, onChange, shipment }: CargoDetailsStepProps) =
         </div>
 
         <CargoDimensionsInput
-          dimensions={data.cargo_dimensions}
+          dimensions={data.cargo_dimensions || initialDimensions}
           maxDimensions={shipment.max_piece_dimensions}
           onChange={(dimensions) => onChange({ cargo_dimensions: dimensions })}
         />

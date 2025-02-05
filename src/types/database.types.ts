@@ -86,6 +86,22 @@ export interface Shipment {
   port_of_discharge?: string;
   created_at: string;
   created_by?: string;
+  accepted_cargo_types: string[];
+  max_piece_dimensions: {
+    length: number;
+    width: number;
+    height: number;
+    weight: number;
+  };
+  hazmat_accepted: boolean;
+  temperature_controlled: boolean;
+  temperature_range: {
+    min: number | null;
+    max: number | null;
+    unit: 'C' | 'F';
+  };
+  special_handling_options: string[];
+  required_cargo_docs: string[];
 }
 
 export interface Booking {

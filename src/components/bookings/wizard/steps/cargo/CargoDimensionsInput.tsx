@@ -6,7 +6,12 @@ import { CargoDimensions } from "@/types/database.types";
 
 interface CargoDimensionsInputProps {
   dimensions: CargoDimensions;
-  maxDimensions?: CargoDimensions;
+  maxDimensions?: {
+    length: number;
+    width: number;
+    height: number;
+    weight: number;
+  };
   onChange: (dimensions: CargoDimensions) => void;
   disabled?: boolean;
 }
