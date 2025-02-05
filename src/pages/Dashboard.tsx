@@ -10,7 +10,9 @@ import {
   TransportMode, 
   BookingStatus, 
   CargoType,
-  ShipmentStatus 
+  ShipmentStatus,
+  CargoDimensions,
+  RouteStop
 } from "@/types/database.types";
 
 const Dashboard = () => {
@@ -25,11 +27,18 @@ const Dashboard = () => {
         .eq("user_id", user.id);
       if (error) throw error;
       
-      // Transform the data to match the Booking type
       return data.map((booking): Booking => ({
         ...booking,
         status: (booking.status || 'pending') as BookingStatus,
         cargo_type: (booking.cargo_type || 'general') as CargoType,
+        cargo_dimensions: booking.cargo_dimensions as CargoDimensions || {
+          length: 0,
+          width: 0,
+          height: 0,
+          weight: 0,
+          weight_unit: 'kg',
+          dimension_unit: 'm'
+        },
       }));
     },
   });
@@ -45,11 +54,11 @@ const Dashboard = () => {
         .eq("created_by", user.id);
       if (error) throw error;
       
-      // Transform the data to match the Shipment type
       return data.map((shipment): Shipment => ({
         ...shipment,
         transport_mode: (shipment.transport_mode || 'sea') as TransportMode,
         status: (shipment.status || 'available') as ShipmentStatus,
+        stops: (shipment.stops as RouteStop[]) || [],
       }));
     },
   });
