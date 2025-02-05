@@ -1,3 +1,4 @@
+
 import { useShipmentForm } from "./hooks/useShipmentForm";
 import WizardProgress from "./WizardProgress";
 import WizardNavigation from "./components/WizardNavigation";
@@ -6,6 +7,9 @@ import DateStep from "./steps/DateStep";
 import SpaceStep from "./steps/SpaceStep";
 import TransportStep from "./steps/TransportStep";
 import ReviewStep from "./steps/ReviewStep";
+import { motion, AnimatePresence } from "framer-motion";
+
+<lov-add-dependency>framer-motion@latest</lov-add-dependency>
 
 interface CreateShipmentWizardProps {
   onClose: () => void;
@@ -88,8 +92,19 @@ const CreateShipmentWizard = ({ onClose }: CreateShipmentWizardProps) => {
     <div className="space-y-6">
       <WizardProgress currentStep={currentStep} steps={steps} />
       
-      <div className="min-h-[300px]">
-        {steps[currentStep].component}
+      <div className="min-h-[400px] relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0"
+          >
+            {steps[currentStep].component}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       <WizardNavigation

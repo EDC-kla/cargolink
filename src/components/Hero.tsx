@@ -1,7 +1,9 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface HeroProps {
   onGetStarted: () => void;
@@ -21,19 +23,39 @@ const Hero = ({ onGetStarted }: HeroProps) => {
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-white to-accent/30 py-32">
+    <div className="relative bg-gradient-to-b from-white to-accent/30 py-32 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
+        >
           <div className="text-center mb-12 space-y-6">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80"
+            >
               Ship Smarter Together
-            </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+            >
               Find available cargo space or offer your excess capacity. Save costs and reduce environmental impact.
-            </p>
+            </motion.p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 p-8 mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 mb-12"
+          >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -92,15 +114,20 @@ const Hero = ({ onGetStarted }: HeroProps) => {
 
               <Button 
                 type="submit" 
-                className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary-hover"
+                className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-white"
               >
                 Find Available Space
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </form>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="flex flex-col sm:flex-row justify-center gap-6"
+          >
             <div className="text-center">
               <Button 
                 variant="outline" 
@@ -127,8 +154,8 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 Browse all available shipments
               </p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

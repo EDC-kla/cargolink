@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Package, Ship, Plane, Clock, Info } from "lucide-react";
 import { Shipment } from "@/types/database.types";
@@ -7,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { motion } from "framer-motion";
 
 interface ShipmentCardProps {
   shipment: Shipment;
@@ -18,13 +20,17 @@ const ShipmentCard = ({ shipment, showBookButton = true, onBookSpace }: Shipment
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
   
   return (
-    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100">
+    <motion.div 
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-6 border border-gray-100"
+    >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-2">
-          <MapPin className="h-5 w-5 text-secondary" />
+          <MapPin className="h-5 w-5 text-primary" />
           <div>
             <p className="text-sm text-gray-500">Route</p>
-            <p className="font-medium text-primary">
+            <p className="font-medium text-gray-900">
               {shipment.origin} → {shipment.destination}
             </p>
           </div>
@@ -46,7 +52,11 @@ const ShipmentCard = ({ shipment, showBookButton = true, onBookSpace }: Shipment
           <div className="flex items-center space-x-2">
             <Calendar className="h-4 w-4 text-gray-400" />
             <span className="text-gray-600">
-              {new Date(shipment.departure_date).toLocaleDateString()}
+              {new Date(shipment.departure_date).toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
             </span>
           </div>
           {shipment.transit_time_days && (
@@ -62,15 +72,19 @@ const ShipmentCard = ({ shipment, showBookButton = true, onBookSpace }: Shipment
           <Package className="h-4 w-4 text-gray-400" />
           <span className="text-gray-600">
             {shipment.available_space} CBM available
-            {shipment.min_booking_size && ` (min. ${shipment.min_booking_size} CBM)`}
+            {shipment.min_booking_size > 0 && (
+              <span className="text-gray-400 text-sm">
+                {" "}(min. {shipment.min_booking_size} CBM)
+              </span>
+            )}
           </span>
         </div>
-        <div className="text-lg font-semibold text-secondary">
-          ${shipment.price_per_cbm}/CBM
+        <div className="text-lg font-semibold text-primary">
+          ${shipment.price_per_cbm.toLocaleString()}/CBM
         </div>
         {(shipment.customs_clearance || shipment.door_pickup || shipment.door_delivery) && (
-          <div className="flex items-start space-x-2 text-sm text-gray-600">
-            <Info className="h-4 w-4 text-gray-400 mt-0.5" />
+          <div className="flex items-start space-x-2 text-sm text-gray-600 bg-gray-50 rounded-md p-2">
+            <Info className="h-4 w-4 text-primary mt-0.5" />
             <div>
               {[
                 shipment.customs_clearance && "Customs clearance",
@@ -84,13 +98,13 @@ const ShipmentCard = ({ shipment, showBookButton = true, onBookSpace }: Shipment
 
       {showBookButton && onBookSpace && (
         <Button 
-          className="w-full bg-primary hover:bg-primary/90"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-medium"
           onClick={() => onBookSpace(shipment)}
         >
           Book Space
         </Button>
       )}
-    </div>
+    </motion.div>
   );
 };
 
