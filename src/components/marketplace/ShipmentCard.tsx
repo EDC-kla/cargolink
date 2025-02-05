@@ -10,16 +10,26 @@ interface ShipmentCardProps {
   showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
+  onBookSpace?: (shipment: Shipment) => void;
 }
 
 const ShipmentCard = ({ 
   shipment,
   showBookButton = true,
   onEdit,
-  showEditButton = false 
+  showEditButton = false,
+  onBookSpace
 }: ShipmentCardProps) => {
   const navigate = useNavigate();
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
+
+  const handleBookClick = () => {
+    if (onBookSpace) {
+      onBookSpace(shipment);
+    } else {
+      navigate(`/marketplace/book/${shipment.id}`);
+    }
+  };
 
   return (
     <Card className="hover:shadow-lg transition-shadow">
@@ -56,7 +66,7 @@ const ShipmentCard = ({
         {showBookButton && (
           <Button 
             className="flex-1" 
-            onClick={() => navigate(`/marketplace/book/${shipment.id}`)}
+            onClick={handleBookClick}
           >
             Book Space
           </Button>
