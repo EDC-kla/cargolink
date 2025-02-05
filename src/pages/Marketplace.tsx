@@ -17,7 +17,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { Shipment } from "@/types/database.types";
 import BookingForm from "@/components/BookingForm";
-import CreateShipmentForm from "@/components/CreateShipmentForm";
+import CreateShipmentWizard from "@/components/shipments/wizard/CreateShipmentWizard";
 import MarketplaceHeader from "@/components/marketplace/MarketplaceHeader";
 import ShipmentCard from "@/components/marketplace/ShipmentCard";
 import BookingsList from "@/components/marketplace/BookingsList";
@@ -138,11 +138,11 @@ const Marketplace = () => {
         </Dialog>
 
         <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
               <DialogTitle>Create New Shipment</DialogTitle>
             </DialogHeader>
-            <CreateShipmentForm
+            <CreateShipmentWizard
               onClose={() => {
                 setShowCreateForm(false);
                 refetchAll();
