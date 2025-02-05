@@ -11,13 +11,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import BookingForm from "@/components/BookingForm";
+import CreateShipmentForm from "@/components/CreateShipmentForm";
 import { useState } from "react";
 import { Shipment } from "@/types/database.types";
 
 const Marketplace = () => {
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
   
-  const { data: shipments, isLoading, error } = useQuery({
+  const { data: shipments, isLoading, error, refetch } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments,
   });
@@ -50,7 +52,10 @@ const Marketplace = () => {
       <main className="container mx-auto px-4 py-16">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-primary">Available Shipments</h1>
-          <Button className="flex items-center gap-2">
+          <Button 
+            className="flex items-center gap-2"
+            onClick={() => setShowCreateForm(true)}
+          >
             <Truck className="h-4 w-4" />
             Post a Shipment
           </Button>
@@ -112,9 +117,26 @@ const Marketplace = () => {
                 shipmentId={selectedShipment.id}
                 availableSpace={selectedShipment.available_space}
                 pricePerCbm={selectedShipment.price_per_cbm}
-                onClose={() => setSelectedShipment(null)}
+                onClose={() => {
+                  setSelectedShipment(null);
+                  refetch();
+                }}
               />
             )}
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create New Shipment</DialogTitle>
+            </DialogHeader>
+            <CreateShipmentForm
+              onClose={() => {
+                setShowCreateForm(false);
+                refetch();
+              }}
+            />
           </DialogContent>
         </Dialog>
       </main>
