@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { Shipment, Booking, Profile } from '@/types/database.types';
 
