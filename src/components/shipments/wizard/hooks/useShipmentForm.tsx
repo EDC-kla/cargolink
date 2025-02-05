@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { shipmentService } from "@/services/api";
 
 export const useShipmentForm = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -47,17 +49,8 @@ export const useShipmentForm = (onClose: () => void) => {
 
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from("shipments")
-        .insert([
-          {
-            ...formData,
-            created_by: user.id,
-          },
-        ]);
-
-      if (error) throw error;
-
+      await shipmentService.createShipment(formData);
+      
       toast({
         title: "Success",
         description: "Shipment created successfully",

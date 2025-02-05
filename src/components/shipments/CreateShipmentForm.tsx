@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { shipmentService } from "@/services/api";
 import ShipmentFormFields from "./ShipmentFormFields";
 
 interface CreateShipmentFormProps {
@@ -26,16 +27,6 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to create a shipment",
-        variant: "destructive",
-      });
-      return;
-    }
-
     const departureDate = new Date(formData.departure_date);
     if (departureDate < new Date()) {
       toast({
@@ -48,16 +39,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
 
     try {
       setLoading(true);
-      const { error } = await supabase
-        .from("shipments")
-        .insert([
-          {
-            ...formData,
-            created_by: user.id,
-          },
-        ]);
-
-      if (error) throw error;
+      await shipmentService.createShipment(formData);
 
       toast({
         title: "Success",
