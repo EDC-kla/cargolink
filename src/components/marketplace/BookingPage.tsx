@@ -11,7 +11,7 @@ const BookingPage = () => {
 
   const { data: shipment, isLoading, error } = useQuery({
     queryKey: ['shipment', shipmentId],
-    queryFn: () => shipmentService.getShipment(shipmentId!),
+    queryFn: () => shipmentId ? shipmentService.getShipment(shipmentId) : null,
     enabled: !!shipmentId,
   });
 
