@@ -32,7 +32,7 @@ const BookingsList = ({ bookings }: BookingsListProps) => {
   };
 
   const handleContinueBooking = (booking: Booking) => {
-    navigate(`/bookings/${booking.id}/edit`);
+    navigate(`/marketplace/bookings/${booking.id}/edit`);
   };
 
   return (

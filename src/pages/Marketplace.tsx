@@ -1,43 +1,36 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { shipmentService } from "@/services/api";
 import { supabase } from "@/integrations/supabase/client";
-import { Shipment } from "@/types/database.types";
-import MarketplaceHeader from "@/components/marketplace/MarketplaceHeader";
-import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
+import { shipmentService } from "@/services/api";
 import AvailableShipments from "@/components/marketplace/AvailableShipments";
 import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import CreateShipmentForm from "@/components/CreateShipmentForm";
+import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
+import EditBookingForm from "@/components/bookings/EditBookingForm";
 
 const Marketplace = () => {
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  
-  const { data: allShipments, isLoading: isLoadingAll, refetch: refetchAll } = useQuery({
+  const navigate = useNavigate();
+
+  const { data: shipments, isLoading: isLoadingAll } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments,
   });
 
-  const { data: userShipments, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['user-shipments'],
+  const { data: { user }, isLoading: isLoadingUser } = useQuery({
+    queryKey: ['user'],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return [];
-      const { data, error } = await supabase
-        .from('shipments')
-        .select('*')
-        .eq('created_by', user.id);
+      const { data, error } = await supabase.auth.getUser();
       if (error) throw error;
-      return data as Shipment[];
+      return data;
     },
   });
+
+  useEffect(() => {
+    if (!isLoadingUser && !user) {
+      navigate("/auth");
+    }
+  }, [user, isLoadingUser, navigate]);
 
   if (isLoadingAll || isLoadingUser) {
     return (
@@ -48,22 +41,20 @@ const Marketplace = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto">
-      <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
-      <div className="mt-8">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-4">Marketplace</h1>
         <ShipmentsNav />
-        <div className="mt-6">
+      </div>
+
+      <div className="bg-background rounded-lg shadow">
+        <div className="p-6">
           <Routes>
             <Route 
               path="/" 
-              element={<Navigate to="/marketplace/available" replace />} 
-            />
-            <Route 
-              path="/available" 
               element={
                 <AvailableShipments 
-                  shipments={allShipments}
-                  onRefetch={refetchAll}
+                  shipments={shipments || []}
                 />
               } 
             />
@@ -71,8 +62,7 @@ const Marketplace = () => {
               path="/my-shipments" 
               element={
                 <MyShipments 
-                  shipments={userShipments}
-                  onRefetch={refetchAll}
+                  shipments={shipments?.filter(s => s.created_by === user?.id) || []}
                 />
               } 
             />
@@ -80,23 +70,13 @@ const Marketplace = () => {
               path="/bookings" 
               element={<MyBookings />} 
             />
+            <Route
+              path="/bookings/:bookingId/edit"
+              element={<EditBookingForm />}
+            />
           </Routes>
         </div>
       </div>
-
-      <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Create New Shipment</DialogTitle>
-          </DialogHeader>
-          <CreateShipmentForm
-            onClose={() => {
-              setShowCreateForm(false);
-              refetchAll();
-            }}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

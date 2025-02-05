@@ -71,6 +71,26 @@ export const shipmentService = {
     if (error) throw error;
   },
 
+  async updateBooking(id: string, updates: Partial<BookingFormData> & { status: string; is_draft: boolean }) {
+    const { data, error } = await supabase
+      .from('bookings')
+      .update({
+        ...updates,
+        cargo_dimensions: updates.cargo_dimensions 
+          ? JSON.stringify(updates.cargo_dimensions)
+          : undefined,
+        temperature_requirements: updates.temperature_requirements 
+          ? JSON.stringify(updates.temperature_requirements)
+          : undefined
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return transformBookingResponse(data) as Booking;
+  },
+
   async bookSpace(booking: BookingFormData & { shipment_id: string; status: string }) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
