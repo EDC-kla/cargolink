@@ -22,6 +22,8 @@ import BookingsList from "@/components/marketplace/BookingsList";
 import TransportModeFilters from "@/components/marketplace/TransportModeFilters";
 import ShipmentsGrid from "@/components/marketplace/ShipmentsGrid";
 import BookingDialog from "@/components/marketplace/BookingDialog";
+import { Card } from "@/components/ui/card";
+import { Package, Ship } from "lucide-react";
 
 const Marketplace = () => {
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
@@ -63,29 +65,68 @@ const Marketplace = () => {
           *,
           shipment:shipments (*)
         `)
-        .eq('user_id', user.id);
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
       if (error) throw error;
       return data;
     },
   });
 
+  const featuredShipments = allShipments?.filter(s => s.featured) || [];
+
   if (isLoadingAll || isLoadingUser || isLoadingBookings) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <MarketplaceHeader onCreateShipment={() => setShowCreateForm(true)} />
+
+      {/* Featured Shipments */}
+      {featuredShipments.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">Featured Routes</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredShipments.map((shipment) => (
+              <Card key={shipment.id} className="p-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-center space-x-4 mb-4">
+                  {shipment.transport_mode === 'sea' ? (
+                    <Ship className="h-8 w-8 text-blue-500" />
+                  ) : (
+                    <Package className="h-8 w-8 text-purple-500" />
+                  )}
+                  <div>
+                    <h3 className="font-semibold">{shipment.origin} → {shipment.destination}</h3>
+                    <p className="text-sm text-gray-500">
+                      {new Date(shipment.departure_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Available Space:</span>
+                    <span className="font-medium">{shipment.available_space} CBM</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Price per CBM:</span>
+                    <span className="font-medium">${shipment.price_per_cbm}</span>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
 
       <Tabs defaultValue="marketplace" className="mt-8">
         <TabsList className="w-full justify-start border-b pb-px">
-          <TabsTrigger value="marketplace">Available Shipments</TabsTrigger>
-          <TabsTrigger value="my-shipments">My Listed Shipments</TabsTrigger>
-          <TabsTrigger value="my-bookings">My Bookings</TabsTrigger>
+          <TabsTrigger value="marketplace" className="text-lg">Available Shipments</TabsTrigger>
+          <TabsTrigger value="my-shipments" className="text-lg">My Listed Shipments</TabsTrigger>
+          <TabsTrigger value="my-bookings" className="text-lg">My Bookings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="marketplace">
@@ -112,12 +153,6 @@ const Marketplace = () => {
         </TabsContent>
       </Tabs>
 
-      <BookingDialog 
-        shipment={selectedShipment}
-        onClose={() => setSelectedShipment(null)}
-        onBookingComplete={refetchAll}
-      />
-
       <Dialog open={showCreateForm} onOpenChange={setShowCreateForm}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
@@ -131,9 +166,14 @@ const Marketplace = () => {
           />
         </DialogContent>
       </Dialog>
+
+      <BookingDialog 
+        shipment={selectedShipment}
+        onClose={() => setSelectedShipment(null)}
+        onBookingComplete={refetchAll}
+      />
     </div>
   );
 };
 
 export default Marketplace;
-

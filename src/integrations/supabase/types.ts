@@ -28,6 +28,7 @@ export type Database = {
           hazmat_details: Json | null
           id: string
           insurance_required: boolean | null
+          last_modified: string | null
           payment_terms: string | null
           pickup_address: string | null
           required_certificates: string[] | null
@@ -36,6 +37,7 @@ export type Database = {
           space_booked: number
           special_handling: string[] | null
           status: string | null
+          step_progress: number | null
           temperature_requirements: Json | null
           tracking_number: string | null
           user_id: string | null
@@ -58,6 +60,7 @@ export type Database = {
           hazmat_details?: Json | null
           id?: string
           insurance_required?: boolean | null
+          last_modified?: string | null
           payment_terms?: string | null
           pickup_address?: string | null
           required_certificates?: string[] | null
@@ -66,6 +69,7 @@ export type Database = {
           space_booked: number
           special_handling?: string[] | null
           status?: string | null
+          step_progress?: number | null
           temperature_requirements?: Json | null
           tracking_number?: string | null
           user_id?: string | null
@@ -88,6 +92,7 @@ export type Database = {
           hazmat_details?: Json | null
           id?: string
           insurance_required?: boolean | null
+          last_modified?: string | null
           payment_terms?: string | null
           pickup_address?: string | null
           required_certificates?: string[] | null
@@ -96,6 +101,7 @@ export type Database = {
           space_booked?: number
           special_handling?: string[] | null
           status?: string | null
+          step_progress?: number | null
           temperature_requirements?: Json | null
           tracking_number?: string | null
           user_id?: string | null
@@ -208,6 +214,7 @@ export type Database = {
           additional_services: string[] | null
           available_space: number
           cargo_restrictions: string[] | null
+          category: string | null
           consolidation_service: boolean | null
           container_type: string | null
           created_at: string
@@ -215,8 +222,10 @@ export type Database = {
           customs_clearance: boolean | null
           departure_date: string
           destination: string
+          display_order: number | null
           door_delivery: boolean | null
           door_pickup: boolean | null
+          featured: boolean | null
           id: string
           min_booking_size: number | null
           notes: string | null
@@ -235,6 +244,7 @@ export type Database = {
           additional_services?: string[] | null
           available_space: number
           cargo_restrictions?: string[] | null
+          category?: string | null
           consolidation_service?: boolean | null
           container_type?: string | null
           created_at?: string
@@ -242,8 +252,10 @@ export type Database = {
           customs_clearance?: boolean | null
           departure_date: string
           destination: string
+          display_order?: number | null
           door_delivery?: boolean | null
           door_pickup?: boolean | null
+          featured?: boolean | null
           id?: string
           min_booking_size?: number | null
           notes?: string | null
@@ -262,6 +274,7 @@ export type Database = {
           additional_services?: string[] | null
           available_space?: number
           cargo_restrictions?: string[] | null
+          category?: string | null
           consolidation_service?: boolean | null
           container_type?: string | null
           created_at?: string
@@ -269,8 +282,10 @@ export type Database = {
           customs_clearance?: boolean | null
           departure_date?: string
           destination?: string
+          display_order?: number | null
           door_delivery?: boolean | null
           door_pickup?: boolean | null
+          featured?: boolean | null
           id?: string
           min_booking_size?: number | null
           notes?: string | null
