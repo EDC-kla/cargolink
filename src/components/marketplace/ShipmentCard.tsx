@@ -1,128 +1,119 @@
-import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Package, Ship, Plane, Clock, Info, Edit } from "lucide-react";
 import { Shipment } from "@/types/database.types";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar, MapPin, Ship, Package, Clock, DollarSign, Edit } from "lucide-react";
+import { formatDate } from "@/lib/utils";
 
 interface ShipmentCardProps {
   shipment: Shipment;
-  showBookButton?: boolean;
   onBookSpace?: (shipment: Shipment) => void;
-  showEditButton?: boolean;
+  showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
+  showEditButton?: boolean;
 }
 
 const ShipmentCard = ({ 
   shipment, 
-  showBookButton = true, 
-  onBookSpace,
-  showEditButton = false,
-  onEdit
+  onBookSpace, 
+  showBookButton = true,
+  onEdit,
+  showEditButton = false 
 }: ShipmentCardProps) => {
-  const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
-  
   return (
-    <motion.div 
-      whileHover={{ y: -5 }}
-      transition={{ type: "spring", stiffness: 300 }}
-      className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-6 border border-gray-100"
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <MapPin className="h-5 w-5 text-primary" />
-          <div>
-            <p className="text-sm text-gray-500">Route</p>
-            <p className="font-medium text-gray-900">
-              {shipment.origin} → {shipment.destination}
-            </p>
+    <Card className="p-6 space-y-4 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start">
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <Ship className="h-5 w-5 text-primary" />
+            {shipment.vessel_name || "Vessel TBD"}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Voyage: {shipment.voyage_number || "TBD"}
+          </p>
+        </div>
+        <div className="text-right">
+          <div className="text-lg font-bold text-primary">
+            ${shipment.price_per_cbm}/CBM
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {shipment.available_space} CBM available
           </div>
         </div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <TransportIcon className="h-5 w-5 text-primary" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{shipment.transport_mode === 'sea' ? 'Sea Freight' : 'Air Freight'}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       </div>
-      
-      <div className="space-y-3 mb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Calendar className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-600">
-              {new Date(shipment.departure_date).toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </span>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4 mr-2" />
+            From: {shipment.port_of_loading || shipment.origin}
           </div>
-          {shipment.transit_time_days && (
-            <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-600">
-                {shipment.transit_time_days} days
-              </span>
+          <div className="flex items-center text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4 mr-2" />
+            To: {shipment.port_of_discharge || shipment.destination}
+          </div>
+        </div>
+        <div className="space-y-1">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Calendar className="h-4 w-4 mr-2" />
+            ETD: {formatDate(shipment.departure_date)}
+          </div>
+          {shipment.estimated_arrival && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Calendar className="h-4 w-4 mr-2" />
+              ETA: {formatDate(shipment.estimated_arrival)}
             </div>
           )}
         </div>
-        <div className="flex items-center space-x-2">
-          <Package className="h-4 w-4 text-gray-400" />
-          <span className="text-gray-600">
-            {shipment.available_space} CBM available
-            {shipment.min_booking_size > 0 && (
-              <span className="text-gray-400 text-sm">
-                {" "}(min. {shipment.min_booking_size} CBM)
-              </span>
-            )}
-          </span>
-        </div>
-        <div className="text-lg font-semibold text-primary">
-          ${shipment.price_per_cbm.toLocaleString()}/CBM
-        </div>
-        {(shipment.customs_clearance || shipment.door_pickup || shipment.door_delivery) && (
-          <div className="flex items-start space-x-2 text-sm text-gray-600 bg-gray-50 rounded-md p-2">
-            <Info className="h-4 w-4 text-primary mt-0.5" />
-            <div>
-              {[
-                shipment.customs_clearance && "Customs clearance",
-                shipment.door_pickup && "Door pickup",
-                shipment.door_delivery && "Door delivery"
-              ].filter(Boolean).join(" • ")}
-            </div>
-          </div>
-        )}
       </div>
 
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Package className="h-4 w-4 mr-2" />
+            {shipment.container_size || shipment.container_type || "LCL"}
+          </div>
+          {shipment.incoterms && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <DollarSign className="h-4 w-4 mr-2" />
+              {shipment.incoterms}
+            </div>
+          )}
+        </div>
+        <div className="space-y-1">
+          <div className="flex items-center text-sm text-muted-foreground">
+            <Clock className="h-4 w-4 mr-2" />
+            Transit: {shipment.transit_time_days} days
+          </div>
+          {shipment.cutoff_date && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Calendar className="h-4 w-4 mr-2" />
+              Cutoff: {formatDate(shipment.cutoff_date)}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex justify-end space-x-2 pt-2">
+        {showEditButton && onEdit && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onEdit(shipment)}
+          >
+            <Edit className="h-4 w-4 mr-2" />
+            Edit
+          </Button>
+        )}
         {showBookButton && onBookSpace && (
-          <Button 
-            className="flex-1 bg-primary hover:bg-primary/90 text-white font-medium"
+          <Button
+            size="sm"
             onClick={() => onBookSpace(shipment)}
           >
             Book Space
           </Button>
         )}
-        {showEditButton && onEdit && (
-          <Button 
-            variant="outline"
-            className="px-3"
-            onClick={() => onEdit(shipment)}
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
-        )}
       </div>
-    </motion.div>
+    </Card>
   );
 };
 
