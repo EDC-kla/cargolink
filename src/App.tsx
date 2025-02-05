@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
@@ -90,7 +89,7 @@ function App() {
                 }
               />
               <Route
-                path="/marketplace"
+                path="/marketplace/*"
                 element={
                   <ProtectedRoute>
                     <Marketplace />

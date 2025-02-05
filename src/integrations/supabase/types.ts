@@ -28,6 +28,7 @@ export type Database = {
           hazmat_details: Json | null
           id: string
           insurance_required: boolean | null
+          is_draft: boolean | null
           last_modified: string | null
           payment_terms: string | null
           pickup_address: string | null
@@ -60,6 +61,7 @@ export type Database = {
           hazmat_details?: Json | null
           id?: string
           insurance_required?: boolean | null
+          is_draft?: boolean | null
           last_modified?: string | null
           payment_terms?: string | null
           pickup_address?: string | null
@@ -92,6 +94,7 @@ export type Database = {
           hazmat_details?: Json | null
           id?: string
           insurance_required?: boolean | null
+          is_draft?: boolean | null
           last_modified?: string | null
           payment_terms?: string | null
           pickup_address?: string | null
