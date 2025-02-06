@@ -4,8 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
 import { supabase } from "@/integrations/supabase/client";
 import AvailableShipments from "@/components/marketplace/AvailableShipments";
-import MyShipments from "@/components/marketplace/MyShipments";
-import MyBookings from "@/components/marketplace/MyBookings";
 import { useState, useEffect } from "react";
 
 const Marketplace = () => {
@@ -33,17 +31,6 @@ const Marketplace = () => {
               onRefetch={refetch}
             />
           } />
-          {userId && (
-            <>
-              <Route path="/my-shipments" element={
-                <MyShipments 
-                  shipments={shipments.filter(s => s.created_by === userId)}
-                  onRefetch={refetch}
-                />
-              } />
-              <Route path="/bookings" element={<MyBookings />} />
-            </>
-          )}
         </Routes>
       </div>
     </div>
@@ -51,3 +38,4 @@ const Marketplace = () => {
 };
 
 export default Marketplace;
+
