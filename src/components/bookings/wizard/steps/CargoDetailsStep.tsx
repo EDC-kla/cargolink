@@ -1,52 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle } from "lucide-react";
-import { BookingFormData } from "../BookingWizard";
-import { Shipment, CargoDimensions } from "@/types/database.types";
-import CargoDimensionsInput from "./cargo/CargoDimensionsInput";
-import TemperatureRequirementsInput from "./cargo/TemperatureRequirementsInput";
+import { CargoDimensions } from "@/types/database.types";
 
 interface CargoDetailsStepProps {
-  data: BookingFormData;
-  onChange: (data: Partial<BookingFormData>) => void;
-  shipment: Shipment;
+  formData: {
+    cargo_dimensions: CargoDimensions;
+    onChange: (field: string, value: any) => void;
+  };
 }
 
-const CargoDetailsStep = ({ data, onChange, shipment }: CargoDetailsStepProps) => {
-  const [validationErrors, setValidationErrors] = useState<string[]>([]);
-
-  useEffect(() => {
-    const errors: string[] = [];
-    
-    if (data.cargo_type && !shipment.accepted_cargo_types?.includes(data.cargo_type)) {
-      errors.push(`This shipment does not accept ${data.cargo_type} cargo type`);
-    }
-
-    if (shipment.max_piece_dimensions && data.cargo_dimensions) {
-      const max = shipment.max_piece_dimensions;
-      const current = data.cargo_dimensions;
-      
-      if (current.length > max.length) {
-        errors.push(`Length exceeds maximum allowed (${max.length}m)`);
-      }
-      if (current.width > max.width) {
-        errors.push(`Width exceeds maximum allowed (${max.width}m)`);
-      }
-      if (current.height > max.height) {
-        errors.push(`Height exceeds maximum allowed (${max.height}m)`);
-      }
-      if (current.weight > max.weight) {
-        errors.push(`Weight exceeds maximum allowed (${max.weight}kg)`);
-      }
-    }
-
-    setValidationErrors(errors);
-  }, [data, shipment]);
-
+const CargoDetailsStep = ({ formData, onChange }: CargoDetailsStepProps) => {
   const initialDimensions: CargoDimensions = {
     length: 0,
     width: 0,
@@ -56,100 +20,82 @@ const CargoDetailsStep = ({ data, onChange, shipment }: CargoDetailsStepProps) =
     dimension_unit: 'm'
   };
 
+  const [dimensions, setDimensions] = useState<CargoDimensions>(initialDimensions);
+
+  const handleDimensionChange = (field: keyof CargoDimensions, value: any) => {
+    const newDimensions = { ...dimensions, [field]: value };
+    setDimensions(newDimensions);
+    onChange("cargo_dimensions", newDimensions);
+  };
+
   return (
     <div className="space-y-6">
-      {validationErrors.length > 0 && (
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Validation Errors</AlertTitle>
-          <AlertDescription>
-            <ul className="list-disc list-inside">
-              {validationErrors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="cargo_type">Cargo Type</Label>
-            <Select
-              value={data.cargo_type}
-              onValueChange={(value) => onChange({ cargo_type: value })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select cargo type" />
-              </SelectTrigger>
-              <SelectContent>
-                {shipment.accepted_cargo_types?.map((type) => (
-                  <SelectItem key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="cargo_value">Cargo Value (USD)</Label>
-            <Input
-              id="cargo_value"
-              type="number"
-              min={0}
-              value={data.cargo_value || 0}
-              onChange={(e) => onChange({ cargo_value: Number(e.target.value) })}
-            />
-          </div>
-        </div>
-
+      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="cargo_description">Cargo Description</Label>
+          <Label htmlFor="length">Length</Label>
           <Input
-            id="cargo_description"
-            value={data.cargo_description || ""}
-            onChange={(e) => onChange({ cargo_description: e.target.value })}
-            placeholder="Detailed description of your cargo"
+            id="length"
+            type="number"
+            value={dimensions.length}
+            onChange={(e) => handleDimensionChange("length", Number(e.target.value))}
+            required
           />
         </div>
-
-        <CargoDimensionsInput
-          dimensions={data.cargo_dimensions || initialDimensions}
-          maxDimensions={shipment.max_piece_dimensions}
-          onChange={(dimensions) => onChange({ cargo_dimensions: dimensions })}
-        />
-
-        {shipment.temperature_controlled && (
-          <TemperatureRequirementsInput
-            requirements={data.temperature_requirements || { min: 0, max: 0, unit: 'C' }}
-            allowedRange={shipment.temperature_range}
-            onChange={(requirements) => onChange({ temperature_requirements: requirements })}
-          />
-        )}
-
         <div className="space-y-2">
-          <Label>Special Handling Requirements</Label>
-          <div className="grid grid-cols-2 gap-2">
-            {shipment.special_handling_options?.map((option) => (
-              <div key={option} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`handling_${option}`}
-                  checked={data.special_handling?.includes(option)}
-                  onCheckedChange={(checked) => {
-                    const newHandling = checked
-                      ? [...(data.special_handling || []), option]
-                      : (data.special_handling || []).filter((h) => h !== option);
-                    onChange({ special_handling: newHandling });
-                  }}
-                />
-                <Label htmlFor={`handling_${option}`} className="cursor-pointer">
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </Label>
-              </div>
-            ))}
-          </div>
+          <Label htmlFor="width">Width</Label>
+          <Input
+            id="width"
+            type="number"
+            value={dimensions.width}
+            onChange={(e) => handleDimensionChange("width", Number(e.target.value))}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="height">Height</Label>
+          <Input
+            id="height"
+            type="number"
+            value={dimensions.height}
+            onChange={(e) => handleDimensionChange("height", Number(e.target.value))}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="weight">Weight</Label>
+          <Input
+            id="weight"
+            type="number"
+            value={dimensions.weight}
+            onChange={(e) => handleDimensionChange("weight", Number(e.target.value))}
+            required
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="weight_unit">Weight Unit</Label>
+          <select
+            id="weight_unit"
+            value={dimensions.weight_unit}
+            onChange={(e) => handleDimensionChange("weight_unit", e.target.value)}
+          >
+            <option value="kg">Kilograms</option>
+            <option value="lbs">Pounds</option>
+          </select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="dimension_unit">Dimension Unit</Label>
+          <select
+            id="dimension_unit"
+            value={dimensions.dimension_unit}
+            onChange={(e) => handleDimensionChange("dimension_unit", e.target.value)}
+          >
+            <option value="m">Meters</option>
+            <option value="cm">Centimeters</option>
+            <option value="in">Inches</option>
+            <option value="ft">Feet</option>
+          </select>
         </div>
       </div>
     </div>

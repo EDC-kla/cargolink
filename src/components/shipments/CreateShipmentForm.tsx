@@ -1,60 +1,52 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
-import { shipmentService } from "@/services/api";
-import { TransportMode, ShipmentStatus, CargoType } from "@/types/database.types";
-import BasicShipmentFields from "./form/BasicShipmentFields";
-import CargoDetailsFields from "./form/CargoDetailsFields";
-
 interface CreateShipmentFormProps {
   onClose: () => void;
+  shipmentData?: Shipment;
 }
 
-const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
+const CreateShipmentForm = ({ onClose, shipmentData }: CreateShipmentFormProps) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    origin: "",
-    destination: "",
-    departure_date: "",
-    available_space: 1,
-    price_per_cbm: 1,
-    transport_mode: "sea" as TransportMode,
-    container_type: "",
-    transit_time_days: 0,
-    customs_clearance: false,
-    door_pickup: false,
-    door_delivery: false,
-    min_booking_size: 0,
-    status: "available" as ShipmentStatus,
-    additional_services: [] as string[],
-    cargo_restrictions: [] as string[],
-    consolidation_service: false,
-    route_frequency: "",
-    route_tags: [] as string[],
-    route_type: "direct",
-    notes: "",
-    preferred_cargo_types: [] as CargoType[],
-    stops: [] as any[],
-    featured: false,
-    display_order: 0,
-    category: "",
-    accepted_cargo_types: [] as string[],
-    max_piece_dimensions: {
+    origin: shipmentData?.origin || "",
+    destination: shipmentData?.destination || "",
+    departure_date: shipmentData?.departure_date || "",
+    available_space: shipmentData?.available_space || 1,
+    price_per_cbm: shipmentData?.price_per_cbm || 1,
+    transport_mode: shipmentData?.transport_mode || "sea" as TransportMode,
+    container_type: shipmentData?.container_type || "",
+    transit_time_days: shipmentData?.transit_time_days || 0,
+    customs_clearance: shipmentData?.customs_clearance || false,
+    door_pickup: shipmentData?.door_pickup || false,
+    door_delivery: shipmentData?.door_delivery || false,
+    min_booking_size: shipmentData?.min_booking_size || 0,
+    status: shipmentData?.status || "available" as ShipmentStatus,
+    additional_services: shipmentData?.additional_services || [],
+    cargo_restrictions: shipmentData?.cargo_restrictions || [],
+    consolidation_service: shipmentData?.consolidation_service || false,
+    route_frequency: shipmentData?.route_frequency || "",
+    route_tags: shipmentData?.route_tags || [],
+    route_type: shipmentData?.route_type || "direct",
+    notes: shipmentData?.notes || "",
+    preferred_cargo_types: shipmentData?.preferred_cargo_types || [],
+    stops: shipmentData?.stops || [],
+    featured: shipmentData?.featured || false,
+    display_order: shipmentData?.display_order || 0,
+    category: shipmentData?.category || "",
+    accepted_cargo_types: shipmentData?.accepted_cargo_types || [],
+    max_piece_dimensions: shipmentData?.max_piece_dimensions || {
       length: 0,
       width: 0,
       height: 0,
       weight: 0
     },
-    hazmat_accepted: false,
-    temperature_controlled: false,
-    temperature_range: {
+    hazmat_accepted: shipmentData?.hazmat_accepted || false,
+    temperature_controlled: shipmentData?.temperature_controlled || false,
+    temperature_range: shipmentData?.temperature_range || {
       min: null,
       max: null,
       unit: 'C' as const
     },
-    special_handling_options: [] as string[],
-    required_cargo_docs: [] as string[]
+    special_handling_options: shipmentData?.special_handling_options || [],
+    required_cargo_docs: shipmentData?.required_cargo_docs || []
   });
 
   const handleFieldChange = (field: string, value: any) => {
@@ -96,19 +88,11 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-6">
-        <BasicShipmentFields
-          formData={formData}
-          onChange={handleFieldChange}
-          disabled={loading}
-        />
-        
-        <CargoDetailsFields
-          formData={formData}
-          onChange={handleFieldChange}
-          disabled={loading}
-        />
-      </div>
+      <ShipmentFormFields
+        formData={formData}
+        onChange={handleFieldChange}
+        disabled={loading}
+      />
 
       <div className="flex justify-end space-x-2">
         <Button 
