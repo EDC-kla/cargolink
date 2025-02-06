@@ -2,16 +2,18 @@
 import { Ship, Plane, Train, Truck } from "lucide-react";
 import { TransportMode } from "@/types/database.types";
 
+type TransportModeWithAll = TransportMode | 'all';
+
 interface TransportModeFiltersProps {
-  transportMode: TransportMode;
-  onTransportModeChange: (mode: TransportMode) => void;
+  transportMode: TransportModeWithAll;
+  onTransportModeChange: (mode: TransportModeWithAll) => void;
 }
 
 const TransportModeFilters = ({ transportMode, onTransportModeChange }: TransportModeFiltersProps) => {
   return (
     <div className="mb-6 flex items-center space-x-4 flex-wrap gap-y-2">
       <button
-        onClick={() => onTransportModeChange('all' as TransportMode)}
+        onClick={() => onTransportModeChange('all')}
         className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
           transportMode === 'all' ? 'bg-primary text-white' : 'bg-gray-100'
         }`}

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Shipment } from "@/types/database.types";
+import { Shipment, TransportMode } from "@/types/database.types";
 import TransportModeFilters from "./TransportModeFilters";
 import ShipmentsGrid from "./ShipmentsGrid";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/sheet";
 import { toast } from "@/hooks/use-toast";
 
+type TransportModeWithAll = TransportMode | 'all';
+
 interface AvailableShipmentsProps {
   shipments: Shipment[] | undefined;
   onRefetch: () => void;
@@ -32,7 +34,7 @@ const AvailableShipments = ({
 }: AvailableShipmentsProps) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [transportMode, setTransportMode] = useState<'all' | 'sea' | 'air'>('all');
+  const [transportMode, setTransportMode] = useState<TransportModeWithAll>('all');
   const [searchData, setSearchData] = useState({
     origin: searchParams.get('origin') || '',
     destination: searchParams.get('destination') || '',
@@ -217,3 +219,4 @@ const AvailableShipments = ({
 };
 
 export default AvailableShipments;
+
