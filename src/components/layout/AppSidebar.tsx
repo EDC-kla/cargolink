@@ -1,23 +1,39 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Package, Store, Home, Menu, X, Settings, User, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const AppSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const getAuthStatus = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+    };
+    getAuthStatus();
+  }, []);
+
   const menuItems = [
-    { icon: Home, label: "Dashboard", path: "/dashboard" },
-    { icon: Store, label: "Marketplace", path: "/marketplace" },
-    { icon: Package, label: "My Shipments", path: "/marketplace/my-shipments" },
-    { icon: User, label: "Profile", path: "/profile" },
-    { icon: Settings, label: "Settings", path: "/settings" },
+    { icon: Home, label: "Dashboard", path: "/dashboard", requiresAuth: true },
+    { icon: Store, label: "Marketplace", path: "/marketplace", requiresAuth: false },
+    { icon: Package, label: "My Shipments", path: "/marketplace/my-shipments", requiresAuth: true },
+    { icon: User, label: "Profile", path: "/profile", requiresAuth: true },
+    { icon: Settings, label: "Settings", path: "/settings", requiresAuth: true },
   ];
 
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  const filteredMenuItems = menuItems.filter(item => 
+    !item.requiresAuth || (item.requiresAuth && isAuthenticated)
+  );
 
   return (
     <>
@@ -45,11 +61,11 @@ const AppSidebar = () => {
             <div className="flex flex-col h-full">
               <div className="flex items-center space-x-2 mb-8">
                 <Package className="h-8 w-8 text-primary" />
-                <span className="text-xl font-bold text-primary">Shipment App</span>
+                <span className="text-xl font-bold text-primary">Cargo Buddy</span>
               </div>
 
               <nav className="flex-grow space-y-1">
-                {menuItems.map((item) => {
+                {filteredMenuItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.path;
 
@@ -76,13 +92,6 @@ const AppSidebar = () => {
                   );
                 })}
               </nav>
-
-              <div className="mt-auto pt-6 border-t border-gray-200">
-                <div className="text-sm text-gray-500">
-                  <p>Need help?</p>
-                  <a href="#" className="text-primary hover:underline">Contact Support</a>
-                </div>
-              </div>
             </div>
           </motion.div>
         )}
