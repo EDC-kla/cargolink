@@ -10,7 +10,7 @@ import EditBookingForm from "@/components/bookings/EditBookingForm";
 
 const Marketplace = () => {
   const navigate = useNavigate();
-  const { data: shipments, refetch } = useQuery({
+  const { data: shipments = [], refetch } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments
   });
@@ -36,13 +36,13 @@ const Marketplace = () => {
           <Routes>
             <Route path="/" element={
               <AvailableShipments 
-                shipments={shipments || []} 
+                shipments={shipments} 
                 onRefetch={refetch}
               />
             } />
             <Route path="/my-shipments" element={
               <MyShipments 
-                shipments={shipments || []}
+                shipments={shipments}
                 onRefetch={refetch}
               />
             } />

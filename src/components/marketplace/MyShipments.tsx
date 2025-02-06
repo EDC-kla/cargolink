@@ -2,8 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ShipmentsGrid from "./ShipmentsGrid";
+import { Shipment } from "@/types/database.types";
 
-const MyShipments = () => {
+interface MyShipmentsProps {
+  shipments: Shipment[];
+  onRefetch?: () => void;
+}
+
+const MyShipments = ({ shipments, onRefetch }: MyShipmentsProps) => {
   const navigate = useNavigate();
 
   return (
@@ -18,7 +24,13 @@ const MyShipments = () => {
           Create Shipment
         </Button>
       </div>
-      <ShipmentsGrid />
+      <ShipmentsGrid 
+        shipments={shipments} 
+        showEditButton={true}
+        onEdit={(shipment) => {
+          navigate(`/edit-shipment/${shipment.id}`);
+        }}
+      />
     </div>
   );
 };
