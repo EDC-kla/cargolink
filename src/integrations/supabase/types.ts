@@ -34,7 +34,9 @@ export type Database = {
           hazmat_details: Json | null
           id: string
           incoterms: Database["public"]["Enums"]["incoterm_type"] | null
+          insurance_coverage: Json | null
           insurance_required: boolean | null
+          insurance_value: number | null
           is_draft: boolean | null
           last_modified: string | null
           payment_terms: string | null
@@ -74,7 +76,9 @@ export type Database = {
           hazmat_details?: Json | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
+          insurance_coverage?: Json | null
           insurance_required?: boolean | null
+          insurance_value?: number | null
           is_draft?: boolean | null
           last_modified?: string | null
           payment_terms?: string | null
@@ -114,7 +118,9 @@ export type Database = {
           hazmat_details?: Json | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
+          insurance_coverage?: Json | null
           insurance_required?: boolean | null
+          insurance_value?: number | null
           is_draft?: boolean | null
           last_modified?: string | null
           payment_terms?: string | null
