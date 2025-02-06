@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
+import { supabase } from "@/integrations/supabase/client";
 import AvailableShipments from "@/components/marketplace/AvailableShipments";
 import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
@@ -30,7 +31,7 @@ const Marketplace = () => {
             } />
             <Route path="/my-shipments" element={
               <MyShipments 
-                shipments={shipments.filter(s => s.created_by === supabase.auth.user()?.id)}
+                shipments={shipments.filter(s => s.created_by === supabase.auth.getUser()?.id)}
                 onRefetch={refetch}
               />
             } />
