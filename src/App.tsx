@@ -1,4 +1,9 @@
+
 import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 import Index from "@/pages/Index";
 import Dashboard from "@/pages/Dashboard";
 import Marketplace from "@/pages/Marketplace";
@@ -8,12 +13,54 @@ import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import Navbar from "@/components/Navbar";
 import AppSidebar from "@/components/layout/AppSidebar";
-import { useLocation } from "react-router-dom";
+import Auth from "@/pages/Auth";
 import BookingPage from "@/components/marketplace/BookingPage";
+import { toast } from "@/hooks/use-toast";
 
 const App = () => {
   const location = useLocation();
-  const showSidebar = location.pathname !== "/";
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const showSidebar = location.pathname !== "/" && location.pathname !== "/auth";
+
+  useEffect(() => {
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (!session?.user && !location.pathname.startsWith("/auth")) {
+        navigate("/auth");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate, location.pathname]);
+
+  // Protect routes that require authentication
+  useEffect(() => {
+    if (!loading && !user) {
+      const publicRoutes = ["/", "/auth"];
+      if (!publicRoutes.includes(location.pathname)) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to access this page",
+        });
+        navigate("/auth");
+      }
+    }
+  }, [user, loading, location.pathname, navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -22,6 +69,7 @@ const App = () => {
       <main className={`${showSidebar ? 'ml-[280px]' : ''} pt-16`}>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/marketplace/*" element={<Marketplace />} />
           <Route path="/book/:shipmentId" element={<BookingPage />} />
