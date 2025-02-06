@@ -14,6 +14,7 @@ import Settings from "@/pages/Settings";
 import Navbar from "@/components/Navbar";
 import AppSidebar from "@/components/layout/AppSidebar";
 import Auth from "@/pages/Auth";
+import Onboarding from "@/pages/Onboarding";
 import BookingPage from "@/components/marketplace/BookingPage";
 import { toast } from "@/hooks/use-toast";
 
@@ -22,7 +23,7 @@ const App = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const showSidebar = location.pathname !== "/" && location.pathname !== "/auth";
+  const showSidebar = location.pathname !== "/" && location.pathname !== "/auth" && location.pathname !== "/onboarding";
 
   useEffect(() => {
     // Check current session
@@ -70,6 +71,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/marketplace/*" element={<Marketplace />} />
           <Route path="/book/:shipmentId" element={<BookingPage />} />
