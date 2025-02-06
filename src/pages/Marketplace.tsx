@@ -1,27 +1,15 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { shipmentService } from "@/services/api";
 import AvailableShipments from "@/components/marketplace/AvailableShipments";
 import MyShipments from "@/components/marketplace/MyShipments";
 import MyBookings from "@/components/marketplace/MyBookings";
 import ShipmentsNav from "@/components/marketplace/ShipmentsNav";
-import EditBookingForm from "@/components/bookings/EditBookingForm";
 
 const Marketplace = () => {
-  const navigate = useNavigate();
   const { data: shipments = [], refetch } = useQuery({
     queryKey: ['shipments'],
     queryFn: shipmentService.listShipments
-  });
-
-  const { data: userData } = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) throw error;
-      return data;
-    },
   });
 
   return (
@@ -42,12 +30,11 @@ const Marketplace = () => {
             } />
             <Route path="/my-shipments" element={
               <MyShipments 
-                shipments={shipments}
+                shipments={shipments.filter(s => s.created_by === supabase.auth.user()?.id)}
                 onRefetch={refetch}
               />
             } />
             <Route path="/bookings" element={<MyBookings />} />
-            <Route path="/bookings/:bookingId/edit" element={<EditBookingForm />} />
           </Routes>
         </div>
       </div>

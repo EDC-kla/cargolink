@@ -7,7 +7,7 @@ const ShipmentsNav = () => {
   const currentPath = location.pathname;
 
   const navItems = [
-    { label: "Available Shipments", path: "/marketplace/available" },
+    { label: "Available Shipments", path: "/marketplace" },
     { label: "My Listed Shipments", path: "/marketplace/my-shipments" },
     { label: "My Bookings", path: "/marketplace/bookings" },
   ];
