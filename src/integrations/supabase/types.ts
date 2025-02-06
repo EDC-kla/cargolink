@@ -50,6 +50,7 @@ export type Database = {
           step_progress: number | null
           temperature_requirements: Json | null
           tracking_number: string | null
+          updated_at: string | null
           user_id: string | null
         }
         Insert: {
@@ -92,6 +93,7 @@ export type Database = {
           step_progress?: number | null
           temperature_requirements?: Json | null
           tracking_number?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Update: {
@@ -134,6 +136,7 @@ export type Database = {
           step_progress?: number | null
           temperature_requirements?: Json | null
           tracking_number?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
@@ -150,7 +153,9 @@ export type Database = {
         Row: {
           company_name: string | null
           company_type: string[] | null
+          contact_email: string | null
           contact_person: string | null
+          contact_phone: string | null
           created_at: string
           email: string | null
           id: string
@@ -158,9 +163,11 @@ export type Database = {
           onboarding_completed: boolean | null
           onboarding_step: string | null
           phone: string | null
+          rating: number | null
           registration_number: string | null
           service_regions: string[] | null
           services_offered: string[] | null
+          updated_at: string | null
           verified: boolean | null
           website: string | null
           years_in_business: number | null
@@ -168,7 +175,9 @@ export type Database = {
         Insert: {
           company_name?: string | null
           company_type?: string[] | null
+          contact_email?: string | null
           contact_person?: string | null
+          contact_phone?: string | null
           created_at?: string
           email?: string | null
           id: string
@@ -176,9 +185,11 @@ export type Database = {
           onboarding_completed?: boolean | null
           onboarding_step?: string | null
           phone?: string | null
+          rating?: number | null
           registration_number?: string | null
           service_regions?: string[] | null
           services_offered?: string[] | null
+          updated_at?: string | null
           verified?: boolean | null
           website?: string | null
           years_in_business?: number | null
@@ -186,7 +197,9 @@ export type Database = {
         Update: {
           company_name?: string | null
           company_type?: string[] | null
+          contact_email?: string | null
           contact_person?: string | null
+          contact_phone?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -194,9 +207,11 @@ export type Database = {
           onboarding_completed?: boolean | null
           onboarding_step?: string | null
           phone?: string | null
+          rating?: number | null
           registration_number?: string | null
           service_regions?: string[] | null
           services_offered?: string[] | null
+          updated_at?: string | null
           verified?: boolean | null
           website?: string | null
           years_in_business?: number | null
@@ -331,6 +346,7 @@ export type Database = {
           temperature_range: Json | null
           transit_time_days: number | null
           transport_mode: string
+          updated_at: string | null
           vessel_name: string | null
           voyage_number: string | null
         }
@@ -378,6 +394,7 @@ export type Database = {
           temperature_range?: Json | null
           transit_time_days?: number | null
           transport_mode?: string
+          updated_at?: string | null
           vessel_name?: string | null
           voyage_number?: string | null
         }
@@ -425,6 +442,7 @@ export type Database = {
           temperature_range?: Json | null
           transit_time_days?: number | null
           transport_mode?: string
+          updated_at?: string | null
           vessel_name?: string | null
           voyage_number?: string | null
         }
