@@ -1,66 +1,24 @@
-import { useState } from "react";
-import { Shipment } from "@/types/database.types";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ShipmentsGrid from "./ShipmentsGrid";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import CreateShipmentForm from "@/components/shipments/CreateShipmentForm";
 
-interface MyShipmentsProps {
-  shipments: Shipment[] | undefined;
-  onRefetch: () => void;
-}
-
-const MyShipments = ({ shipments, onRefetch }: MyShipmentsProps) => {
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [editingShipment, setEditingShipment] = useState<Shipment | null>(null);
-
-  const handleEdit = (shipment: Shipment) => {
-    setEditingShipment(shipment);
-  };
-
-  const handleCloseForm = () => {
-    setShowCreateForm(false);
-    setEditingShipment(null);
-    onRefetch();
-  };
+const MyShipments = () => {
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end">
-        <button
-          onClick={() => setShowCreateForm(true)}
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">My Shipments</h2>
+        <Button 
+          onClick={() => navigate("/create-shipment")}
+          className="bg-green-600 hover:bg-green-700"
         >
-          Create New Shipment
-        </button>
+          <Plus className="mr-2 h-4 w-4" />
+          Create Shipment
+        </Button>
       </div>
-
-      <ShipmentsGrid 
-        shipments={shipments}
-        showBookButton={false}
-        onEdit={handleEdit}
-        showEditButton={true}
-      />
-
-      <Dialog open={showCreateForm || !!editingShipment} onOpenChange={(open) => {
-        if (!open) handleCloseForm();
-      }}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>
-              {editingShipment ? 'Edit Shipment' : 'Create New Shipment'}
-            </DialogTitle>
-          </DialogHeader>
-          <CreateShipmentForm
-            shipmentData={editingShipment}
-            onClose={handleCloseForm}
-          />
-        </DialogContent>
-      </Dialog>
+      <ShipmentsGrid />
     </div>
   );
 };
