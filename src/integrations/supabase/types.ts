@@ -460,6 +460,18 @@ export type Database = {
     }
     Enums: {
       app_role: "buyer" | "seller" | "admin"
+      cargo_type:
+        | "general"
+        | "hazardous"
+        | "perishable"
+        | "fragile"
+        | "valuable"
+        | "oversized"
+        | "temperature_controlled"
+        | "liquid_bulk"
+        | "dry_bulk"
+        | "vehicles"
+        | "livestock"
       container_size_type: "20GP" | "40GP" | "40HC" | "45HC" | "LCL"
       incoterm_type:
         | "EXW"
@@ -473,6 +485,17 @@ export type Database = {
         | "DAP"
         | "DPU"
         | "DDP"
+      special_handling_type:
+        | "lift_gate"
+        | "inside_delivery"
+        | "appointment_required"
+        | "notify_recipient"
+        | "signature_required"
+        | "handle_with_care"
+        | "keep_upright"
+        | "do_not_stack"
+        | "protect_from_heat"
+        | "protect_from_moisture"
     }
     CompositeTypes: {
       [_ in never]: never
