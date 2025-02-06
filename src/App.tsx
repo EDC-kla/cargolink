@@ -9,6 +9,7 @@ import Settings from "@/pages/Settings";
 import Navbar from "@/components/Navbar";
 import AppSidebar from "@/components/layout/AppSidebar";
 import { useLocation } from "react-router-dom";
+import BookingPage from "@/components/marketplace/BookingPage";
 
 const App = () => {
   const location = useLocation();
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/marketplace/*" element={<Marketplace />} />
+          <Route path="/book/:shipmentId" element={<BookingPage />} />
           <Route path="/create-shipment" element={<CreateShipment />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
