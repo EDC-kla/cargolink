@@ -3,9 +3,14 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
-import { Ship, Plane, Edit, Clock, Package, CircleDollarSign, MapPin } from "lucide-react";
+import { Ship, Plane, Edit, Clock, Package, CircleDollarSign, MapPin, AlertTriangle, Truck, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 interface ShipmentCardProps {
   shipment: Shipment;
@@ -38,25 +43,42 @@ const ShipmentCard = ({
     navigate(`/book/${shipment.id}`);
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'available':
+        return 'text-green-500';
+      case 'limited':
+        return 'text-yellow-500';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
   return (
     <Card className="hover:shadow-lg transition-shadow bg-white">
       <CardContent className="pt-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-3">
               <TransportIcon className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium text-primary capitalize">
                 {shipment.transport_mode} Freight
               </span>
+              <span className={`ml-auto ${getStatusColor(shipment.status || 'available')}`}>
+                <CheckCircle2 className="h-5 w-5" />
+              </span>
             </div>
-            <div className="space-y-2">
+
+            <div className="space-y-3">
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-gray-500 mt-1 shrink-0" />
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">
                     {shipment.origin}
                   </h3>
-                  <p className="text-sm text-gray-500">Port of Loading</p>
+                  <p className="text-sm text-gray-500">
+                    {shipment.port_of_loading || 'Port of Loading'}
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
@@ -65,13 +87,24 @@ const ShipmentCard = ({
                   <h3 className="text-lg font-semibold text-gray-900">
                     {shipment.destination}
                   </h3>
-                  <p className="text-sm text-gray-500">Port of Discharge</p>
+                  <p className="text-sm text-gray-500">
+                    {shipment.port_of_discharge || 'Port of Discharge'}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center mt-3 text-sm text-gray-500">
-              <Clock className="h-4 w-4 mr-1" />
-              <span>Departure: {formatDate(shipment.departure_date)}</span>
+
+            <div className="mt-4 space-y-2">
+              <div className="flex items-center text-sm text-gray-500">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>Departure: {formatDate(shipment.departure_date)}</span>
+              </div>
+              {shipment.estimated_arrival && (
+                <div className="flex items-center text-sm text-gray-500">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span>Estimated Arrival: {formatDate(shipment.estimated_arrival)}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -101,6 +134,49 @@ const ShipmentCard = ({
             </div>
           )}
         </div>
+
+        {(shipment.special_handling_options?.length > 0 || shipment.additional_services?.length > 0) && (
+          <div className="mt-4">
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button variant="outline" size="sm" className="w-full">
+                  <Truck className="h-4 w-4 mr-2" />
+                  View Services
+                </Button>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                {shipment.special_handling_options?.length > 0 && (
+                  <div className="mb-3">
+                    <h4 className="text-sm font-medium mb-1">Special Handling</h4>
+                    <div className="text-sm text-gray-500">
+                      {shipment.special_handling_options.join(', ')}
+                    </div>
+                  </div>
+                )}
+                {shipment.additional_services?.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium mb-1">Additional Services</h4>
+                    <div className="text-sm text-gray-500">
+                      {shipment.additional_services.join(', ')}
+                    </div>
+                  </div>
+                )}
+              </HoverCardContent>
+            </HoverCard>
+          </div>
+        )}
+
+        {shipment.cargo_restrictions?.length > 0 && (
+          <div className="mt-4 p-3 bg-yellow-50 rounded-md">
+            <div className="flex items-center text-yellow-800 text-sm">
+              <AlertTriangle className="h-4 w-4 mr-2" />
+              <span className="font-medium">Cargo Restrictions</span>
+            </div>
+            <p className="mt-1 text-sm text-yellow-700">
+              {shipment.cargo_restrictions.join(', ')}
+            </p>
+          </div>
+        )}
       </CardContent>
 
       <CardFooter className="flex gap-2">

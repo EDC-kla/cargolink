@@ -4,10 +4,8 @@ import { Shipment } from "@/types/database.types";
 import TransportModeFilters from "./TransportModeFilters";
 import ShipmentsGrid from "./ShipmentsGrid";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, MapPin, Calendar, Package, Filter, ArrowRight } from "lucide-react";
+import { Plus, Search, MapPin, Calendar, Package, Filter, ArrowRight, RefreshCw } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import {
   Sheet,
@@ -17,17 +15,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { toast } from "@/hooks/use-toast";
 
 interface AvailableShipmentsProps {
   shipments: Shipment[] | undefined;
   onRefetch: () => void;
   isAuthenticated: boolean;
+  isLoading?: boolean;
 }
 
 const AvailableShipments = ({ 
   shipments, 
   onRefetch,
-  isAuthenticated 
+  isAuthenticated,
+  isLoading = false,
 }: AvailableShipmentsProps) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -77,6 +78,14 @@ const AvailableShipments = ({
     navigate(`/marketplace?${params.toString()}`);
   };
 
+  const handleRefresh = () => {
+    onRefetch();
+    toast({
+      title: "Refreshing Results",
+      description: "Getting the latest available shipments...",
+    });
+  };
+
   return (
     <div className="space-y-8">
       <div className="bg-white shadow-sm rounded-xl border border-gray-100">
@@ -84,6 +93,14 @@ const AvailableShipments = ({
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-gray-900">Available Cargo Space</h1>
             <div className="flex items-center gap-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleRefresh}
+                className="hidden sm:flex"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
               <Sheet open={showMobileFilters} onOpenChange={setShowMobileFilters}>
                 <SheetTrigger asChild>
                   <Button variant="outline" className="lg:hidden">
@@ -184,6 +201,7 @@ const AvailableShipments = ({
           shipments={filteredShipments}
           showBookButton={true}
           isAuthenticated={isAuthenticated}
+          isLoading={isLoading}
         />
       </div>
     </div>
