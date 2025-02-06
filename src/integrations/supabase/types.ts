@@ -473,6 +473,18 @@ export type Database = {
         | "vehicles"
         | "livestock"
       container_size_type: "20GP" | "40GP" | "40HC" | "45HC" | "LCL"
+      document_type:
+        | "bill_of_lading"
+        | "commercial_invoice"
+        | "packing_list"
+        | "certificate_of_origin"
+        | "dangerous_goods_declaration"
+        | "phytosanitary_certificate"
+        | "health_certificate"
+        | "export_license"
+        | "import_license"
+        | "insurance_certificate"
+        | "inspection_certificate"
       incoterm_type:
         | "EXW"
         | "FCA"
