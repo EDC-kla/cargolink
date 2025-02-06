@@ -23,7 +23,7 @@ const App = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const showSidebar = location.pathname !== "/" && location.pathname !== "/auth" && location.pathname !== "/onboarding";
+  const showSidebar = user && location.pathname !== "/" && location.pathname !== "/auth" && location.pathname !== "/onboarding";
 
   useEffect(() => {
     // Check current session
@@ -37,24 +37,23 @@ const App = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (!session?.user && !location.pathname.startsWith("/auth")) {
-        navigate("/auth");
-      }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, location.pathname]);
+  }, []);
 
   // Protect routes that require authentication
   useEffect(() => {
     if (!loading && !user) {
-      const publicRoutes = ["/", "/auth"];
-      if (!publicRoutes.includes(location.pathname)) {
+      const protectedRoutes = ["/dashboard", "/create-shipment", "/profile", "/settings", "/book", "/onboarding"];
+      const isProtectedRoute = protectedRoutes.some(route => location.pathname.startsWith(route));
+      
+      if (isProtectedRoute) {
         toast({
           title: "Authentication required",
           description: "Please log in to access this page",
         });
-        navigate("/auth");
+        navigate("/auth", { state: { from: location.pathname } });
       }
     }
   }, [user, loading, location.pathname, navigate]);

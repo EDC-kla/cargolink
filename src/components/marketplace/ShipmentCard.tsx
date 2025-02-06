@@ -1,9 +1,12 @@
+
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
 import { Ship, Plane, Edit } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 interface ShipmentCardProps {
   shipment: Shipment;
@@ -21,7 +24,18 @@ const ShipmentCard = ({
   const navigate = useNavigate();
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
 
-  const handleBookClick = () => {
+  const handleBookClick = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to book cargo space",
+      });
+      navigate("/auth", { state: { from: `/book/${shipment.id}` } });
+      return;
+    }
+    
     navigate(`/book/${shipment.id}`);
   };
 
