@@ -28,6 +28,8 @@ export type BookingFormData = {
     width: number;
     height: number;
     weight: number;
+    weight_unit: 'kg' | 'lbs';
+    dimension_unit: 'm' | 'cm' | 'in' | 'ft';
   };
   hazmat_details?: {
     class: string;
@@ -58,7 +60,14 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
     cargo_description: "",
     cargo_value: 0,
     cargo_packaging_type: "pallets",
-    cargo_dimensions: { length: 0, width: 0, height: 0, weight: 0 },
+    cargo_dimensions: { 
+      length: 0, 
+      width: 0, 
+      height: 0, 
+      weight: 0,
+      weight_unit: 'kg',
+      dimension_unit: 'm'
+    },
     special_handling: [],
     pickup_address: "",
     delivery_address: "",
@@ -97,7 +106,7 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
       component: (
         <CargoDetailsStep
           formData={formData}
-          onChange={(data) => setFormData({ ...formData, ...data })}
+          onChange={(data: Partial<BookingFormData>) => setFormData({ ...formData, ...data })}
           shipment={shipment}
         />
       ),

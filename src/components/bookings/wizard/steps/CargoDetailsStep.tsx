@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CargoDimensions } from "@/types/database.types";
+import { CargoDimensions, Shipment } from "@/types/database.types";
 
 interface CargoDetailsStepProps {
   formData: {
     cargo_dimensions: CargoDimensions;
   };
-  onChange: (field: string, value: any) => void;
+  onChange: (data: Partial<{ cargo_dimensions: CargoDimensions }>) => void;
   shipment: Shipment;
 }
 
@@ -21,12 +21,14 @@ const CargoDetailsStep = ({ formData, onChange, shipment }: CargoDetailsStepProp
     dimension_unit: 'm'
   };
 
-  const [dimensions, setDimensions] = useState<CargoDimensions>(initialDimensions);
+  const [dimensions, setDimensions] = useState<CargoDimensions>(
+    formData.cargo_dimensions || initialDimensions
+  );
 
   const handleDimensionChange = (field: keyof CargoDimensions, value: any) => {
     const newDimensions = { ...dimensions, [field]: value };
     setDimensions(newDimensions);
-    onChange("cargo_dimensions", newDimensions);
+    onChange({ cargo_dimensions: newDimensions });
   };
 
   return (
