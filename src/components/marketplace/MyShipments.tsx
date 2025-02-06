@@ -56,7 +56,7 @@ const MyShipments = ({ shipments, onRefetch }: MyShipmentsProps) => {
             </DialogTitle>
           </DialogHeader>
           <CreateShipmentForm
-            initialData={editingShipment}
+            shipmentData={editingShipment}
             onClose={handleCloseForm}
           />
         </DialogContent>
