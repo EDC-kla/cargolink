@@ -19,10 +19,20 @@ const convertJsonToRouteStop = (json: any): RouteStop => ({
   notes: json.notes
 });
 
+// Helper to ensure valid date or null
+const ensureValidDate = (date: string | null | undefined): string | null => {
+  if (!date) return null;
+  const parsedDate = new Date(date);
+  return isNaN(parsedDate.getTime()) ? null : parsedDate.toISOString();
+};
+
 export const transformShipmentResponse = (data: any): Shipment => {
   return {
     ...data,
     transport_mode: data.transport_mode as TransportMode,
+    departure_date: ensureValidDate(data.departure_date) || new Date().toISOString(),
+    cutoff_date: ensureValidDate(data.cutoff_date),
+    estimated_arrival: ensureValidDate(data.estimated_arrival),
     stops: Array.isArray(data.stops) 
       ? data.stops.map(convertJsonToRouteStop)
       : [],
@@ -56,15 +66,18 @@ export const shipmentService = {
   },
 
   createShipment: async (shipment: Omit<Shipment, 'id' | 'created_at'>) => {
-    // Convert stops to JSON-compatible format
-    const jsonShipment = {
+    // Ensure dates are in ISO format
+    const formattedShipment = {
       ...shipment,
+      departure_date: ensureValidDate(shipment.departure_date),
+      cutoff_date: ensureValidDate(shipment.cutoff_date),
+      estimated_arrival: ensureValidDate(shipment.estimated_arrival),
       stops: shipment.stops?.map(convertRouteStopToJson)
     };
 
     const { data, error } = await supabase
       .from('shipments')
-      .insert([jsonShipment])
+      .insert([formattedShipment])
       .select()
       .single();
 
@@ -73,15 +86,18 @@ export const shipmentService = {
   },
 
   updateShipment: async (id: string, updates: Partial<Omit<Shipment, 'id' | 'created_at'>>) => {
-    // Convert stops to JSON-compatible format if present
-    const jsonUpdates = {
+    // Ensure dates are in ISO format
+    const formattedUpdates = {
       ...updates,
+      departure_date: updates.departure_date ? ensureValidDate(updates.departure_date) : undefined,
+      cutoff_date: updates.cutoff_date ? ensureValidDate(updates.cutoff_date) : undefined,
+      estimated_arrival: updates.estimated_arrival ? ensureValidDate(updates.estimated_arrival) : undefined,
       stops: updates.stops?.map(convertRouteStopToJson)
     };
 
     const { data, error } = await supabase
       .from('shipments')
-      .update(jsonUpdates)
+      .update(formattedUpdates)
       .eq('id', id)
       .select()
       .single();
