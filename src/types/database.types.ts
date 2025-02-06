@@ -5,6 +5,17 @@ export type BookingStatus = 'draft' | 'pending' | 'confirmed' | 'cancelled' | 'c
 export type CargoType = 'general' | 'hazardous' | 'perishable' | 'fragile' | 'valuable' | 'oversized' | 'temperature_controlled' | 'liquid_bulk' | 'dry_bulk' | 'vehicles' | 'livestock';
 export type ContainerSizeType = '20GP' | '40GP' | '40HC' | '45HC' | 'LCL';
 export type IncotermType = 'EXW' | 'FCA' | 'FAS' | 'FOB' | 'CFR' | 'CIF' | 'CPT' | 'CIP' | 'DAP' | 'DPU' | 'DDP';
+export type SpecialHandlingType = 
+  | 'lift_gate'
+  | 'inside_delivery'
+  | 'appointment_required'
+  | 'notify_recipient'
+  | 'signature_required'
+  | 'handle_with_care'
+  | 'keep_upright'
+  | 'do_not_stack'
+  | 'protect_from_heat'
+  | 'protect_from_moisture';
 
 // Interfaces for complex types
 export interface CargoDimensions {
@@ -44,6 +55,12 @@ export interface RouteStop {
   notes?: string;
 }
 
+// Database JSON types
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+export interface JsonObject {
+  [key: string]: JsonValue;
+}
+
 // Main interfaces
 export interface Shipment {
   id: string;
@@ -53,13 +70,13 @@ export interface Shipment {
   available_space: number;
   price_per_cbm: number;
   transport_mode: TransportMode;
-  container_type?: string;
-  transit_time_days?: number;
+  container_type: string;  // Changed from optional to required
+  transit_time_days: number;  // Changed from optional to required
   customs_clearance: boolean;
   door_pickup: boolean;
   door_delivery: boolean;
   min_booking_size: number;
-  status?: ShipmentStatus;
+  status: ShipmentStatus;  // Changed from optional to required
   additional_services?: string[];
   cargo_restrictions?: string[];
   consolidation_service?: boolean;
@@ -81,14 +98,10 @@ export interface Shipment {
   port_of_loading?: string;
   port_of_discharge?: string;
   accepted_cargo_types?: string[];
-  max_piece_dimensions?: CargoDimensions;
+  max_piece_dimensions?: JsonObject;  // Changed from CargoDimensions to JsonObject
   hazmat_accepted?: boolean;
   temperature_controlled?: boolean;
-  temperature_range?: {
-    min: number | null;
-    max: number | null;
-    unit: 'C' | 'F';
-  };
+  temperature_range?: JsonObject;  // Changed to JsonObject
   special_handling_options?: string[];
   required_cargo_docs?: string[];
   created_at?: string;
@@ -104,15 +117,15 @@ export interface Booking {
   cargo_type?: string;
   cargo_value?: number;
   cargo_description?: string;
-  special_handling?: string[];
+  special_handling?: SpecialHandlingType[];
   insurance_required?: boolean;
   pickup_address?: string;
   delivery_address?: string;
-  booking_preferences?: any;
+  booking_preferences?: JsonObject;
   communication_preferences?: string[];
   cargo_packaging_type?: string;
-  cargo_dimensions?: CargoDimensions;
-  hazmat_details?: HazmatDetails;
+  cargo_dimensions?: JsonObject;  // Changed from CargoDimensions to JsonObject
+  hazmat_details?: JsonObject;  // Changed from HazmatDetails to JsonObject
   required_certificates?: string[];
   customs_broker?: string;
   payment_terms?: string;
@@ -120,9 +133,9 @@ export interface Booking {
   estimated_delivery_date?: string;
   actual_delivery_date?: string;
   tracking_number?: string;
-  shipping_documents?: any;
+  shipping_documents?: JsonObject;
   booking_notes?: string;
-  temperature_requirements?: CargoTemperatureRequirements;
+  temperature_requirements?: JsonObject;  // Changed from CargoTemperatureRequirements to JsonObject
   step_progress?: number;
   last_modified?: string;
   is_draft?: boolean;
@@ -132,7 +145,7 @@ export interface Booking {
   customs_status?: string;
   container_number?: string[];
   insurance_value?: number;
-  insurance_coverage?: InsuranceCoverage;
+  insurance_coverage?: JsonObject;  // Changed from InsuranceCoverage to JsonObject
   created_at?: string;
 }
 
