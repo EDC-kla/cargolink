@@ -1,13 +1,29 @@
 
-import { Ship, Plane, CheckCircle2 } from "lucide-react";
+import { Ship, Plane, Train, Truck, CheckCircle2 } from "lucide-react";
+import { TransportMode } from "@/types/database.types";
 
 interface TransportHeaderProps {
-  transportMode: 'sea' | 'air';
+  transportMode: TransportMode;
   status?: string;
 }
 
 const TransportHeader = ({ transportMode, status }: TransportHeaderProps) => {
-  const TransportIcon = transportMode === 'sea' ? Ship : Plane;
+  const getTransportIcon = (mode: TransportMode) => {
+    switch (mode) {
+      case 'sea':
+        return Ship;
+      case 'air':
+        return Plane;
+      case 'rail':
+        return Train;
+      case 'road':
+        return Truck;
+      default:
+        return Ship;
+    }
+  };
+
+  const TransportIcon = getTransportIcon(transportMode);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -34,3 +50,4 @@ const TransportHeader = ({ transportMode, status }: TransportHeaderProps) => {
 };
 
 export default TransportHeader;
+
