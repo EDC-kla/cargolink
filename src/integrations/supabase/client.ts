@@ -26,7 +26,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // Add error handling for connection issues
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_OUT') {
-    // Clear any cached data
-    supabase.removeAllSubscriptions();
+    // Clear any realtime subscriptions
+    supabase.channel('*').unsubscribe();
   }
 });
