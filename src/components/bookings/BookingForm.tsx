@@ -62,7 +62,14 @@ const BookingForm = ({ shipmentId, availableSpace, pricePerCbm, onClose }: Booki
         cargo_description: "",
         cargo_value: 0,
         cargo_packaging_type: "pallets",
-        cargo_dimensions: { length: 0, width: 0, height: 0, weight: 0 },
+        cargo_dimensions: { 
+          length: 0, 
+          width: 0, 
+          height: 0, 
+          weight: 0,
+          weight_unit: 'kg',
+          dimension_unit: 'm'
+        },
         special_handling: [],
         pickup_address: "",
         delivery_address: "",
