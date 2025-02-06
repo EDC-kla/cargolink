@@ -1,5 +1,4 @@
-
-import { Label } from "@/components/ui/label";
+import { DollarSign } from "lucide-react";
 
 interface PriceCalculationProps {
   pricePerCbm: number;
@@ -8,16 +7,19 @@ interface PriceCalculationProps {
 
 const PriceCalculation = ({ pricePerCbm, totalPrice }: PriceCalculationProps) => {
   return (
-    <div className="space-y-2">
-      <Label>Price Calculation</Label>
-      <div className="bg-secondary/10 p-4 rounded-lg space-y-2">
-        <div className="flex justify-between">
-          <span>Price per CBM:</span>
-          <span>${pricePerCbm.toFixed(2)}</span>
+    <div className="space-y-2 border rounded-lg p-4">
+      <div className="flex items-center justify-between text-sm">
+        <span>Price per CBM:</span>
+        <div className="flex items-center">
+          <DollarSign className="h-4 w-4" />
+          <span>{pricePerCbm.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between font-semibold">
-          <span>Total Price:</span>
-          <span>${totalPrice.toFixed(2)}</span>
+      </div>
+      <div className="flex items-center justify-between font-semibold">
+        <span>Total Price:</span>
+        <div className="flex items-center">
+          <DollarSign className="h-4 w-4" />
+          <span>{totalPrice.toFixed(2)}</span>
         </div>
       </div>
     </div>
