@@ -1,3 +1,4 @@
+
 import { Shipment } from "@/types/database.types";
 import ShipmentCard from "./ShipmentCard";
 
@@ -6,6 +7,7 @@ interface ShipmentsGridProps {
   showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
+  isAuthenticated?: boolean;
 }
 
 const ShipmentsGrid = ({ 
@@ -13,11 +15,13 @@ const ShipmentsGrid = ({
   showBookButton = true,
   onEdit,
   showEditButton = false,
+  isAuthenticated = false,
 }: ShipmentsGridProps) => {
   if (!shipments?.length) {
     return (
-      <div className="text-center py-8">
-        <p className="text-muted-foreground">No shipments found</p>
+      <div className="text-center py-12 bg-white rounded-lg border border-gray-100">
+        <p className="text-muted-foreground">No shipments found matching your criteria</p>
+        <p className="text-sm text-gray-500 mt-2">Try adjusting your search filters</p>
       </div>
     );
   }
@@ -31,6 +35,7 @@ const ShipmentsGrid = ({
           showBookButton={showBookButton}
           onEdit={onEdit}
           showEditButton={showEditButton}
+          isAuthenticated={isAuthenticated}
         />
       ))}
     </div>

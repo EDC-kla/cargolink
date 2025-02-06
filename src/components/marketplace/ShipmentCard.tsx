@@ -3,9 +3,8 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
-import { Ship, Plane, Edit } from "lucide-react";
+import { Ship, Plane, Edit, Clock, Package, CircleDollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 interface ShipmentCardProps {
@@ -13,6 +12,7 @@ interface ShipmentCardProps {
   showBookButton?: boolean;
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
+  isAuthenticated?: boolean;
 }
 
 const ShipmentCard = ({ 
@@ -20,14 +20,13 @@ const ShipmentCard = ({
   showBookButton = true,
   onEdit,
   showEditButton = false,
+  isAuthenticated = false,
 }: ShipmentCardProps) => {
   const navigate = useNavigate();
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
 
-  const handleBookClick = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
+  const handleBookClick = () => {
+    if (!isAuthenticated) {
       toast({
         title: "Authentication Required",
         description: "Please log in to book cargo space",
@@ -43,27 +42,44 @@ const ShipmentCard = ({
     <Card className="hover:shadow-lg transition-shadow">
       <CardContent className="pt-6">
         <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-semibold mb-1">{shipment.origin} → {shipment.destination}</h3>
-            <p className="text-sm text-muted-foreground">
-              Departure: {formatDate(shipment.departure_date)}
-            </p>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <TransportIcon className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium text-primary capitalize">
+                {shipment.transport_mode} Freight
+              </span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              {shipment.origin} → {shipment.destination}
+            </h3>
+            <div className="flex items-center mt-1 text-sm text-gray-500">
+              <Clock className="h-4 w-4 mr-1" />
+              <span>{formatDate(shipment.departure_date)}</span>
+            </div>
           </div>
-          <TransportIcon className="h-5 w-5 text-muted-foreground" />
         </div>
 
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span>Available Space:</span>
+        <div className="space-y-3 border-t border-gray-100 pt-4">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center text-gray-600">
+              <Package className="h-4 w-4 mr-2" />
+              <span>Available Space</span>
+            </div>
             <span className="font-medium">{shipment.available_space} CBM</span>
           </div>
-          <div className="flex justify-between text-sm">
-            <span>Price per CBM:</span>
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center text-gray-600">
+              <CircleDollarSign className="h-4 w-4 mr-2" />
+              <span>Price per CBM</span>
+            </div>
             <span className="font-medium">${shipment.price_per_cbm}</span>
           </div>
           {shipment.transit_time_days && (
-            <div className="flex justify-between text-sm">
-              <span>Transit Time:</span>
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center text-gray-600">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>Transit Time</span>
+              </div>
               <span className="font-medium">{shipment.transit_time_days} days</span>
             </div>
           )}
