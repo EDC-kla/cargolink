@@ -2,12 +2,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Thermometer } from "lucide-react";
-import { TemperatureRequirements } from "@/types/database.types";
+import { CargoTemperatureRequirements } from "@/types/database.types";
 
 interface TemperatureRequirementsInputProps {
-  requirements: TemperatureRequirements;
+  requirements: CargoTemperatureRequirements;
   allowedRange?: { min: number; max: number };
-  onChange: (requirements: TemperatureRequirements) => void;
+  onChange: (requirements: CargoTemperatureRequirements) => void;
   disabled?: boolean;
 }
 

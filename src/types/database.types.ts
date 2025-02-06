@@ -70,21 +70,21 @@ export interface Shipment {
   available_space: number;
   price_per_cbm: number;
   transport_mode: TransportMode;
-  container_type: string;  // Changed from optional to required
-  transit_time_days: number;  // Changed from optional to required
+  container_type: string;
+  transit_time_days: number;
   customs_clearance: boolean;
   door_pickup: boolean;
   door_delivery: boolean;
   min_booking_size: number;
-  status: ShipmentStatus;  // Changed from optional to required
-  additional_services?: string[];
-  cargo_restrictions?: string[];
-  consolidation_service?: boolean;
+  status: ShipmentStatus;
+  additional_services: string[];  // Changed from optional
+  cargo_restrictions: string[];   // Changed from optional
+  consolidation_service: boolean; // Changed from optional
   route_frequency?: string;
-  route_tags?: string[];
+  route_tags: string[];          // Changed from optional
   route_type?: string;
   notes?: string;
-  preferred_cargo_types?: CargoType[];
+  preferred_cargo_types: CargoType[]; // Changed from optional
   stops?: RouteStop[];
   featured?: boolean;
   display_order?: number;
@@ -98,10 +98,10 @@ export interface Shipment {
   port_of_loading?: string;
   port_of_discharge?: string;
   accepted_cargo_types?: string[];
-  max_piece_dimensions?: JsonObject;  // Changed from CargoDimensions to JsonObject
+  max_piece_dimensions?: JsonObject;
   hazmat_accepted?: boolean;
   temperature_controlled?: boolean;
-  temperature_range?: JsonObject;  // Changed to JsonObject
+  temperature_range?: JsonObject;
   special_handling_options?: string[];
   required_cargo_docs?: string[];
   created_at?: string;
