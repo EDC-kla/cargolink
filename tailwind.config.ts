@@ -26,9 +26,9 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#00AFF5", // BlaBlaCar-inspired blue
+          DEFAULT: "#2950CC", // New primary blue
           foreground: "#FFFFFF",
-          hover: "#008DC7",
+          hover: "#233FAF", // Darker shade for hover
         },
         secondary: {
           DEFAULT: "#8E9196", // Neutral gray
@@ -72,3 +72,4 @@ export default {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+

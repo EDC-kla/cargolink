@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 196 100% 48%;
+    --primary: 227 64% 48%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 220 3% 57%;
@@ -48,7 +48,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 196 100% 48%;
+    --primary: 227 64% 48%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -112,3 +112,4 @@
     @apply rounded-lg border border-gray-200 px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200;
   }
 }
+
