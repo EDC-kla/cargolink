@@ -90,7 +90,7 @@ const AvailableShipments = ({
     <div className="space-y-8">
       <div className="bg-white shadow-sm rounded-xl border border-gray-100">
         <div className="p-6 space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-4">
             <h1 className="text-2xl font-semibold text-gray-900">Available Cargo Space</h1>
             <div className="flex items-center gap-4">
               <Button
@@ -204,6 +204,14 @@ const AvailableShipments = ({
           isLoading={isLoading}
         />
       </div>
+
+      <Button 
+        onClick={handleNewShipment}
+        className="fixed bottom-4 right-4 shadow-lg sm:hidden"
+      >
+        <Plus className="mr-2 h-4 w-4" />
+        List Your Space
+      </Button>
     </div>
   );
 };

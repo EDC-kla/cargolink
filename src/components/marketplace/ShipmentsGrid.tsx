@@ -30,9 +30,24 @@ const ShipmentsGrid = ({
 
   if (!shipments?.length) {
     return (
-      <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Available Space Found</h3>
-        <p className="text-gray-500">Try adjusting your search criteria or check back later</p>
+      <div className="flex flex-col items-center justify-center py-16 px-4 bg-gray-50 rounded-xl border border-gray-100">
+        <div className="max-w-md text-center">
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            No Available Space Found
+          </h3>
+          <p className="text-gray-600 mb-6">
+            We couldn't find any cargo space matching your criteria. Try adjusting your search filters or check back later for new listings.
+          </p>
+          <div className="space-y-4 text-sm text-gray-500">
+            <p>You can try:</p>
+            <ul className="list-disc list-inside space-y-2">
+              <li>Adjusting your date range</li>
+              <li>Broadening your location search</li>
+              <li>Changing cargo size requirements</li>
+              <li>Trying different transport modes</li>
+            </ul>
+          </div>
+        </div>
       </div>
     );
   }
