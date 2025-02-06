@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
-import { Ship, Plane, Edit, Clock, Package, CircleDollarSign } from "lucide-react";
+import { Ship, Plane, Edit, Clock, Package, CircleDollarSign, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 
@@ -39,7 +39,7 @@ const ShipmentCard = ({
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="hover:shadow-lg transition-shadow bg-white">
       <CardContent className="pt-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
@@ -49,12 +49,29 @@ const ShipmentCard = ({
                 {shipment.transport_mode} Freight
               </span>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              {shipment.origin} → {shipment.destination}
-            </h3>
-            <div className="flex items-center mt-1 text-sm text-gray-500">
+            <div className="space-y-2">
+              <div className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-gray-500 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {shipment.origin}
+                  </h3>
+                  <p className="text-sm text-gray-500">Port of Loading</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-gray-500 mt-1 shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {shipment.destination}
+                  </h3>
+                  <p className="text-sm text-gray-500">Port of Discharge</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center mt-3 text-sm text-gray-500">
               <Clock className="h-4 w-4 mr-1" />
-              <span>{formatDate(shipment.departure_date)}</span>
+              <span>Departure: {formatDate(shipment.departure_date)}</span>
             </div>
           </div>
         </div>

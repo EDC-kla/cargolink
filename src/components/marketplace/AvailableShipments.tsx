@@ -4,7 +4,7 @@ import { Shipment } from "@/types/database.types";
 import TransportModeFilters from "./TransportModeFilters";
 import ShipmentsGrid from "./ShipmentsGrid";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, MapPin, Calendar, Package, Filter } from "lucide-react";
+import { Plus, Search, MapPin, Calendar, Package, Filter, ArrowRight } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -79,10 +79,10 @@ const AvailableShipments = ({
 
   return (
     <div className="space-y-8">
-      <div className="bg-white shadow-sm rounded-xl p-6 border border-gray-100">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="bg-white shadow-sm rounded-xl border border-gray-100">
+        <div className="p-6 space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-gray-900">Find Available Cargo Space</h1>
+            <h1 className="text-2xl font-semibold text-gray-900">Available Cargo Space</h1>
             <div className="flex items-center gap-4">
               <Sheet open={showMobileFilters} onOpenChange={setShowMobileFilters}>
                 <SheetTrigger asChild>
@@ -93,7 +93,7 @@ const AvailableShipments = ({
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
-                    <SheetTitle>Filters</SheetTitle>
+                    <SheetTitle>Search Filters</SheetTitle>
                     <SheetDescription>
                       Refine your cargo space search
                     </SheetDescription>
@@ -111,7 +111,7 @@ const AvailableShipments = ({
                 className="hidden sm:flex"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                List New Shipment
+                List Your Space
               </Button>
             </div>
           </div>
@@ -121,7 +121,7 @@ const AvailableShipments = ({
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <Input
-                  placeholder="Origin"
+                  placeholder="Origin Port/City"
                   className="pl-10 h-12"
                   value={searchData.origin}
                   onChange={(e) => setSearchData({ ...searchData, origin: e.target.value })}
@@ -130,7 +130,7 @@ const AvailableShipments = ({
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <Input
-                  placeholder="Destination"
+                  placeholder="Destination Port/City"
                   className="pl-10 h-12"
                   value={searchData.destination}
                   onChange={(e) => setSearchData({ ...searchData, destination: e.target.value })}
@@ -160,18 +160,17 @@ const AvailableShipments = ({
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <Button 
-                type="submit"
-                className="flex-1 h-12"
-              >
-                <Search className="mr-2 h-5 w-5" />
-                Search Available Space
-              </Button>
-            </div>
+            <Button 
+              type="submit"
+              className="w-full h-12"
+            >
+              <Search className="mr-2 h-5 w-5" />
+              Search Available Space
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
           </form>
 
-          <div className="hidden lg:block">
+          <div className="hidden lg:block border-t pt-6">
             <TransportModeFilters 
               transportMode={transportMode}
               onTransportModeChange={setTransportMode}
@@ -180,7 +179,7 @@ const AvailableShipments = ({
         </div>
       </div>
       
-      <div className="max-w-4xl mx-auto">
+      <div className="bg-white shadow-sm rounded-xl border border-gray-100 p-6">
         <ShipmentsGrid 
           shipments={filteredShipments}
           showBookButton={true}

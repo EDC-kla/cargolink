@@ -19,9 +19,9 @@ const ShipmentsGrid = ({
 }: ShipmentsGridProps) => {
   if (!shipments?.length) {
     return (
-      <div className="text-center py-12 bg-white rounded-lg border border-gray-100">
-        <p className="text-muted-foreground">No shipments found matching your criteria</p>
-        <p className="text-sm text-gray-500 mt-2">Try adjusting your search filters</p>
+      <div className="text-center py-12">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Available Space Found</h3>
+        <p className="text-gray-500">Try adjusting your search criteria or check back later</p>
       </div>
     );
   }
