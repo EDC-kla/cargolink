@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shipment } from "@/types/database.types";
 import { formatDate } from "@/lib/utils";
-import { Ship, Plane, Edit, Clock, Package, CircleDollarSign, MapPin, AlertTriangle, Truck, CheckCircle2 } from "lucide-react";
+import { Ship, Plane, Edit, Clock, Package, CircleDollarSign, MapPin, AlertTriangle, Truck, CheckCircle2, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import {
@@ -11,6 +11,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { cn } from "@/lib/utils";
 
 interface ShipmentCardProps {
   shipment: Shipment;
@@ -18,6 +19,7 @@ interface ShipmentCardProps {
   onEdit?: (shipment: Shipment) => void;
   showEditButton?: boolean;
   isAuthenticated?: boolean;
+  isFeatured?: boolean;
 }
 
 const ShipmentCard = ({ 
@@ -26,6 +28,7 @@ const ShipmentCard = ({
   onEdit,
   showEditButton = false,
   isAuthenticated = false,
+  isFeatured = false,
 }: ShipmentCardProps) => {
   const navigate = useNavigate();
   const TransportIcon = shipment.transport_mode === 'sea' ? Ship : Plane;
@@ -55,7 +58,17 @@ const ShipmentCard = ({
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow bg-white">
+    <Card className={cn(
+      "hover:shadow-lg transition-shadow bg-white relative",
+      isFeatured && "border-primary border-2"
+    )}>
+      {isFeatured && (
+        <div className="absolute -top-3 left-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+          <Star className="w-4 h-4" />
+          Featured
+        </div>
+      )}
+      
       <CardContent className="pt-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">

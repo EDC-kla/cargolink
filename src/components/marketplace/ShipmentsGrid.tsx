@@ -10,6 +10,7 @@ interface ShipmentsGridProps {
   showEditButton?: boolean;
   isAuthenticated?: boolean;
   isLoading?: boolean;
+  showFeaturedFirst?: boolean;
 }
 
 const ShipmentsGrid = ({ 
@@ -19,6 +20,7 @@ const ShipmentsGrid = ({
   showEditButton = false,
   isAuthenticated = false,
   isLoading = false,
+  showFeaturedFirst = false,
 }: ShipmentsGridProps) => {
   if (isLoading) {
     return (
@@ -52,9 +54,18 @@ const ShipmentsGrid = ({
     );
   }
 
+  // Sort shipments to show featured ones first if requested
+  const sortedShipments = showFeaturedFirst 
+    ? [...shipments].sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+      })
+    : shipments;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {shipments.map((shipment) => (
+      {sortedShipments.map((shipment) => (
         <ShipmentCard
           key={shipment.id}
           shipment={shipment}
@@ -62,6 +73,7 @@ const ShipmentsGrid = ({
           onEdit={onEdit}
           showEditButton={showEditButton}
           isAuthenticated={isAuthenticated}
+          isFeatured={showFeaturedFirst && shipment.featured}
         />
       ))}
     </div>
