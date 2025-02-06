@@ -96,7 +96,7 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
       title: "Cargo Details",
       component: (
         <CargoDetailsStep
-          data={formData}
+          formData={formData}
           onChange={(data) => setFormData({ ...formData, ...data })}
           shipment={shipment}
         />

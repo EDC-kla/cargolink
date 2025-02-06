@@ -6,11 +6,12 @@ import { CargoDimensions } from "@/types/database.types";
 interface CargoDetailsStepProps {
   formData: {
     cargo_dimensions: CargoDimensions;
-    onChange: (field: string, value: any) => void;
   };
+  onChange: (field: string, value: any) => void;
+  shipment: Shipment;
 }
 
-const CargoDetailsStep = ({ formData, onChange }: CargoDetailsStepProps) => {
+const CargoDetailsStep = ({ formData, onChange, shipment }: CargoDetailsStepProps) => {
   const initialDimensions: CargoDimensions = {
     length: 0,
     width: 0,
@@ -79,6 +80,7 @@ const CargoDetailsStep = ({ formData, onChange }: CargoDetailsStepProps) => {
             id="weight_unit"
             value={dimensions.weight_unit}
             onChange={(e) => handleDimensionChange("weight_unit", e.target.value)}
+            className="w-full p-2 border rounded"
           >
             <option value="kg">Kilograms</option>
             <option value="lbs">Pounds</option>
@@ -90,6 +92,7 @@ const CargoDetailsStep = ({ formData, onChange }: CargoDetailsStepProps) => {
             id="dimension_unit"
             value={dimensions.dimension_unit}
             onChange={(e) => handleDimensionChange("dimension_unit", e.target.value)}
+            className="w-full p-2 border rounded"
           >
             <option value="m">Meters</option>
             <option value="cm">Centimeters</option>
