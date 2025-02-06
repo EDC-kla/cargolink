@@ -61,4 +61,3 @@ const TransportModeFilters = ({ transportMode, onTransportModeChange }: Transpor
 };
 
 export default TransportModeFilters;
-

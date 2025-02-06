@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Shipment, TransportMode } from "@/types/database.types";
 import TransportModeFilters from "./TransportModeFilters";
 import ShipmentsGrid from "./ShipmentsGrid";
@@ -219,4 +218,3 @@ const AvailableShipments = ({
 };
 
 export default AvailableShipments;
-
