@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { shipmentService } from "@/services/api";
-import { TransportMode, ShipmentStatus } from "@/types/database.types";
+import { TransportMode, ShipmentStatus, CargoType } from "@/types/database.types";
 import BasicShipmentFields from "./form/BasicShipmentFields";
 import CargoDetailsFields from "./form/CargoDetailsFields";
 
@@ -34,7 +34,7 @@ const CreateShipmentForm = ({ onClose }: CreateShipmentFormProps) => {
     route_tags: [] as string[],
     route_type: "direct",
     notes: "",
-    preferred_cargo_types: [] as string[],
+    preferred_cargo_types: [] as CargoType[],
     stops: [] as any[],
     featured: false,
     display_order: 0,
