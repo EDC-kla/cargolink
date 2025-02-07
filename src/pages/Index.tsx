@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
 import { Ship, ShieldCheck, Banknote, Globe, Timer, Scale, Package, FileCheck, Truck } from "lucide-react";
+import NavLogo from "@/components/navbar/NavLogo";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -14,27 +15,27 @@ const Index = () => {
   const features = [
     {
       icon: Ship,
-      title: "Pan-African Coverage",
-      description: "Access major trade routes connecting African markets, from Mombasa to Lagos and beyond."
+      title: "Pan-African Network",
+      description: "Access major trade routes connecting African markets, with real-time tracking and updates."
     },
     {
       icon: ShieldCheck,
-      title: "Trusted Network",
-      description: "Join our vetted community of African carriers and shippers with verified credentials."
+      title: "Verified Partners",
+      description: "Join our vetted community of African carriers and shippers with proven track records."
     },
     {
       icon: Banknote,
-      title: "Cost Efficiency",
-      description: "Save up to 40% on shipping costs by booking directly with carriers and forwarders."
+      title: "Cost Savings",
+      description: "Save up to 40% on shipping costs by booking directly with trusted carriers."
     },
     {
       icon: Globe,
       title: "Real-Time Updates",
-      description: "Track your shipments 24/7 with live location updates and customs status notifications."
+      description: "Track shipments 24/7 with live location and customs status notifications."
     },
     {
       icon: Timer,
-      title: "Fast Booking",
+      title: "Quick Booking",
       description: "Book cargo space instantly with automated documentation and secure payments."
     },
     {
@@ -66,7 +67,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Hero onGetStarted={handleGetStarted} />
       
-      <section className="py-20 bg-gradient-to-b from-white to-accent/10">
+      <section className="py-24 bg-gradient-to-b from-white to-accent/10">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0 }}
@@ -74,33 +75,33 @@ const Index = () => {
             transition={{ duration: 0.6 }}
             className="max-w-6xl mx-auto"
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-              How AfriLogix Works
+            <h2 className="text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+              How GogoCargo Works
             </h2>
             <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-              Three simple steps to revolutionize your African shipping experience
+              Three simple steps to transform your African shipping experience
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
               {howItWorks.map((step, index) => (
                 <motion.div
                   key={step.title}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className="text-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
+                  className="text-center p-8 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
                 >
-                  <div className="inline-flex p-3 rounded-full bg-accent mb-4">
+                  <div className="inline-flex p-4 rounded-full bg-accent mb-6 group-hover:scale-110 transition-transform">
                     <step.icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
+                  <h3 className="text-xl font-semibold mb-4">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
                 </motion.div>
               ))}
             </div>
 
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-              Why Choose AfriLogix
+            <h2 className="text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+              Why Choose GogoCargo
             </h2>
             <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
               Join thousands of businesses transforming their African shipping operations
@@ -131,7 +132,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-primary/5">
+      <section className="py-20 bg-primary/5">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -139,7 +140,7 @@ const Index = () => {
             transition={{ duration: 0.6 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            <h2 className="text-3xl font-bold mb-6">
               Ready to Transform Your Shipping?
             </h2>
             <p className="text-lg text-gray-600 mb-8">
@@ -169,45 +170,58 @@ const Index = () => {
 
       <footer className="bg-white py-16 border-t border-gray-100">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <h3 className="font-semibold text-lg text-primary">AfriLogix</h3>
-              <p className="text-sm text-gray-600">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col items-center mb-12">
+              <NavLogo />
+              <p className="mt-4 text-gray-600 text-center max-w-md">
                 Connecting Africa through innovative digital logistics solutions. Making cargo shipping simple, efficient, and affordable.
               </p>
             </div>
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900">Solutions</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Air Freight</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Sea Freight</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Customs Clearance</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Cargo Insurance</a></li>
-              </ul>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Solutions</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Air Freight</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Sea Freight</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Customs Clearance</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Cargo Insurance</a></li>
+                </ul>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Company</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">About Us</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Contact</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Partners</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Blog</a></li>
+                </ul>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Resources</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Documentation</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Help Center</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">FAQs</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">API</a></li>
+                </ul>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900">Legal</h4>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Privacy Policy</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Terms of Service</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Cookie Policy</a></li>
+                  <li><a href="#" className="text-gray-600 hover:text-primary transition-colors">Compliance</a></li>
+                </ul>
+              </div>
             </div>
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900">Company</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">About Us</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Contact</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Partners</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Blog</a></li>
-              </ul>
+            
+            <div className="border-t border-gray-100 pt-8 text-center">
+              <p className="text-sm text-gray-600">
+                © {new Date().getFullYear()} GogoCargo. Transforming African logistics through technology.
+              </p>
             </div>
-            <div className="space-y-4">
-              <h4 className="font-semibold text-gray-900">Legal</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Cookie Policy</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Compliance</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-100 mt-12 pt-8 text-center">
-            <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} AfriLogix. Transforming African logistics through technology.
-            </p>
           </div>
         </div>
       </footer>
