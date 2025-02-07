@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Calendar, Package, ArrowRight, Ship, Plane } from "lucide-react";
+import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, Globe } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
