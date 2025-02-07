@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight } from "lucide-react";
@@ -20,7 +21,6 @@ const Hero = ({ onGetStarted }: HeroProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Navigate to marketplace with search params
     const searchParams = new URLSearchParams({
       origin: searchData.origin,
       destination: searchData.destination,
@@ -46,7 +46,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80"
             >
-              Ship Smarter Together
+              Move Cargo Across Africa, <br />Without the Hassle
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -54,7 +54,8 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-xl text-gray-600 max-w-2xl mx-auto"
             >
-              Find available cargo space or offer your excess capacity. Save costs and reduce environmental impact.
+              Connect with trusted carriers, find the best rates, and ship with confidence. 
+              Whether it's a container or just a few boxes, we've got space for your cargo.
             </motion.p>
           </div>
 
@@ -67,11 +68,11 @@ const Hero = ({ onGetStarted }: HeroProps) => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">From</label>
+                  <label className="text-sm font-medium text-gray-700">Shipping From</label>
                   <div className="relative">
                     <MapPin className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
                     <Input
-                      placeholder="City or Port"
+                      placeholder="e.g., Nairobi, Mombasa Port"
                       className="pl-12 h-12 text-base"
                       value={searchData.origin}
                       onChange={(e) => setSearchData({ ...searchData, origin: e.target.value })}
@@ -79,11 +80,11 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">To</label>
+                  <label className="text-sm font-medium text-gray-700">Shipping To</label>
                   <div className="relative">
                     <MapPin className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
                     <Input
-                      placeholder="City or Port"
+                      placeholder="e.g., Lagos, Dar es Salaam"
                       className="pl-12 h-12 text-base"
                       value={searchData.destination}
                       onChange={(e) => setSearchData({ ...searchData, destination: e.target.value })}
@@ -94,7 +95,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">When</label>
+                  <label className="text-sm font-medium text-gray-700">When Do You Need It?</label>
                   <div className="relative">
                     <Calendar className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
                     <Input
@@ -106,12 +107,12 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Cargo Size</label>
+                  <label className="text-sm font-medium text-gray-700">How Much Space?</label>
                   <div className="relative">
                     <Package className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
                     <Input
-                      placeholder="Size in CBM"
                       type="number"
+                      placeholder="Enter space in CBM"
                       className="pl-12 h-12 text-base"
                       value={searchData.cargoSize}
                       onChange={(e) => setSearchData({ ...searchData, cargoSize: e.target.value })}
@@ -143,10 +144,10 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 onClick={onGetStarted}
                 className="w-full sm:w-auto h-12 text-base font-semibold border-2 hover:bg-accent/5"
               >
-                List Your Shipment
+                List Your Space
               </Button>
               <p className="mt-2 text-sm text-gray-600">
-                Offer your available cargo space
+                Got extra cargo space? Turn it into revenue
               </p>
             </div>
             <div className="text-center">
@@ -156,10 +157,10 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 onClick={() => navigate('/marketplace')}
                 className="w-full sm:w-auto h-12 text-base font-semibold border-2 hover:bg-accent/5"
               >
-                View Marketplace
+                Explore Marketplace
               </Button>
               <p className="mt-2 text-sm text-gray-600">
-                Browse all available shipments
+                Browse available routes and rates
               </p>
             </div>
           </motion.div>
