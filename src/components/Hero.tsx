@@ -30,7 +30,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-white via-accent/20 to-white pt-20 pb-32 overflow-hidden">
+    <div className="relative bg-gradient-to-b from-white via-accent/20 to-white pt-16 pb-24 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -57,8 +57,8 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               transition={{ duration: 0.5 }}
               className="flex justify-center items-center gap-4 mb-6"
             >
-              <Ship className="h-12 w-12 text-primary/80" />
-              <Plane className="h-12 w-12 text-primary transform -rotate-45" />
+              <Ship className="h-10 w-10 text-primary/80" />
+              <Plane className="h-10 w-10 text-primary transform -rotate-45" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -66,10 +66,10 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="space-y-4"
             >
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+              <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
                 Book Cargo Space Across Africa <br />in Minutes
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Africa's digital logistics marketplace connecting shippers with available air & sea freight space. 
                 <span className="font-semibold text-primary"> Save up to 40% on shipping costs.</span>
               </p>
