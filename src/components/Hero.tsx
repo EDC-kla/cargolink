@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, Globe } from "lucide-react";
+import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, Globe as GlobeIcon } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -176,7 +176,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 className="w-full sm:w-auto h-12 text-base font-semibold border-2 hover:bg-accent/5 group"
               >
                 Browse Marketplace
-                <Globe className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                <GlobeIcon className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
               </Button>
               <p className="mt-2 text-sm text-gray-600">
                 Compare routes and instant quotes
