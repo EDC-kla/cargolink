@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, Globe as GlobeIcon } from "lucide-react";
@@ -57,8 +58,8 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               transition={{ duration: 0.5 }}
               className="flex justify-center items-center gap-4 mb-6"
             >
-              <Ship className="h-10 w-10 text-primary/80" />
-              <Plane className="h-10 w-10 text-primary transform -rotate-45" />
+              <Ship className="h-12 w-12 text-primary/80" />
+              <Plane className="h-12 w-12 text-primary transform -rotate-45" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -66,12 +67,11 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="space-y-4"
             >
-              <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-                Book Cargo Space Across Africa <br />in Minutes
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+                Your Gateway to African <br />Logistics Excellence
               </h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Africa's digital logistics marketplace connecting shippers with available air & sea freight space. 
-                <span className="font-semibold text-primary"> Save up to 40% on shipping costs.</span>
+              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Connect with Africa's largest network of verified carriers and save up to <span className="font-semibold text-primary">40% on shipping costs</span>. Ship smarter, not harder.
               </p>
             </motion.div>
           </div>
@@ -165,7 +165,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 <Ship className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
               </Button>
               <p className="mt-2 text-sm text-gray-600">
-                Got empty cargo space? Earn more revenue
+                Maximize your revenue with empty cargo space
               </p>
             </div>
             <div className="text-center">
@@ -179,7 +179,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 <GlobeIcon className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
               </Button>
               <p className="mt-2 text-sm text-gray-600">
-                Compare routes and instant quotes
+                Find the best rates across Africa
               </p>
             </div>
           </motion.div>

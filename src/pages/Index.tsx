@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -13,51 +14,51 @@ const Index = () => {
   const features = [
     {
       icon: Ship,
-      title: "Book Cargo Space Instantly",
-      description: "Find and book available air & sea freight space across Africa's busiest trade routes."
+      title: "Pan-African Coverage",
+      description: "Access major trade routes connecting African markets, from Mombasa to Lagos and beyond."
     },
     {
       icon: ShieldCheck,
-      title: "Verified Network",
-      description: "Ship with confidence through our vetted network of African carriers and forwarders."
+      title: "Trusted Network",
+      description: "Join our vetted community of African carriers and shippers with verified credentials."
     },
     {
       icon: Banknote,
-      title: "Save Up to 40%",
-      description: "Compare rates instantly and skip the middlemen. Pay securely via M-Pesa or card."
+      title: "Cost Efficiency",
+      description: "Save up to 40% on shipping costs by booking directly with carriers and forwarders."
     },
     {
       icon: Globe,
-      title: "Pan-African Coverage",
-      description: "From Mombasa to Lagos, access major trade routes connecting African markets."
+      title: "Real-Time Updates",
+      description: "Track your shipments 24/7 with live location updates and customs status notifications."
     },
     {
       icon: Timer,
-      title: "Real-Time Tracking",
-      description: "Track your shipments 24/7 with live updates on location and customs status."
+      title: "Fast Booking",
+      description: "Book cargo space instantly with automated documentation and secure payments."
     },
     {
       icon: Scale,
-      title: "Any Size Welcome",
-      description: "Whether it's one pallet or multiple containers, we've got space for your cargo."
+      title: "Flexible Solutions",
+      description: "From single pallets to full containers, we accommodate cargo of all sizes."
     }
   ];
 
   const howItWorks = [
     {
       icon: Package,
-      title: "List Your Cargo Space",
-      description: "Share details about your available air or sea freight capacity, routes, and pricing."
+      title: "List or Find Space",
+      description: "List your available cargo space or search for shipping capacity that matches your needs."
     },
     {
       icon: FileCheck,
-      title: "Get Instant Bookings",
-      description: "Shippers can book your space instantly with secure digital documentation."
+      title: "Book Securely",
+      description: "Complete your booking with instant documentation and secure payment processing."
     },
     {
       icon: Truck,
-      title: "Track & Earn",
-      description: "Monitor shipments in real-time and get paid securely through our platform."
+      title: "Ship & Track",
+      description: "Monitor your shipment in real-time and get updates at every step of the journey."
     }
   ];
 
@@ -73,11 +74,11 @@ const Index = () => {
             transition={{ duration: 0.6 }}
             className="max-w-6xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-              How It Works
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+              How AfriLogix Works
             </h2>
             <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-              Three simple steps to start moving cargo across Africa
+              Three simple steps to revolutionize your African shipping experience
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
@@ -87,9 +88,9 @@ const Index = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className="text-center p-6"
+                  className="text-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <div className="inline-flex p-3 rounded-full bg-accent/20 mb-4">
+                  <div className="inline-flex p-3 rounded-full bg-accent mb-4">
                     <step.icon className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
@@ -98,11 +99,11 @@ const Index = () => {
               ))}
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-              Ship Smarter Across Africa
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+              Why Choose AfriLogix
             </h2>
             <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-              Join thousands of businesses saving time and money on their African shipping operations
+              Join thousands of businesses transforming their African shipping operations
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -138,7 +139,7 @@ const Index = () => {
             transition={{ duration: 0.6 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">
               Ready to Transform Your Shipping?
             </h2>
             <p className="text-lg text-gray-600 mb-8">
@@ -166,45 +167,46 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="bg-primary/5 py-16 mt-16">
+      <footer className="bg-white py-16 border-t border-gray-100">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
-              <h3 className="font-semibold text-lg">AfriLogix</h3>
+              <h3 className="font-semibold text-lg text-primary">AfriLogix</h3>
               <p className="text-sm text-gray-600">
-                Africa's digital logistics marketplace connecting shippers with available cargo space.
+                Connecting Africa through innovative digital logistics solutions. Making cargo shipping simple, efficient, and affordable.
               </p>
             </div>
             <div className="space-y-4">
-              <h4 className="font-semibold">Solutions</h4>
+              <h4 className="font-semibold text-gray-900">Solutions</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Air Freight</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Sea Freight</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Customs Clearance</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Cargo Insurance</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Air Freight</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Sea Freight</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Customs Clearance</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Cargo Insurance</a></li>
               </ul>
             </div>
             <div className="space-y-4">
-              <h4 className="font-semibold">Company</h4>
+              <h4 className="font-semibold text-gray-900">Company</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">About Us</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Contact</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Partners</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Blog</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">About Us</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Contact</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Partners</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Blog</a></li>
               </ul>
             </div>
             <div className="space-y-4">
-              <h4 className="font-semibold">Legal</h4>
+              <h4 className="font-semibold text-gray-900">Legal</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Privacy Policy</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Terms of Service</a></li>
-                <li><a href="#" className="text-sm text-gray-600 hover:text-primary">Cookie Policy</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Cookie Policy</a></li>
+                <li><a href="#" className="text-sm text-gray-600 hover:text-primary transition-colors">Compliance</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-200 mt-12 pt-8 text-center">
+          <div className="border-t border-gray-100 mt-12 pt-8 text-center">
             <p className="text-sm text-gray-600">
-              © {new Date().getFullYear()} AfriLogix. All rights reserved.
+              © {new Date().getFullYear()} AfriLogix. Transforming African logistics through technology.
             </p>
           </div>
         </div>
