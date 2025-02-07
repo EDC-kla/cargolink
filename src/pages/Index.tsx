@@ -33,10 +33,10 @@ const Index = () => {
             className="max-w-4xl mx-auto text-center"
           >
             <h2 className="text-3xl font-bold mb-6">
-              Ready to Transform Your Shipping?
+              Ready to Optimize Your Global Shipping?
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              Join Africa's fastest-growing logistics marketplace today
+              Join the marketplace revolutionizing international trade through Africa
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <motion.button

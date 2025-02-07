@@ -5,33 +5,33 @@ import { Ship, ShieldCheck, Banknote, Globe, Timer, Scale } from "lucide-react";
 const features = [
   {
     icon: Ship,
-    title: "Pan-African Network",
-    description: "Access major trade routes connecting African markets, with real-time tracking and updates."
+    title: "Global Network",
+    description: "Connect with verified carriers on major trade routes linking Africa to international markets."
   },
   {
     icon: ShieldCheck,
-    title: "Verified Partners",
-    description: "Join our vetted community of African carriers and shippers with proven track records."
+    title: "Trusted Partners",
+    description: "Access our network of verified global carriers and shippers with proven track records."
   },
   {
     icon: Banknote,
-    title: "Cost Savings",
-    description: "Save up to 40% on shipping costs by booking directly with trusted carriers."
+    title: "Cost Optimization",
+    description: "Save up to 40% on shipping costs by sharing cargo space and booking directly."
   },
   {
     icon: Globe,
-    title: "Real-Time Updates",
-    description: "Track shipments 24/7 with live location and customs status notifications."
+    title: "Real-Time Visibility",
+    description: "Track shipments globally with live updates on location, customs, and delivery status."
   },
   {
     icon: Timer,
-    title: "Quick Booking",
-    description: "Book cargo space instantly with automated documentation and secure payments."
+    title: "Instant Booking",
+    description: "Book cargo space with automated documentation and secure cross-border payments."
   },
   {
     icon: Scale,
     title: "Flexible Solutions",
-    description: "From single pallets to full containers, we accommodate cargo of all sizes."
+    description: "Find the right space for any cargo size, from parcels to full containers."
   }
 ];
 

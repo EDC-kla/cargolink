@@ -68,10 +68,10 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               className="space-y-6"
             >
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-                Ship Smarter Across Africa
+                Connect Global Markets Through African Trade Routes
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Join Africa's largest network of verified carriers. Save up to <span className="font-semibold text-primary">40%</span> on shipping costs while enjoying seamless, secure logistics solutions.
+                List your available cargo space or find efficient shipping solutions on Africa's first digital logistics marketplace. Save up to <span className="font-semibold text-primary">40%</span> by sharing cargo space across global trade routes.
               </p>
             </motion.div>
           </div>

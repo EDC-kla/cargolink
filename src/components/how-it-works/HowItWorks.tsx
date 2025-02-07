@@ -6,17 +6,17 @@ const howItWorks = [
   {
     icon: Package,
     title: "List or Find Space",
-    description: "List your available cargo space or search for shipping capacity that matches your needs."
+    description: "List your excess cargo capacity or find available space on routes connecting Africa to global markets."
   },
   {
     icon: FileCheck,
     title: "Book Securely",
-    description: "Complete your booking with instant documentation and secure payment processing."
+    description: "Get instant quotes, automated documentation, and secure payment processing for seamless transactions."
   },
   {
     icon: Truck,
     title: "Ship & Track",
-    description: "Monitor your shipment in real-time and get updates at every step of the journey."
+    description: "Track your shipments in real-time with end-to-end visibility across international trade routes."
   }
 ];
 
@@ -32,7 +32,7 @@ const HowItWorks = () => {
         How GogoCargo Works
       </h2>
       <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-        Three simple steps to transform your African shipping experience
+        Streamline your global shipping through Africa's digital logistics marketplace
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
