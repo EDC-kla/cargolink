@@ -1,4 +1,5 @@
-import React from 'react';
+
+import * as React from 'react';
 import { motion } from "framer-motion";
 import { Package, FileCheck, Truck, Globe, ArrowRight } from "lucide-react";
 
