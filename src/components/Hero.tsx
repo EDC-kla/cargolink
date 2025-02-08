@@ -147,42 +147,6 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               </Button>
             </form>
           </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="flex flex-col sm:flex-row justify-center gap-6"
-          >
-            <div className="text-center">
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={onGetStarted}
-                className="w-full sm:w-auto h-12 text-base font-semibold border-2 hover:bg-accent/5 group"
-              >
-                List Your Space
-                <Ship className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-              </Button>
-              <p className="mt-2 text-sm text-gray-600">
-                Maximize your revenue with empty cargo space
-              </p>
-            </div>
-            <div className="text-center">
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={() => navigate('/marketplace')}
-                className="w-full sm:w-auto h-12 text-base font-semibold border-2 hover:bg-accent/5 group"
-              >
-                Browse Marketplace
-                <GlobeIcon className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-              </Button>
-              <p className="mt-2 text-sm text-gray-600">
-                Find the best rates across Africa
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </div>
