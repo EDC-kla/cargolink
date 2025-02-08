@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { motion } from "framer-motion";
-import { Package, FileCheck, Truck, Globe, ArrowRight, Ship, MapPin } from "lucide-react";
+import { Package, FileCheck, Truck, Globe, ArrowRight } from "lucide-react";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -153,43 +153,6 @@ const HowItWorks = () => {
               ))}
             </div>
           </div>
-
-          {/* Interactive Demo Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="mt-20"
-          >
-            <div className="bg-white rounded-2xl shadow-xl p-8">
-              <h3 className="text-2xl font-semibold text-center mb-8">Live Demo Preview</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="flex items-center justify-center p-4 bg-accent/10 rounded-lg">
-                  <Ship className="h-8 w-8 text-primary mr-3" />
-                  <div>
-                    <p className="text-sm text-gray-600">Route</p>
-                    <p className="font-semibold">Lagos → Dubai</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-center p-4 bg-accent/10 rounded-lg">
-                  <MapPin className="h-8 w-8 text-primary mr-3" />
-                  <div>
-                    <p className="text-sm text-gray-600">Distance</p>
-                    <p className="font-semibold">3,800 km</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-center p-4 bg-accent/10 rounded-lg">
-                  <Package className="h-8 w-8 text-primary mr-3" />
-                  <div>
-                    <p className="text-sm text-gray-600">Estimated Cost</p>
-                    <p className="font-semibold">$3.2k</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </ErrorBoundary>
