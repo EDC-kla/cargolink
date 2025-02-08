@@ -1,10 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, Globe as GlobeIcon } from "lucide-react";
+import { MapPin, Calendar, Package, ArrowRight, Ship, Plane } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { shipmentService } from "@/services/api";
+import ShipmentsGrid from "@/components/marketplace/ShipmentsGrid";
 
 interface HeroProps {
   onGetStarted: () => void;
@@ -17,6 +20,14 @@ const Hero = ({ onGetStarted }: HeroProps) => {
     destination: "",
     date: "",
     cargoSize: "",
+  });
+
+  const { data: shipments, isLoading } = useQuery({
+    queryKey: ['shipments', 'featured'],
+    queryFn: async () => {
+      const allShipments = await shipmentService.listShipments();
+      return allShipments.filter(shipment => shipment.featured);
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -146,6 +157,23 @@ const Hero = ({ onGetStarted }: HeroProps) => {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </form>
+          </motion.div>
+
+          {/* Featured Listings Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="mt-16"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+              Featured Shipping Routes
+            </h2>
+            <ShipmentsGrid 
+              shipments={shipments} 
+              isLoading={isLoading}
+              showFeaturedFirst={true}
+            />
           </motion.div>
         </motion.div>
       </div>
