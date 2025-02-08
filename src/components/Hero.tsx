@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight, Ship, Plane } from "lucide-react";
@@ -23,10 +22,9 @@ const Hero = ({ onGetStarted }: HeroProps) => {
   });
 
   const { data: shipments, isLoading } = useQuery({
-    queryKey: ['shipments', 'featured'],
+    queryKey: ['shipments', 'all'],
     queryFn: async () => {
-      const allShipments = await shipmentService.listShipments();
-      return allShipments.filter(shipment => shipment.featured);
+      return await shipmentService.listShipments();
     },
   });
 
@@ -159,7 +157,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
             </form>
           </motion.div>
 
-          {/* Featured Listings Section */}
+          {/* Available Listings Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,7 +165,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
             className="mt-16"
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Featured Shipping Routes
+              Available Shipping Routes
             </h2>
             <ShipmentsGrid 
               shipments={shipments} 
