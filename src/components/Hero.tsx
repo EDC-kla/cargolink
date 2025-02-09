@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Calendar, Package, ArrowRight, Ship, Plane } from "lucide-react";
+import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +12,11 @@ interface HeroProps {
   onGetStarted: () => void;
 }
 
+const ITEMS_PER_PAGE = 6;
+
 const Hero = ({ onGetStarted }: HeroProps) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchData, setSearchData] = useState({
     origin: "",
     destination: "",
@@ -43,6 +45,19 @@ const Hero = ({ onGetStarted }: HeroProps) => {
       cargoSize: searchData.cargoSize,
     });
     navigate(`/marketplace?${searchParams.toString()}`);
+  };
+
+  // Pagination logic
+  const totalPages = shipments ? Math.ceil(shipments.length / ITEMS_PER_PAGE) : 0;
+  const paginatedShipments = shipments?.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    // Smooth scroll to listings section
+    document.getElementById('listings-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -165,19 +180,69 @@ const Hero = ({ onGetStarted }: HeroProps) => {
 
           {/* Available Listings Section */}
           <motion.div
+            id="listings-section"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
             className="mt-16"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-              Available Shipping Routes
-            </h2>
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Available Shipping Routes
+              </h2>
+              <Button
+                variant="outline"
+                onClick={() => navigate('/marketplace')}
+                className="text-primary hover:text-primary/90"
+              >
+                View All Routes
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+
             <ShipmentsGrid 
-              shipments={shipments} 
+              shipments={paginatedShipments} 
               isLoading={isLoading}
               showFeaturedFirst={true}
             />
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="w-10 h-10"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                
+                <div className="flex gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <Button
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      onClick={() => handlePageChange(page)}
+                      className="w-10 h-10"
+                    >
+                      {page}
+                    </Button>
+                  ))}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="w-10 h-10"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       </div>
