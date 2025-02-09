@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight, Ship, Plane } from "lucide-react";
@@ -21,10 +22,15 @@ const Hero = ({ onGetStarted }: HeroProps) => {
     cargoSize: "",
   });
 
-  const { data: shipments, isLoading } = useQuery({
+  const { data: shipments, isLoading, error } = useQuery({
     queryKey: ['shipments', 'all'],
     queryFn: async () => {
-      return await shipmentService.listShipments();
+      try {
+        return await shipmentService.listShipments();
+      } catch (err) {
+        console.error('Error fetching shipments:', err);
+        return [];
+      }
     },
   });
 
