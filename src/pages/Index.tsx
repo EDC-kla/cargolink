@@ -17,13 +17,27 @@ const Index = () => {
     <div className="min-h-screen">
       <Hero onGetStarted={handleGetStarted} />
       
-      <section className="py-24 bg-gradient-to-b from-white to-accent/10">
-        <div className="container mx-auto px-4">
-          <HowItWorks />
-          <Features />
-        </div>
-      </section>
+      {/* Sections Container */}
+      <div className="relative">
+        {/* Decorative top border */}
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent" />
+        
+        {/* How It Works Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <HowItWorks />
+          </div>
+        </section>
 
+        {/* Features Section with different background */}
+        <section className="py-16 bg-accent/5">
+          <div className="container mx-auto px-4">
+            <Features />
+          </div>
+        </section>
+      </div>
+
+      {/* Call to Action Section */}
       <section className="py-20 bg-primary/5">
         <div className="container mx-auto px-4">
           <motion.div 
