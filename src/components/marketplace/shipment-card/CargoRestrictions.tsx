@@ -8,6 +8,14 @@ interface CargoRestrictionsProps {
 const CargoRestrictions = ({ restrictions }: CargoRestrictionsProps) => {
   if (!restrictions?.length) return null;
 
+  const formatRestriction = (restriction: string): string => {
+    // Split by underscore and capitalize each word
+    return restriction
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   return (
     <div className="mt-4 p-3 bg-yellow-50 rounded-md">
       <div className="flex items-center text-yellow-800 text-sm">
@@ -15,10 +23,11 @@ const CargoRestrictions = ({ restrictions }: CargoRestrictionsProps) => {
         <span className="font-medium">Cargo Restrictions</span>
       </div>
       <p className="mt-1 text-sm text-yellow-700">
-        {restrictions.join(', ')}
+        {restrictions.map(formatRestriction).join(', ')}
       </p>
     </div>
   );
 };
 
 export default CargoRestrictions;
+
