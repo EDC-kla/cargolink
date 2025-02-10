@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Calendar, Package, ArrowRight, Ship, Plane, ChevronLeft, ChevronRight } from "lucide-react";
@@ -72,12 +73,12 @@ const Hero = ({ onGetStarted }: HeroProps) => {
         }}
       />
       
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-7xl">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto"
+          className="max-w-5xl mx-auto"
         >
           <div className="text-center mb-12 space-y-8">
             <motion.div 
@@ -251,3 +252,4 @@ const Hero = ({ onGetStarted }: HeroProps) => {
 };
 
 export default Hero;
+
