@@ -1,3 +1,4 @@
+
 // Enums
 export type TransportMode = 'sea' | 'air' | 'rail' | 'road';
 export type ShipmentStatus = 'available' | 'booked' | 'in_transit' | 'completed' | 'cancelled';
@@ -16,6 +17,15 @@ export type SpecialHandlingType =
   | 'do_not_stack'
   | 'protect_from_heat'
   | 'protect_from_moisture';
+
+// Base type for JSON objects
+export type Json = 
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[];
 
 // Interfaces for complex types
 export interface CargoDimensions {
@@ -45,6 +55,14 @@ export interface InsuranceCoverage {
   loss: boolean;
   temperature_deviation?: boolean;
   hazmat_incident?: boolean;
+}
+
+export interface RouteStop {
+  location: string;
+  arrival_date: string;
+  departure_date: string;
+  stop_type: 'port' | 'terminal' | 'warehouse' | 'customs';
+  notes?: string;
 }
 
 export interface EquipmentDetails {
@@ -171,10 +189,10 @@ export interface Shipment {
   port_of_loading?: string;
   port_of_discharge?: string;
   accepted_cargo_types?: string[];
-  max_piece_dimensions?: JsonObject;
+  max_piece_dimensions?: Json;
   hazmat_accepted?: boolean;
   temperature_controlled?: boolean;
-  temperature_range?: JsonObject;
+  temperature_range?: Json;
   special_handling_options?: string[];
   required_cargo_docs?: string[];
   description?: string;
@@ -186,16 +204,16 @@ export interface Shipment {
   
   // New fields
   vessel_type?: string;
-  equipment_details?: EquipmentDetails;
-  service_level_agreement?: ServiceLevelAgreement;
+  equipment_details?: Json;
+  service_level_agreement?: Json;
   carrier_certifications?: string[];
-  liability_coverage?: LiabilityCoverage;
-  schedule_reliability_metrics?: ScheduleReliabilityMetrics;
+  liability_coverage?: Json;
+  schedule_reliability_metrics?: Json;
   intermodal_services?: string[];
-  vessel_tracking_info?: VesselTrackingInfo;
-  service_schedule?: ServiceSchedule;
-  carrier_insurance_info?: CarrierInsuranceInfo;
-  equipment_specifications?: JsonObject;
+  vessel_tracking_info?: Json;
+  service_schedule?: Json;
+  carrier_insurance_info?: Json;
+  equipment_specifications?: Json;
 }
 
 export interface Booking {
@@ -211,11 +229,11 @@ export interface Booking {
   insurance_required?: boolean;
   pickup_address?: string;
   delivery_address?: string;
-  booking_preferences?: JsonObject;
+  booking_preferences?: Json;
   communication_preferences?: string[];
   cargo_packaging_type?: string;
-  cargo_dimensions?: JsonObject;  // Changed from CargoDimensions to JsonObject
-  hazmat_details?: JsonObject;  // Changed from HazmatDetails to JsonObject
+  cargo_dimensions?: Json;
+  hazmat_details?: Json;
   required_certificates?: string[];
   customs_broker?: string;
   payment_terms?: string;
@@ -223,9 +241,9 @@ export interface Booking {
   estimated_delivery_date?: string;
   actual_delivery_date?: string;
   tracking_number?: string;
-  shipping_documents?: JsonObject;
+  shipping_documents?: Json;
   booking_notes?: string;
-  temperature_requirements?: JsonObject;  // Changed from CargoTemperatureRequirements to JsonObject
+  temperature_requirements?: Json;
   step_progress?: number;
   last_modified?: string;
   is_draft?: boolean;
@@ -235,21 +253,21 @@ export interface Booking {
   customs_status?: string;
   container_number?: string[];
   insurance_value?: number;
-  insurance_coverage?: JsonObject;  // Changed from InsuranceCoverage to JsonObject
+  insurance_coverage?: Json;
   created_at?: string;
   
   // New fields
   shipper_certifications?: string[];
-  shipping_history?: JsonObject;
+  shipping_history?: Json;
   cargo_classification_codes?: string[];
   handling_codes?: string[];
   dangerous_goods_class?: string;
-  customs_compliance_info?: CustomsComplianceInfo;
-  trade_compliance_details?: TradeComplianceDetails;
-  cargo_insurance_details?: JsonObject;
-  packaging_specifications?: PackagingSpecifications;
-  regulatory_requirements?: RegulatoryRequirements;
-  export_control_details?: ExportControlDetails;
+  customs_compliance_info?: Json;
+  trade_compliance_details?: Json;
+  cargo_insurance_details?: Json;
+  packaging_specifications?: Json;
+  regulatory_requirements?: Json;
+  export_control_details?: Json;
 }
 
 export interface Profile {
