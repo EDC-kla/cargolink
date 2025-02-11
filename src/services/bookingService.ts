@@ -16,6 +16,15 @@ function transformBookingResponse(data: any): Booking {
       : null,
     special_handling: data.special_handling || [],
     required_certificates: data.required_certificates || [],
+    shipper_certifications: data.shipper_certifications || [],
+    cargo_classification_codes: data.cargo_classification_codes || [],
+    handling_codes: data.handling_codes || [],
+    customs_compliance_info: data.customs_compliance_info || null,
+    trade_compliance_details: data.trade_compliance_details || null,
+    cargo_insurance_details: data.cargo_insurance_details || null,
+    packaging_specifications: data.packaging_specifications || null,
+    regulatory_requirements: data.regulatory_requirements || null,
+    export_control_details: data.export_control_details || null,
     status: data.status as BookingStatus
   };
 }

@@ -47,18 +47,91 @@ export interface InsuranceCoverage {
   hazmat_incident?: boolean;
 }
 
-export interface RouteStop {
-  location: string;
-  arrival_date?: string;
-  departure_date?: string;
-  stop_type?: 'port' | 'terminal' | 'warehouse';
-  notes?: string;
+export interface EquipmentDetails {
+  type: string;
+  capacity: number;
+  features: string[];
+  maintenance_status?: string;
+  last_inspection_date?: string;
 }
 
-// Database JSON types
-export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
-export interface JsonObject {
-  [key: string]: JsonValue;
+export interface ServiceLevelAgreement {
+  delivery_guarantee?: boolean;
+  compensation_terms?: string;
+  service_standards: string[];
+  performance_metrics: Record<string, number>;
+}
+
+export interface LiabilityCoverage {
+  coverage_amount: number;
+  coverage_type: string;
+  exclusions: string[];
+  deductible?: number;
+}
+
+export interface ScheduleReliabilityMetrics {
+  on_time_performance: number;
+  delay_frequency: number;
+  average_delay_hours?: number;
+  historical_performance?: Record<string, number>;
+}
+
+export interface VesselTrackingInfo {
+  vessel_id?: string;
+  current_position?: { lat: number; lng: number };
+  speed?: number;
+  heading?: number;
+  last_port?: string;
+  next_port?: string;
+}
+
+export interface ServiceSchedule {
+  departure_frequency: string;
+  transit_times: Record<string, number>;
+  key_milestones: Array<{ point: string; estimated_time: string }>;
+}
+
+export interface CarrierInsuranceInfo {
+  provider: string;
+  policy_number: string;
+  coverage_amount: number;
+  expiry_date: string;
+  covered_risks: string[];
+}
+
+export interface CustomsComplianceInfo {
+  customs_broker?: string;
+  broker_license?: string;
+  clearance_requirements: string[];
+  documentation_status: Record<string, string>;
+}
+
+export interface TradeComplianceDetails {
+  export_license_required: boolean;
+  import_license_required: boolean;
+  restricted_parties_status: string;
+  trade_agreements: string[];
+}
+
+export interface PackagingSpecifications {
+  type: string;
+  material: string;
+  dimensions: CargoDimensions;
+  special_requirements: string[];
+}
+
+export interface RegulatoryRequirements {
+  certificates_required: string[];
+  compliance_status: Record<string, boolean>;
+  regulatory_bodies: string[];
+  expiry_dates: Record<string, string>;
+}
+
+export interface ExportControlDetails {
+  classification: string;
+  license_required: boolean;
+  restrictions: string[];
+  destination_requirements: Record<string, string>;
 }
 
 // Main interfaces
@@ -110,6 +183,19 @@ export interface Shipment {
   booking_deadline?: string;
   created_at?: string;
   created_by?: string;
+  
+  // New fields
+  vessel_type?: string;
+  equipment_details?: EquipmentDetails;
+  service_level_agreement?: ServiceLevelAgreement;
+  carrier_certifications?: string[];
+  liability_coverage?: LiabilityCoverage;
+  schedule_reliability_metrics?: ScheduleReliabilityMetrics;
+  intermodal_services?: string[];
+  vessel_tracking_info?: VesselTrackingInfo;
+  service_schedule?: ServiceSchedule;
+  carrier_insurance_info?: CarrierInsuranceInfo;
+  equipment_specifications?: JsonObject;
 }
 
 export interface Booking {
@@ -151,6 +237,19 @@ export interface Booking {
   insurance_value?: number;
   insurance_coverage?: JsonObject;  // Changed from InsuranceCoverage to JsonObject
   created_at?: string;
+  
+  // New fields
+  shipper_certifications?: string[];
+  shipping_history?: JsonObject;
+  cargo_classification_codes?: string[];
+  handling_codes?: string[];
+  dangerous_goods_class?: string;
+  customs_compliance_info?: CustomsComplianceInfo;
+  trade_compliance_details?: TradeComplianceDetails;
+  cargo_insurance_details?: JsonObject;
+  packaging_specifications?: PackagingSpecifications;
+  regulatory_requirements?: RegulatoryRequirements;
+  export_control_details?: ExportControlDetails;
 }
 
 export interface Profile {

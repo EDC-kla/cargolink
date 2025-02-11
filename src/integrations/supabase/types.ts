@@ -15,8 +15,10 @@ export type Database = {
           bill_of_lading_number: string | null
           booking_notes: string | null
           booking_preferences: Json | null
+          cargo_classification_codes: string[] | null
           cargo_description: string | null
           cargo_dimensions: Json | null
+          cargo_insurance_details: Json | null
           cargo_packaging_type: string | null
           cargo_type: string | null
           cargo_value: number | null
@@ -27,10 +29,14 @@ export type Database = {
             | null
           created_at: string
           customs_broker: string | null
+          customs_compliance_info: Json | null
           customs_declaration_number: string | null
           customs_status: string | null
+          dangerous_goods_class: string | null
           delivery_address: string | null
           estimated_delivery_date: string | null
+          export_control_details: Json | null
+          handling_codes: string[] | null
           hazmat_details: Json | null
           id: string
           incoterms: Database["public"]["Enums"]["incoterm_type"] | null
@@ -39,17 +45,22 @@ export type Database = {
           insurance_value: number | null
           is_draft: boolean | null
           last_modified: string | null
+          packaging_specifications: Json | null
           payment_terms: string | null
           pickup_address: string | null
+          regulatory_requirements: Json | null
           required_certificates: string[] | null
           shipment_id: string | null
+          shipper_certifications: string[] | null
           shipping_documents: Json | null
+          shipping_history: Json | null
           space_booked: number
           special_handling: string[] | null
           status: string | null
           step_progress: number | null
           temperature_requirements: Json | null
           tracking_number: string | null
+          trade_compliance_details: Json | null
           updated_at: string | null
           user_id: string | null
         }
@@ -58,8 +69,10 @@ export type Database = {
           bill_of_lading_number?: string | null
           booking_notes?: string | null
           booking_preferences?: Json | null
+          cargo_classification_codes?: string[] | null
           cargo_description?: string | null
           cargo_dimensions?: Json | null
+          cargo_insurance_details?: Json | null
           cargo_packaging_type?: string | null
           cargo_type?: string | null
           cargo_value?: number | null
@@ -70,10 +83,14 @@ export type Database = {
             | null
           created_at?: string
           customs_broker?: string | null
+          customs_compliance_info?: Json | null
           customs_declaration_number?: string | null
           customs_status?: string | null
+          dangerous_goods_class?: string | null
           delivery_address?: string | null
           estimated_delivery_date?: string | null
+          export_control_details?: Json | null
+          handling_codes?: string[] | null
           hazmat_details?: Json | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
@@ -82,17 +99,22 @@ export type Database = {
           insurance_value?: number | null
           is_draft?: boolean | null
           last_modified?: string | null
+          packaging_specifications?: Json | null
           payment_terms?: string | null
           pickup_address?: string | null
+          regulatory_requirements?: Json | null
           required_certificates?: string[] | null
           shipment_id?: string | null
+          shipper_certifications?: string[] | null
           shipping_documents?: Json | null
+          shipping_history?: Json | null
           space_booked: number
           special_handling?: string[] | null
           status?: string | null
           step_progress?: number | null
           temperature_requirements?: Json | null
           tracking_number?: string | null
+          trade_compliance_details?: Json | null
           updated_at?: string | null
           user_id?: string | null
         }
@@ -101,8 +123,10 @@ export type Database = {
           bill_of_lading_number?: string | null
           booking_notes?: string | null
           booking_preferences?: Json | null
+          cargo_classification_codes?: string[] | null
           cargo_description?: string | null
           cargo_dimensions?: Json | null
+          cargo_insurance_details?: Json | null
           cargo_packaging_type?: string | null
           cargo_type?: string | null
           cargo_value?: number | null
@@ -113,10 +137,14 @@ export type Database = {
             | null
           created_at?: string
           customs_broker?: string | null
+          customs_compliance_info?: Json | null
           customs_declaration_number?: string | null
           customs_status?: string | null
+          dangerous_goods_class?: string | null
           delivery_address?: string | null
           estimated_delivery_date?: string | null
+          export_control_details?: Json | null
+          handling_codes?: string[] | null
           hazmat_details?: Json | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
@@ -125,17 +153,22 @@ export type Database = {
           insurance_value?: number | null
           is_draft?: boolean | null
           last_modified?: string | null
+          packaging_specifications?: Json | null
           payment_terms?: string | null
           pickup_address?: string | null
+          regulatory_requirements?: Json | null
           required_certificates?: string[] | null
           shipment_id?: string | null
+          shipper_certifications?: string[] | null
           shipping_documents?: Json | null
+          shipping_history?: Json | null
           space_booked?: number
           special_handling?: string[] | null
           status?: string | null
           step_progress?: number | null
           temperature_requirements?: Json | null
           tracking_number?: string | null
+          trade_compliance_details?: Json | null
           updated_at?: string | null
           user_id?: string | null
         }
@@ -309,6 +342,8 @@ export type Database = {
           booking_deadline: string | null
           cancellation_policy: string | null
           cargo_restrictions: string[] | null
+          carrier_certifications: string[] | null
+          carrier_insurance_info: Json | null
           carrier_notes: string | null
           category: string | null
           consolidation_service: boolean | null
@@ -326,11 +361,15 @@ export type Database = {
           display_order: number | null
           door_delivery: boolean | null
           door_pickup: boolean | null
+          equipment_details: Json | null
+          equipment_specifications: Json | null
           estimated_arrival: string | null
           featured: boolean | null
           hazmat_accepted: boolean | null
           id: string
           incoterms: Database["public"]["Enums"]["incoterm_type"] | null
+          intermodal_services: string[] | null
+          liability_coverage: Json | null
           max_piece_dimensions: Json | null
           min_booking_size: number | null
           notes: string | null
@@ -343,6 +382,9 @@ export type Database = {
           route_frequency: string | null
           route_tags: string[] | null
           route_type: string | null
+          schedule_reliability_metrics: Json | null
+          service_level_agreement: Json | null
+          service_schedule: Json | null
           special_handling_options: string[] | null
           status: string | null
           stops: Json[] | null
@@ -352,6 +394,8 @@ export type Database = {
           transport_mode: string
           updated_at: string | null
           vessel_name: string | null
+          vessel_tracking_info: Json | null
+          vessel_type: string | null
           voyage_number: string | null
         }
         Insert: {
@@ -361,6 +405,8 @@ export type Database = {
           booking_deadline?: string | null
           cancellation_policy?: string | null
           cargo_restrictions?: string[] | null
+          carrier_certifications?: string[] | null
+          carrier_insurance_info?: Json | null
           carrier_notes?: string | null
           category?: string | null
           consolidation_service?: boolean | null
@@ -378,11 +424,15 @@ export type Database = {
           display_order?: number | null
           door_delivery?: boolean | null
           door_pickup?: boolean | null
+          equipment_details?: Json | null
+          equipment_specifications?: Json | null
           estimated_arrival?: string | null
           featured?: boolean | null
           hazmat_accepted?: boolean | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
+          intermodal_services?: string[] | null
+          liability_coverage?: Json | null
           max_piece_dimensions?: Json | null
           min_booking_size?: number | null
           notes?: string | null
@@ -395,6 +445,9 @@ export type Database = {
           route_frequency?: string | null
           route_tags?: string[] | null
           route_type?: string | null
+          schedule_reliability_metrics?: Json | null
+          service_level_agreement?: Json | null
+          service_schedule?: Json | null
           special_handling_options?: string[] | null
           status?: string | null
           stops?: Json[] | null
@@ -404,6 +457,8 @@ export type Database = {
           transport_mode?: string
           updated_at?: string | null
           vessel_name?: string | null
+          vessel_tracking_info?: Json | null
+          vessel_type?: string | null
           voyage_number?: string | null
         }
         Update: {
@@ -413,6 +468,8 @@ export type Database = {
           booking_deadline?: string | null
           cancellation_policy?: string | null
           cargo_restrictions?: string[] | null
+          carrier_certifications?: string[] | null
+          carrier_insurance_info?: Json | null
           carrier_notes?: string | null
           category?: string | null
           consolidation_service?: boolean | null
@@ -430,11 +487,15 @@ export type Database = {
           display_order?: number | null
           door_delivery?: boolean | null
           door_pickup?: boolean | null
+          equipment_details?: Json | null
+          equipment_specifications?: Json | null
           estimated_arrival?: string | null
           featured?: boolean | null
           hazmat_accepted?: boolean | null
           id?: string
           incoterms?: Database["public"]["Enums"]["incoterm_type"] | null
+          intermodal_services?: string[] | null
+          liability_coverage?: Json | null
           max_piece_dimensions?: Json | null
           min_booking_size?: number | null
           notes?: string | null
@@ -447,6 +508,9 @@ export type Database = {
           route_frequency?: string | null
           route_tags?: string[] | null
           route_type?: string | null
+          schedule_reliability_metrics?: Json | null
+          service_level_agreement?: Json | null
+          service_schedule?: Json | null
           special_handling_options?: string[] | null
           status?: string | null
           stops?: Json[] | null
@@ -456,6 +520,8 @@ export type Database = {
           transport_mode?: string
           updated_at?: string | null
           vessel_name?: string | null
+          vessel_tracking_info?: Json | null
+          vessel_type?: string | null
           voyage_number?: string | null
         }
         Relationships: []

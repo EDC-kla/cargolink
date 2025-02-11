@@ -39,7 +39,17 @@ export const transformShipmentResponse = (data: any): Shipment => {
     additional_services: data.additional_services || [],
     cargo_restrictions: data.cargo_restrictions || [],
     route_tags: data.route_tags || [],
-    preferred_cargo_types: data.preferred_cargo_types || []
+    preferred_cargo_types: data.preferred_cargo_types || [],
+    carrier_certifications: data.carrier_certifications || [],
+    intermodal_services: data.intermodal_services || [],
+    equipment_details: data.equipment_details || null,
+    service_level_agreement: data.service_level_agreement || null,
+    liability_coverage: data.liability_coverage || null,
+    schedule_reliability_metrics: data.schedule_reliability_metrics || null,
+    vessel_tracking_info: data.vessel_tracking_info || null,
+    service_schedule: data.service_schedule || null,
+    carrier_insurance_info: data.carrier_insurance_info || null,
+    equipment_specifications: data.equipment_specifications || null
   };
 };
 
