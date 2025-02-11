@@ -1,7 +1,8 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { shipmentService } from "@/services/api";
-import BookingForm from "@/components/bookings/BookingForm";
+import BookingWizard from "@/components/bookings/wizard/BookingWizard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
@@ -38,11 +39,10 @@ const BookingPage = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">Book Space</h2>
-      <BookingForm
-        shipmentId={shipment.id}
-        availableSpace={shipment.available_space}
-        pricePerCbm={shipment.price_per_cbm}
-        onClose={() => navigate("/marketplace")}
+      <BookingWizard
+        shipment={shipment}
+        onComplete={() => navigate("/marketplace")}
+        onCancel={() => navigate("/marketplace")}
       />
     </div>
   );
