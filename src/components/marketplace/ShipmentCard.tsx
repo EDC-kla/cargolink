@@ -46,11 +46,18 @@ const ShipmentCard = ({
     navigate(`/book/${shipment.id}`);
   };
 
+  const handleCardClick = () => {
+    navigate(`/shipments/${shipment.id}`);
+  };
+
   return (
-    <Card className={cn(
-      "hover:shadow-lg transition-shadow bg-white relative",
-      isFeatured && "border-primary border-2"
-    )}>
+    <Card 
+      className={cn(
+        "hover:shadow-lg transition-shadow bg-white relative cursor-pointer",
+        isFeatured && "border-primary border-2"
+      )}
+      onClick={handleCardClick}
+    >
       {isFeatured && <FeaturedBadge />}
       
       <CardContent className="pt-6">
@@ -97,7 +104,7 @@ const ShipmentCard = ({
         />
       </CardContent>
 
-      <CardFooter className="flex gap-2">
+      <CardFooter className="flex gap-2" onClick={(e) => e.stopPropagation()}>
         {showBookButton && (
           <Button 
             className="flex-1" 
@@ -109,7 +116,10 @@ const ShipmentCard = ({
         {showEditButton && onEdit && (
           <Button 
             variant="outline"
-            onClick={() => onEdit(shipment)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(shipment);
+            }}
           >
             <Edit className="h-4 w-4" />
           </Button>

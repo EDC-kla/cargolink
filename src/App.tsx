@@ -16,6 +16,7 @@ import AppSidebar from "@/components/layout/AppSidebar";
 import Auth from "@/pages/Auth";
 import Onboarding from "@/pages/Onboarding";
 import BookingPage from "@/components/marketplace/BookingPage";
+import ShipmentDetailsPage from "@/pages/ShipmentDetailsPage";
 import { toast } from "@/hooks/use-toast";
 
 const App = () => {
@@ -73,6 +74,7 @@ const App = () => {
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/marketplace/*" element={<Marketplace />} />
+          <Route path="/shipments/:id" element={<ShipmentDetailsPage />} />
           <Route path="/book/:shipmentId" element={<BookingPage />} />
           <Route path="/create-shipment" element={<CreateShipment />} />
           <Route path="/profile" element={<Profile />} />

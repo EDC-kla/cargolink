@@ -306,7 +306,10 @@ export type Database = {
           accepted_cargo_types: string[] | null
           additional_services: string[] | null
           available_space: number
+          booking_deadline: string | null
+          cancellation_policy: string | null
           cargo_restrictions: string[] | null
+          carrier_notes: string | null
           category: string | null
           consolidation_service: boolean | null
           container_size:
@@ -318,6 +321,7 @@ export type Database = {
           customs_clearance: boolean | null
           cutoff_date: string | null
           departure_date: string
+          description: string | null
           destination: string
           display_order: number | null
           door_delivery: boolean | null
@@ -354,7 +358,10 @@ export type Database = {
           accepted_cargo_types?: string[] | null
           additional_services?: string[] | null
           available_space: number
+          booking_deadline?: string | null
+          cancellation_policy?: string | null
           cargo_restrictions?: string[] | null
+          carrier_notes?: string | null
           category?: string | null
           consolidation_service?: boolean | null
           container_size?:
@@ -366,6 +373,7 @@ export type Database = {
           customs_clearance?: boolean | null
           cutoff_date?: string | null
           departure_date: string
+          description?: string | null
           destination: string
           display_order?: number | null
           door_delivery?: boolean | null
@@ -402,7 +410,10 @@ export type Database = {
           accepted_cargo_types?: string[] | null
           additional_services?: string[] | null
           available_space?: number
+          booking_deadline?: string | null
+          cancellation_policy?: string | null
           cargo_restrictions?: string[] | null
+          carrier_notes?: string | null
           category?: string | null
           consolidation_service?: boolean | null
           container_size?:
@@ -414,6 +425,7 @@ export type Database = {
           customs_clearance?: boolean | null
           cutoff_date?: string | null
           departure_date?: string
+          description?: string | null
           destination?: string
           display_order?: number | null
           door_delivery?: boolean | null
