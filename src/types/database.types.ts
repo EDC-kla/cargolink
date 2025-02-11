@@ -77,14 +77,14 @@ export interface Shipment {
   door_delivery: boolean;
   min_booking_size: number;
   status: ShipmentStatus;
-  additional_services: string[];  // Changed from optional
-  cargo_restrictions: string[];   // Changed from optional
-  consolidation_service: boolean; // Changed from optional
+  additional_services: string[];
+  cargo_restrictions: string[];
+  consolidation_service: boolean;
   route_frequency?: string;
-  route_tags: string[];          // Changed from optional
+  route_tags: string[];
   route_type?: string;
   notes?: string;
-  preferred_cargo_types: CargoType[]; // Changed from optional
+  preferred_cargo_types: CargoType[];
   stops?: RouteStop[];
   featured?: boolean;
   display_order?: number;
@@ -104,6 +104,10 @@ export interface Shipment {
   temperature_range?: JsonObject;
   special_handling_options?: string[];
   required_cargo_docs?: string[];
+  description?: string;
+  carrier_notes?: string;
+  cancellation_policy?: string;
+  booking_deadline?: string;
   created_at?: string;
   created_by?: string;
 }
