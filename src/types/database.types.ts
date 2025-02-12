@@ -201,8 +201,6 @@ export interface Shipment {
   booking_deadline?: string;
   created_at?: string;
   created_by?: string;
-  
-  // New fields
   vessel_type?: string;
   equipment_details?: Json;
   service_level_agreement?: Json;
@@ -255,8 +253,6 @@ export interface Booking {
   insurance_value?: number;
   insurance_coverage?: Json;
   created_at?: string;
-  
-  // New fields
   shipper_certifications?: string[];
   shipping_history?: Json;
   cargo_classification_codes?: string[];
