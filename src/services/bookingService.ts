@@ -44,10 +44,7 @@ export const bookingService = {
           : undefined
       })
       .eq('id', id)
-      .select(`
-        *,
-        shipment:shipments (*)
-      `)
+      .select('*, shipment:shipments(*)')
       .single();
     
     if (error) throw error;
@@ -61,23 +58,30 @@ export const bookingService = {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
 
+    // Prepare the booking data
+    const bookingData = {
+      ...booking,
+      user_id: user.id,
+      cargo_dimensions: JSON.stringify(booking.cargo_dimensions),
+      temperature_requirements: booking.temperature_requirements 
+        ? JSON.stringify(booking.temperature_requirements)
+        : null,
+      special_handling: booking.special_handling || [],
+      required_certificates: booking.required_certificates || [],
+      status: booking.status || 'pending'
+    };
+
     const { data, error } = await supabase
       .from('bookings')
-      .insert([{ 
-        ...booking,
-        user_id: user.id,
-        cargo_dimensions: JSON.stringify(booking.cargo_dimensions),
-        temperature_requirements: booking.temperature_requirements 
-          ? JSON.stringify(booking.temperature_requirements)
-          : null
-      }])
-      .select(`
-        *,
-        shipment:shipments (*)
-      `)
+      .insert([bookingData])
+      .select('*, shipment:shipments(*)')
       .single();
     
-    if (error) throw error;
+    if (error) {
+      console.error('Booking error:', error);
+      throw error;
+    }
+
     return {
       ...transformBookingResponse(data),
       shipment: data.shipment ? transformShipmentResponse(data.shipment) : null
@@ -90,10 +94,7 @@ export const bookingService = {
 
     const { data, error } = await supabase
       .from('bookings')
-      .select(`
-        *,
-        shipment:shipments (*)
-      `)
+      .select('*, shipment:shipments(*)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
     
