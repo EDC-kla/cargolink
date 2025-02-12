@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { Booking, BookingStatus, Shipment } from '@/types/database.types';
 import { BookingFormData } from '@/components/bookings/wizard/BookingWizard';
@@ -8,7 +9,7 @@ function transformBookingResponse(data: any): Booking {
     ...data,
     cargo_dimensions: typeof data.cargo_dimensions === 'string' 
       ? JSON.parse(data.cargo_dimensions)
-      : data.cargo_dimensions || { length: 0, width: 0, height: 0, weight: 0 },
+      : data.cargo_dimensions || { length: 0, width: 0, height: 0, weight: 0, weight_unit: 'kg', dimension_unit: 'm' },
     temperature_requirements: data.temperature_requirements
       ? typeof data.temperature_requirements === 'string'
         ? JSON.parse(data.temperature_requirements)
