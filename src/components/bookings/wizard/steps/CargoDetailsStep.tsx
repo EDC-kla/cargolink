@@ -16,8 +16,8 @@ type FormDataType = {
     width: number;
     height: number;
     weight: number;
-    weight_unit?: 'kg' | 'lbs';
-    dimension_unit?: 'm' | 'cm' | 'in' | 'ft';
+    weight_unit: 'kg' | 'lbs';    // Made required
+    dimension_unit: 'm' | 'cm' | 'in' | 'ft';  // Made required
   };
   cargo_type: string;
   cargo_description: string;
