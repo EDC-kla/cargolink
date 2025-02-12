@@ -21,7 +21,7 @@ interface CargoDetailsStepProps {
       unit: 'C' | 'F';
     };
   };
-  onChange: (data: Partial<typeof CargoDetailsStepProps['formData']>) => void;
+  onChange: (data: Partial<CargoDetailsStepProps['formData']>) => void;
   shipment: Shipment;
 }
 
