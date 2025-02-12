@@ -7,21 +7,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { PackageSearch, AlertTriangle, Ruler, Scale, ThermometerIcon } from "lucide-react";
-import { CargoDimensions, Shipment } from "@/types/database.types";
+import type { Shipment } from "@/types/database.types";
 import TemperatureRequirementsInput from "./cargo/TemperatureRequirementsInput";
 
-interface CargoDetailsStepProps {
-  formData: {
-    cargo_dimensions: CargoDimensions;
-    cargo_type: string;
-    cargo_description: string;
-    temperature_requirements?: {
-      min: number;
-      max: number;
-      unit: 'C' | 'F';
-    };
+type FormDataType = {
+  cargo_dimensions: {
+    length: number;
+    width: number;
+    height: number;
+    weight: number;
+    weight_unit?: 'kg' | 'lbs';
+    dimension_unit?: 'm' | 'cm' | 'in' | 'ft';
   };
-  onChange: (data: Partial<CargoDetailsStepProps['formData']>) => void;
+  cargo_type: string;
+  cargo_description: string;
+  temperature_requirements?: {
+    min: number;
+    max: number;
+    unit: 'C' | 'F';
+  };
+};
+
+interface CargoDetailsStepProps {
+  formData: FormDataType;
+  onChange: (data: Partial<FormDataType>) => void;
   shipment: Shipment;
 }
 
