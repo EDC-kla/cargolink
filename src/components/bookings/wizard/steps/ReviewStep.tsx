@@ -15,9 +15,10 @@ interface ReviewStepProps {
   data: BookingFormData;
   shipment: Shipment;
   onSubmit: () => void;
+  isSubmitting: boolean; // Added this prop
 }
 
-const ReviewStep = ({ data, shipment, onSubmit }: ReviewStepProps) => {
+const ReviewStep = ({ data, shipment, onSubmit, isSubmitting }: ReviewStepProps) => {
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -52,7 +53,7 @@ const ReviewStep = ({ data, shipment, onSubmit }: ReviewStepProps) => {
               <div className="flex justify-between">
                 <span className="text-gray-500">Temperature:</span>
                 <span>
-                  {data.temperature_requirements.min}°C to {data.temperature_requirements.max}°C
+                  {data.temperature_requirements.min}°{data.temperature_requirements.unit} to {data.temperature_requirements.max}°{data.temperature_requirements.unit}
                 </span>
               </div>
             )}
@@ -142,8 +143,19 @@ const ReviewStep = ({ data, shipment, onSubmit }: ReviewStepProps) => {
       )}
 
       <div className="flex justify-end">
-        <Button onClick={onSubmit} className="w-full md:w-auto">
-          Confirm Booking
+        <Button 
+          onClick={onSubmit} 
+          disabled={isSubmitting}
+          className="w-full md:w-auto"
+        >
+          {isSubmitting ? (
+            <div className="flex items-center">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+              Processing...
+            </div>
+          ) : (
+            "Confirm Booking"
+          )}
         </Button>
       </div>
     </div>

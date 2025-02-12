@@ -21,7 +21,7 @@ interface CargoDetailsStepProps {
       unit: 'C' | 'F';
     };
   };
-  onChange: (data: Partial<typeof formData>) => void;
+  onChange: (data: Partial<typeof CargoDetailsStepProps['formData']>) => void;
   shipment: Shipment;
 }
 
@@ -45,7 +45,7 @@ const CargoDetailsStep = ({ formData, onChange, shipment }: CargoDetailsStepProp
   return (
     <div className="space-y-6">
       {formData.cargo_type === "hazardous" && (
-        <Alert variant="warning">
+        <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
           <AlertDescription>
             Hazardous materials require additional documentation and special handling. Our team will contact you for details.
