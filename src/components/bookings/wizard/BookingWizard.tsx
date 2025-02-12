@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Card } from "@/components/ui/card";
 import { Shipment } from "@/types/database.types";
 import CargoDetailsStep from "./steps/CargoDetailsStep";
 import LogisticsDetailsStep from "./steps/LogisticsDetailsStep";
@@ -10,6 +11,7 @@ import ReviewStep from "./steps/ReviewStep";
 import { motion, AnimatePresence } from "framer-motion";
 import { bookingService } from "@/services/api";
 import { toast } from "@/hooks/use-toast";
+import { Check, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface BookingWizardProps {
   shipment: Shipment;
@@ -77,8 +79,11 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
     payment_terms: "prepaid",
   });
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = async () => {
     try {
+      setSubmitting(true);
       if (onAuthRequired) {
         await onAuthRequired();
       }
@@ -88,8 +93,8 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
         status: 'pending',
       });
       toast({
-        title: "Booking submitted successfully",
-        description: "Your booking request has been sent.",
+        title: "Booking submitted successfully! 🎉",
+        description: "We'll notify you once the carrier reviews your booking.",
       });
       onComplete();
     } catch (error: any) {
@@ -98,22 +103,26 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
         description: error.message,
         variant: "destructive",
       });
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const steps = [
     {
       title: "Cargo Details",
+      description: "Tell us about your cargo",
       component: (
         <CargoDetailsStep
           formData={formData}
-          onChange={(data: Partial<BookingFormData>) => setFormData({ ...formData, ...data })}
+          onChange={(data) => setFormData({ ...formData, ...data })}
           shipment={shipment}
         />
       ),
     },
     {
       title: "Logistics Details",
+      description: "Pickup and delivery information",
       component: (
         <LogisticsDetailsStep
           data={formData}
@@ -122,7 +131,8 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
       ),
     },
     {
-      title: "Customs & Documentation",
+      title: "Documentation",
+      description: "Required documents and customs info",
       component: (
         <CustomsDetailsStep
           data={formData}
@@ -132,11 +142,13 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
     },
     {
       title: "Review & Confirm",
+      description: "Verify your booking details",
       component: (
         <ReviewStep
           data={formData}
           shipment={shipment}
           onSubmit={handleSubmit}
+          isSubmitting={submitting}
         />
       ),
     },
@@ -145,16 +157,50 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
   const progress = ((currentStep + 1) / steps.length) * 100;
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="space-y-2">
-        <div className="flex justify-between text-sm text-gray-500">
-          <span>Step {currentStep + 1} of {steps.length}</span>
-          <span>{steps[currentStep].title}</span>
+    <div className="space-y-8 max-w-4xl mx-auto">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold">{steps[currentStep].title}</h2>
+            <p className="text-muted-foreground">{steps[currentStep].description}</p>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span>Step {currentStep + 1} of {steps.length}</span>
+            <Progress value={progress} className="w-32 h-2" />
+          </div>
         </div>
-        <Progress value={progress} className="h-2" />
+
+        <div className="flex items-center justify-center">
+          <div className="flex items-center gap-4">
+            {steps.map((step, index) => (
+              <div key={index} className="flex items-center">
+                <div
+                  className={`flex items-center justify-center w-8 h-8 rounded-full border-2 
+                    ${index <= currentStep 
+                      ? 'border-primary bg-primary text-white' 
+                      : 'border-gray-300 text-gray-400'
+                    }`}
+                >
+                  {index < currentStep ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <span>{index + 1}</span>
+                  )}
+                </div>
+                {index < steps.length - 1 && (
+                  <div 
+                    className={`w-16 h-0.5 ${
+                      index < currentStep ? 'bg-primary' : 'bg-gray-300'
+                    }`} 
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="min-h-[400px] relative">
+      <Card className="p-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
@@ -162,12 +208,11 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute inset-0"
           >
             {steps[currentStep].component}
           </motion.div>
         </AnimatePresence>
-      </div>
+      </Card>
 
       <div className="flex justify-between pt-4 border-t">
         <Button
@@ -179,19 +224,39 @@ const BookingWizard = ({ shipment, onComplete, onCancel, onAuthRequired }: Booki
               setCurrentStep(currentStep - 1);
             }
           }}
+          disabled={submitting}
         >
+          <ArrowLeft className="w-4 h-4 mr-2" />
           {currentStep === 0 ? "Cancel" : "Previous"}
         </Button>
-        <Button
-          onClick={() => {
-            if (currentStep < steps.length - 1) {
-              setCurrentStep(currentStep + 1);
-            }
-          }}
-          disabled={currentStep === steps.length - 1}
-        >
-          Next
-        </Button>
+        
+        {currentStep < steps.length - 1 ? (
+          <Button
+            onClick={() => setCurrentStep(currentStep + 1)}
+            disabled={submitting}
+          >
+            Next
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSubmit}
+            disabled={submitting}
+            className="min-w-[120px]"
+          >
+            {submitting ? (
+              <div className="flex items-center">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                Submitting...
+              </div>
+            ) : (
+              <>
+                Confirm Booking
+                <Check className="w-4 h-4 ml-2" />
+              </>
+            )}
+          </Button>
+        )}
       </div>
     </div>
   );
